@@ -1,0 +1,52 @@
+<div class="row mt-20" >
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="fa fa-rocket font-dark"></i>
+                    <span class="caption-subject bold uppercase">路由管理</span>
+                </div>
+                <div class="tools" style="padding-top:7px;">
+                    <button type="button" class="btn btn-warning" id="resetServerBtn">重启服务</button>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="col-md-1">序号</th>
+                                    <th class="col-md-3">路由地址</th>
+                                    <th class="col-md-2">请求类型</th>
+                                    <th class="col-md-5">回调类</th>
+                                    <th class="col-md-1">方法</th>
+                                    <th class="col-md-1">验证</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data %}
+                            <tr role="row">
+                                <td>{{ k+1 }}</td>
+                                <td>
+                                    <a href="javascript:;" class="copyDataBtn" data-clipboard-text="{{ v.url }}">{{ v.url }}</a>
+                                </td>
+                                <td>{{ v.method }}</td>
+                                <td>{{ v.class }}</td>
+                                <td>{{ v.action }}</td>
+                                <td>{{ label(v.verify,{0:['danger','不需要登陆'],1:['primary','验证登陆'],2:['success','验证权限']}) }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,75 @@
+<div class="row mt-20" >
+    {{ render("user/memberExtend/_logs_search") }}
+    <div class="col-md-12">
+        <div class="tabbable tabbable-tabdrop tabbable-custom">
+            <ul class="nav nav-tabs mb-20">
+                <li {% if ctype=='wallet' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/memberExtend/logs/'~userid,{'ctype':'wallet'})}}">
+                        钱包日志
+                    </a>
+                </li>
+                <li {% if ctype=='point' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/memberExtend/logs/'~userid,{'ctype':'point'})}}">
+                        积分日志
+                    </a>
+                </li>
+                <li {% if ctype=='profit' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/memberExtend/logs/'~userid,{'ctype':'profit'})}}">
+                        收益日志
+                    </a>
+                </li>
+<!--                <li {% if ctype=='exp' %}class="active"{% endif %}>-->
+<!--                    <a href="{{url('/backend/memberExtend/logs/'~userid,{'ctype':'exp'})}}">-->
+<!--                        经验日志-->
+<!--                    </a>-->
+<!--                </li>-->
+                <li class="pull-right">
+                    {{ render("main/_tools") }}
+                </li>
+            </ul>
+            <div class="tab-content">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="col-xs-2 text-center">原本数据</th>
+                                    <th class="col-xs-1 text-center">数据值</th>
+                                    <th class="col-xs-2 text-center">变动后的数据</th>
+                                    <th class="col-xs-4 text-center">描述</th>
+                                    <th>创建时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row">
+                                <td class="text-center">{{v.before_money}}</td>
+                                <td class="text-center">
+                                    {% if v.type=='add' %}
+                                    <span class="label label-sm label-success">+{{v.change}}</span>
+                                    {% elseif v.type=='minus' %}
+                                    <span class="label label-sm label-danger">-{{v.change}}</span>
+                                    {% else %}
+                                    {{v.change}}
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">{{v.after_money}}</td>
+                                <td class="text-center">{{v.descr}}</td>
+                                <td>{{v.created_time|date('Y-m-d H:i:s')}}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

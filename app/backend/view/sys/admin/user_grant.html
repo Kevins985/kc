@@ -1,0 +1,42 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/admin/setUserGrant')}}"  class="form-horizontal formValidation"
+                      method="put" data-callback="setUserGrant">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">用户名称
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="hidden" name="userid" id="userid" value="{{admin.user_id}}" />
+                                <input type="text" class="form-control" placeholder="用户名称" disabled="" id="realname" name="realname"
+                                       value="{{admin.realname}}" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="menu_container">
+                            <label class="col-md-2 control-label">菜单权限</label>
+                            <div class="col-md-7 zTreeDemoBackground mt-5 pl-0">
+                                <ul id="menuTree" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="button" data-type="menu"  id="setUserGrantSubmit" class="btn green">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

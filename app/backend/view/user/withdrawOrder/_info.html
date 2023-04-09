@@ -1,0 +1,78 @@
+<tr class="child" pid="{{orderObj.order_id}}">
+    <td colspan="12" style="text-align:left;padding:0px;word-break:break-all;">
+        <div class="row goodsInfo" style="margin:0px;">
+            <div class="tabbable tabbable-tabdrop">
+                <ul class="nav nav-tabs">
+                    <li class="active" name="tab_info">
+                        <a href="#tab_info" data-toggle="tab" aria-expanded="true">基础信息</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_info">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 客户账号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ memberObj.account|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 客户手机号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ memberObj.mobile }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 银行名称 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ bankObj.bank_name }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 银行卡号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ bankObj.bank_card }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 持卡人姓名 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ bankObj.real_name }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 开户行地址 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ bank.bank_address }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 描述 </div>
+                                <div class="profile-info-value">
+                                    <span>{{ orderObj.descr|default('&nbsp;') }}</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 备注 </div>
+                                <div class="profile-info-value">
+                                    <span>{{ orderObj.memo|default('&nbsp;') }}</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

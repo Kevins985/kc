@@ -1,0 +1,269 @@
+<tr class="child" pid="{{member.user_id}}" id="info_{{member.user_id}}">
+    <td colspan="12" style="text-align:left;padding:0px;word-break:break-all;">
+        <div class="row goodsInfo" style="margin:0px;">
+            <div class="tabbable tabbable-tabdrop">
+                <ul class="nav nav-tabs">
+                    <li class="active" name="tab_info">
+                        <a href="#tab_info" data-toggle="tab" aria-expanded="true">基本信息</a>
+                    </li>
+                    <li class="" name="tab_address">
+                        <a href="#tab_address" data-toggle="tab" aria-expanded="false">收件地址</a>
+                    </li>
+                    <li class="" name="tab_invite">
+                        <a href="#tab_invite" data-toggle="tab" aria-expanded="false">直推用户</a>
+                    </li>
+                    <li class="" name="tab_extend">
+                        <a href="#tab_extend" data-toggle="tab" aria-expanded="false">用户资产</a>
+                    </li>
+                    <li>
+                        <a href='{{url("/backend/memberExtend/logs/"~member.user_id)}}' target="_blank">资产日志</a>
+                    </li>
+                    <li class="pull-right pt-10">
+                        <button data-id="{{member.user_id}}" data-remark="{{member.remark}}" class="btn red btn-xs btn-sm setRemark">备注</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_info">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 登陆账号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.account }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 昵称 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.nickname }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 是否实名认证 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.auth_type|eq(0,'&nbsp;','已认证') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 是否设置支付密码 </div>
+                                    <div class="profile-info-value">
+                                        <span>{% if member.pay_password %}已设置{% endif %} &nbsp;</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 联系邮箱 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.email|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 手机号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.mobile|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 最后登陆时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{% if member.login_time %}{{member.last_login_time|date('Y-m-d H:i:s')}}{% endif %}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 登陆次数 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.login_cnt }}</span>
+                                    </div>
+                                </div>
+<!--                                <div class="col-2">-->
+<!--                                    <div class="profile-info-name"> 密码最后修改时间 </div>-->
+<!--                                    <div class="profile-info-value">-->
+<!--                                        <span>{% if member.modify_pwd_time>0 %}{{ member.modify_pwd_time }}{% endif %}&nbsp;</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 注册时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.created_time|date('Y-m-d H:i:s') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 注册IP </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ member.client_ip }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 邀请码 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{team.invite_code|default('&nbsp;')}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 邀请奖励金 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ team.reward|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 上级邀请人ID </div>
+                                    <div class="profile-info-value">
+                                        <span>
+                                        {% if team.parent_id!=0 %}
+                                        <a href="{{url('/backend/member/list',{'searchType':'user_id','searchValue':team.parent_id})}}" target="_blank">{{team.parent_id}}</a>
+                                        {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 上级邀请人节点 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ team.parents_path|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 联系地址 </div>
+                                <div class="profile-info-value">
+                                    <span>{{member.address|default('&nbsp;')}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 描述 </div>
+                                <div class="profile-info-value">
+                                    <span>{{member.descr|default('&nbsp;')}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 备注 </div>
+                                <div class="profile-info-value">
+                                    <span id="memberRemark" style="color:red;">{{member.remark|default('&nbsp;')}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_address">
+                        <div class="panel panel-default m-b-none">
+                            <table class="table table-striped m-b-none">
+                                <thead>
+                                <tr>
+                                    <th class="col-xs-2">收件人</th>
+                                    <th class="col-xs-2">联系电话</th>
+                                    <th class="col-xs-2">地区</th>
+                                    <th>详细地址</th>
+                                    <th class="col-xs-1">邮编</th>
+                                    <th class="col-xs-2">是否默认</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for k,v in addressList %}
+                                <tr>
+                                    <td>{{v.name}}</td>
+                                    <td>{{v.mobile}}</td>
+                                    <td>{{v.local}}</td>
+                                    <td>{{v.address}}</td>
+                                    <td>{{v.post_code}}</td>
+                                    <td>{{ label(v.is_default,{0:['danger','否'],1:['success','是']}) }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td class="nodata" colspan="10">暂无数据</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_invite">
+                        <div class="panel panel-default m-b-none">
+                            <table class="table table-striped m-b-none">
+                                <thead>
+                                <tr>
+                                    <th class="col-xs-1">UID</th>
+                                    <th>登陆账号</th>
+                                    <th>用户IP</th>
+                                    <th style="width:120px;">邀请码</th>
+                                    <th class="col-xs-2">直推人数</th>
+                                    <th class="col-xs-2">团队人数</th>
+<!--                                    <th class="col-xs-1">直推业绩</th>-->
+<!--                                    <th class="col-xs-1">团队业绩</th>-->
+                                    <th class="col-xs-2">注册时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for k,v in inviteList %}
+                                <tr class="sku_node">
+                                    <td>{{v.user_id}}</td>
+                                    <td>{{v.account}}</td>
+                                    <td>{{memberList[v.user_id].client_ip}}</td>
+                                    <td>{{v.invite_code}}</td>
+                                    <td class="text-center">{{v.invite_cnt}}</td>
+                                    <td class="text-center">{{v.team_cnt}}</td>
+<!--                                    <td class="text-center">{{v.invite_money}}</td>-->
+<!--                                    <td class="text-center">{{v.team_money}}</td>-->
+                                    <td>{{v.created_time|date('Y-m-d H:i:s')}}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td class="nodata" colspan="10">暂无数据</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_extend">
+                        <div class="panel panel-default m-b-none">
+                            <table class="table table-striped m-b-none">
+                                <thead>
+                                <tr class="text-center">
+                                    <th class="col-xs-1">UID</th>
+                                    <th class="col-xs-1">可用积分</th>
+                                    <th class="col-xs-1">钱包余额</th>
+                                    <th class="col-xs-1">收益余额</th>
+                                    <th class="col-xs-1">冻结金额</th>
+                                    <th class="col-xs-1">已充值金额</th>
+                                    <th class="col-xs-1">已提现金额</th>
+                                    <th class="col-xs-1">已使用积分</th>
+                                    <th class="col-xs-2">最后更新时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="sku_node">
+                                    <td class="text-center">{{extend.user_id}}</td>
+                                    <td class="text-center">{{extend.point}}</td>
+                                    <td class="text-center">{{extend.wallet}}</td>
+                                    <td class="text-center">{{extend.profit}}</td>
+                                    <td class="text-center">{{extend.frozen}}</td>
+                                    <td class="text-center">{{extend.recharge_money}}</td>
+                                    <td class="text-center">{{extend.withdraw_money}}</td>
+                                    <td class="text-center">{{extend.used_point}}</td>
+                                    <td>{{extend.updated_time|date('Y-m-d H:i:s')}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

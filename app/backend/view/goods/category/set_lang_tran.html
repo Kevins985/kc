@@ -1,0 +1,55 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/category/setLangTran/'~data.category_id)}}" class="form-horizontal formValidation"
+                      method="put" data-callback="updateSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">分类展示图</label>
+                            <div class="col-md-4 mt-10 ml-15 thumbnail" id='uploadImageContainer' style='position:relative;{% if data.image=="" %}display:none;{% endif %}'>
+                                {% if data.image!="" %}
+                                <a href="javascript:;" class="delImageBtn"><i class="fa fa-remove"></i></a>
+                                <img class="img-rounded" src="{{data.image}}" />
+                                <input type="hidden" id="image" name="image" value="{{data.image}}" />
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">分类名称</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" disabled="true" value="{{data.category_name}}" />
+                                <span class="help-block">翻译没有定义使用默认英文品名</span>
+                            </div>
+                        </div>
+                        {% for k,v in langList %}
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{v.lang_name}}
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control value_name" name="trans[{{k}}]" value="{{langKeyValues[k]}}" />
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="col-md-12 {% if params.searchType is empty %}hide{% endif %}" id="listSearchBox">
+    <div class="portlet box green">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-search"></i>搜索
+            </div>
+            <div class="tools">
+                <a class="clearSearchBtn" href="javascript:;" title="重置表单">
+                    <i class="fa fa-refresh font-white" aria-hidden="true"></i>
+                </a>
+                <a class="searchBoxBtn" href="javascript:;" title="关闭搜索框">
+                    <i class="fa fa-close font-white" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body flip-scroll">
+            <div class="form-inline mt-5">
+                <form id="searchForm" action="{{url('/backend/realAuth/list')}}" method="post">
+                    <div class="form-group">
+                        <label>审核状态:</label>
+                        <select id="status" name="status" class="form-control">
+                            <option value="" {% if params.status=='' %}selected=""{% endif %}>所有状态</option>
+                            <option value="0" {% if params.status=='0' %}selected=""{% endif %}>待审核</option>
+                            <option value="1" {% if params.status=='1' %}selected=""{% endif %}>审核通过</option>
+                            <option value="2" {% if params.status=='2' %}selected=""{% endif %}>已拒绝</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>筛选条件:</label>
+                        <select id="searchType" name="searchType" class="form-control">
+                            <option value="user_id" {{params.searchType|eq('user_id','selected','')}}>UID</option>
+                            <option value="user_no" {{params.searchType|eq('user_no','selected','')}}>会员ID</option>
+                            <option value="invite_userid" {{params.searchType|eq('invite_userid','selected','')}}>邀请人ID</option>
+                            <option value="real_name" {{params.searchType|eq('real_name','selected','')}}>真实姓名</option>
+                            <option value="card_id" {{params.searchType|eq('card_id','selected','')}}>身份证号</option>
+                            <option value="created_time" {{params.searchType|eq('created_time','selected','')}}>创建时间</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchValue" name="searchValue" value="{{params.searchValue}}" placeholder="搜索">
+                        <button type="button" id="searchBtn" class="btn btn-success">搜索</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

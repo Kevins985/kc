@@ -1,0 +1,28 @@
+<div class="portlet-body">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <th style="width:50px;">&nbsp;</th>
+            <th>任务名称</th>
+            <th>任务脚本</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for k,v in data %}
+        <tr role="row"  id="cmd_{{ k }}">
+            <td>
+                <label class="mt-radio mt-radio-single mt-radio-outline">
+                    <input type="radio" class="radio" name="cmd_key" value="{{ k }}">
+                    <span></span>
+                </label>
+            </td>
+            <td class="doc">{{v.doc}}</td>
+            <td class="cmd">{{v.cmd}}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td class="nodata text-center" colspan="6">暂无数据</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

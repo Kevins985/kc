@@ -1,0 +1,42 @@
+{% set action = menus("action",param) %}
+{% if action %}
+<div class="table-toolbar">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="btn-group" id="callUrlBtn">
+                {% for key,v in action %}
+                <a href="javascript:;" data-url="{{v.route_url}}" data-choice="{{v.choice_ids}}" class="btn {{v.btn_class|default('btn-default btn-sm')}} mr-10">
+                    <i class="{{v.icon}}"></i> {{v.menu_name}}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% if cmenu.top<0 %}
+        <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Tools
+                    <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-print"></i> Print
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-file-pdf-o"></i> Save as PDF
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-file-excel-o"></i> Export to Excel
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

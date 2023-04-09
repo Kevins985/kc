@@ -1,0 +1,36 @@
+<div class="login-box">
+    <header>KC</header>
+    <div class="login-main clearfix">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="account" class="col-xs-3 control-label">账号</label>
+                <div class="col-xs-9">
+                    <input class="form-control" id="account" autocomplete="off" placeholder="账号/邮箱" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-xs-3 control-label">密码</label>
+                <div class="col-xs-9">
+                    <input class="form-control" id="password" autocomplete="off" placeholder="账号密码" type="password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-3 control-label">验证码</label>
+                <div class="col-xs-9 captchaBox">
+                    <input class="form-control" id="captcha" autocomplete="off" placeholder="验证码" type="text">
+                    <img id="captchaImg" src="{{ captcha }}" data-src="{{ captcha }}" title="重新获取验证码" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-9">
+                    <div class="checkbox remember">
+                        <label><input type="checkbox" name="is_remember" value="1" id="is_remember">记住帐号?</label>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <button type="button" id="loginSubmitBtn" class="btn btn-primary">登陆</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

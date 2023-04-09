@@ -1,0 +1,60 @@
+<div id="exception_contain">
+    <div id="showInfo">
+        <h1>Oops!</h1>
+        <p>Request Fail!</p>
+        <p style="color: #FF6666;">
+            {{msg|default('The page you are looking for does not exist !')}}
+        </p>
+        {% if refer_url %}
+        <p>
+            错误链接：<a href="{{refer_url}}">{{refer_url}}</a>
+        </p>
+        {% endif %}
+        <p id="page-jump">Redirect to <a style="font-size:14px;" id="jump_url" href="{{url('/backend/main/index')}}">homepage</a> automatically in <span id="time_span">10</span> seconds</p>
+    </div>
+    <div id="img">
+        {{ asset("/static/common/images/error_page.gif","image") }}
+    </div>
+</div>
+<style>
+    .page-content{background-color: #f5f5f5;}
+    #exception_contain{
+        width: 550px;
+        margin: 150px auto;
+    }
+    #showInfo{
+        width: 330px;
+        float: left;
+        display:inline-block;
+    }
+    #showInfo h1{
+        font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+        margin-top: 40px;
+        color: #565a5c;
+        font-size: 3em;
+    }
+    #showInfo p{
+        margin: 20px auto auto 10px;
+        color: #565a5c;
+        line-height: 20px;
+    }
+    #showInfo a{
+        text-decoration: none;
+        color: #555;
+    }
+    #showInfo a:hover{
+        text-decoration: underline;
+    }
+
+    #page-jump,#page-jump a{
+        line-height: 40px;
+        font-size: 0.8em;
+    }
+    #img{
+        display: inline-block;
+        float: right;
+    }
+    #img img{
+        max-width: 220px;
+    }
+</style>

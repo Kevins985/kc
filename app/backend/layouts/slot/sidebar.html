@@ -1,0 +1,40 @@
+<aside class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <ul class="page-sidebar-menu page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <li class="nav-item ">
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="pull-left info">
+                        <p>{{login.account}}</p>
+                        <a href="{{ url('/backend/admin/userInfo') }}">{{login.realname}}</a>
+                    </div>
+                </div>
+            </li>
+            {% for k1,v1 in menus("sidebar") %}
+            <li class="nav-item ">
+                <a href="{{v1.route_url|default('javascript:void(0)')}}" class="nav-link nav-toggle">
+                    <i class="{{v1.icon}}"></i>
+                    <span class="title">{{v1.menu_name}}</span>
+                    {% if v1.child %}
+                    <span class="arrow {% if v1.menu_id==cmenu.menu_id %}open{% endif %}"></span>
+                    {% endif %}
+                </a>
+                {% if v1.child %}
+                <ul class="sub-menu" {% if v1.menu_id==cmenu.menu_id %}style='display:block'{% endif %}>
+                    {% for k2,v2 in v1.child %}
+                    <li class="nav-item {% if v2.menu_id==cmenu.list_id %}active{% endif %}">
+                        <a href="{{v2.route_url}}" class="nav-link nav-toggle">
+                            <i class="{{ v2.icon }}"></i>
+                            <span class="title">{{v2.menu_name}}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</aside>

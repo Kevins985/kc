@@ -1,0 +1,40 @@
+{% if data.lastPage>1 %}
+<div class="flip form-inline clearfix">
+    <div class="pull-left form-group mt-10">
+        <span>每页显示</span>
+        <select class="form-control" id="pageSubmit" data-url="{{data.url(1)}}">
+            <option value="10" {{ data.perPage|eq('10','selected','') }}>10</option>
+            <option value="20" {{ data.perPage|eq('20','selected','') }}>20</option>
+            <option value="30" {{ data.perPage|eq('30','selected','') }}>30</option>
+            <option value="40" {{ data.perPage|eq('40','selected','') }}>40</option>
+            <option value="50" {{ data.perPage|eq('50','selected','') }}>50</option>
+        </select>
+        <span>共 {{data.total}} 条</span>
+    </div>
+    <div class="pull-right form-group">
+        <ul class="pagination pagination-sm form-group">
+            {% if data.currentPage==1 %}
+            <li class="disabled"><a href="javascript:;">首页</a></li>
+            <li class="disabled"><a href="javascript:;" aria-label="Previous">上一页</a></li>
+            {% else %}
+            <li><a href="{{data.url(1)}}">首页</a></li>
+            <li><a href="{{data.previousPageUrl()}}" aria-label="Previous">上一页</a></li>
+            {% endif %}
+            {% for key,num in paginator(data.currentPage,data.lastPage,5) %}
+            {% if data.currentPage==num %}
+            <li class="active"><a href="javascript:;">{{num}}</a></li>
+            {% else %}
+            <li><a href="{{data.url(num)}}">{{num}}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if data.currentPage==data.lastPage %}
+            <li class="disabled"><a href="javascript:;" aria-label="Next">下一页</a></li>
+            <li class="disabled"><a href="javascript:;">尾页</a></li>
+            {% else %}
+            <li><a href="{{data.nextPageUrl()}}" aria-label="Previous">下一页</a></li>
+            <li><a href="{{data.url(data.lastPage)}}">尾页</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endif %}

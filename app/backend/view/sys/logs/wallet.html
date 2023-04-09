@@ -1,0 +1,73 @@
+<div class="row mt-20" >
+    {{ render("sys/logs/_search_wallet") }}
+    <div class="col-md-12">
+        <div class="tabbable tabbable-tabdrop tabbable-custom">
+            <ul class="nav nav-tabs mb-20">
+                <li {% if params.type=='' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/logs/wallet')}}">
+                        所有
+                        <span class="badge badge-default"> {{countList['total']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.type=='add' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/logs/wallet',{'type':'add'})}}">
+                        收入 <span class="badge badge-success"> {{countList['add']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.type=='minus' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/logs/wallet',{'type':'minus'})}}">
+                        支出 <span class="badge badge-warning"> {{countList['minus']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li class="pull-right">
+                    {{ render("main/_tools") }}
+                </li>
+            </ul>
+            <div class="tab-content">
+                {% if params.type=='' %}
+                统计金额:{{countList["total"]['money']}}
+                {% else %}
+                统计金额:{{countList[params.type]['money']}}
+                {% endif %}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                            <tr role="row">
+                                <th class="col-md-3">用户数据</th>
+                                <th class="col-md-1">金额</th>
+                                <th class="col-md-1">钱包余额</th>
+                                <th class="col-md-2">操作类型</th>
+                                <th class="col-md-2">描述</th>
+                                <th style="width:180px;">操作时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr>
+                                <td>
+                                    <div class="tooltips" title="{{ memberList[v.user_id].account }}">
+                                        <b style="color:red;">{{ memberList[v.user_id].account }}</b>({{v.user_id}})
+                                    </div>
+                                </td>
+                                <td>{{ label(v.type,{'minus':['danger','-'~v.change],'add':['success','+'~v.change],'set':['info',v.change]}) }}</td>
+                                <td><div style="cursor:pointer" title="从{{v.before_money~'到'~v.after_money}}">{{v.after_money}}</div></td>
+                                <td>{{eventList[v.event]}}</td>
+                                <td>{{v.descr}}</td>
+                                <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

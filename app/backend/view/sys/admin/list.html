@@ -1,0 +1,68 @@
+<div class="row mt-20" >
+    {{ render("sys/admin/_search") }}
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="width50">
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="width80">登陆账号</th>
+                                    <th class="width80">手机号</th>
+                                    <th class="width100">真实姓名</th>
+                                    <th class="width100">所属角色</th>
+                                    <th class="width80">登陆次数</th>
+                                    <th class="width120">登陆IP</th>
+                                    <th class="width160">最后登录时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            {%set lastLoginTime=extendList[v.userid].last_login_time%}
+                            <tr role="row">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.user_id }}" {{v.user_id|eq(1,'disabled','')}}>
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>{{ v.account }}</td>
+                                <td>{{ v.mobile }}</td>
+                                <td>{{ v.realname }}</td>
+                                <td>{{roleNames[v.role_id]}}</td>
+                                <td>{{v.login_cnt}}</td>
+                                <td>{{v.client_ip}}</td>
+                                <td>{% if v.login_time>0 %}{{v.login_time|date('Y-m-d H:i:s')}}{% endif %}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

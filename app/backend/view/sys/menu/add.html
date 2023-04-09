@@ -1,0 +1,148 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/menu/add')}}" class="form-horizontal formValidation"
+                      method="post" data-callback="addSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">功能类型
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                {% for key,val in menuTypes %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="menu_type_{{key}}" name="menu_type" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==0 %}checked=""{% endif %} >
+                                        <label for="menu_type_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">父级菜单
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="parent_id" id="parent_id"
+                                        data-fv-notempty data-fv-notempty-message="请选择父级菜单">
+                                    <option value="0">顶级菜单</option>
+                                    {% for k,v in menusList %}
+                                    <option value="{{v.menu_id|default('')}}">{{v.menu_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="menu_name"><span id="vname">资源名称</span>
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="资源名称" id="menu_name" name="menu_name"
+                                       required data-fv-notempty-message="资源名称不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group hide url_container">
+                            <label class="col-md-2 control-label">权限标识
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8 choiceBtnBox">
+                                <input type="hidden" readonly="" id="url" name="url">
+                                <input type="text" class="form-control" readonly="" placeholder="权限ID" id="route_id" name="route_id">
+                                <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" id="urlChoiceBtn">选择</a>
+                            </div>
+                        </div>
+                        <div class="form-group hide url_container">
+                            <label class="col-md-2 control-label">路由地址</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="路由地址" name="route_url" id="route_url" />
+                            </div>
+                        </div>
+                        <div class="form-group hide choice_container">
+                            <label class="col-md-2 control-label">选择数据操作方式</label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    <div class="md-radio">
+                                        <input type="radio" id="choice_ids_0" name="choice_ids" value="0" checked="" class="md-radiobtn" >
+                                        <label for="choice_ids_0">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> 不需选择
+                                        </label>
+                                    </div>
+                                    <div class="md-radio">
+                                        <input type="radio" id="choice_ids_1" name="choice_ids" value="1" class="md-radiobtn" >
+                                        <label for="choice_ids_1">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> 只能选择一个
+                                        </label>
+                                    </div>
+                                    <div class="md-radio">
+                                        <input type="radio" id="choice_ids_2" name="choice_ids" value="2" class="md-radiobtn" >
+                                        <label for="choice_ids_2">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> 可选择多个
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">图标样式</label>
+                            <div class="col-md-8 choiceBtnBox">
+                                <input type="text" class="form-control"  placeholder="图标样式" name="icon" id="icon" />
+                                <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" id="iconChoiceBtn">选择</a>
+                            </div>
+                        </div>
+                        <div class="form-group hide choice_container">
+                            <label class="col-md-2 control-label">按钮样式</label>
+                            <div class="col-md-8 choiceBtnBox">
+                                <input type="text" class="form-control" placeholder="按钮样式" id="btn_class" name="btn_class" />
+                                <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" id="btnChoiceBtn">选择</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">排序值
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                           <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="排序值" id="sort" name="sort" step="1" max="255" value="100"
+                                       required data-fv-notempty-message="排序值不能为空"
+                                       data-fv-lessthan-inclusive="true" data-fv-lessthan-message="最大值不能超过255" />
+                           </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">描述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="descr" id="descr" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

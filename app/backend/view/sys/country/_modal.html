@@ -1,0 +1,33 @@
+<div id="countryModalBox" style="padding:20px;">
+    <div class="tabbable-custom">
+        <ul class="nav nav-pills nav-country">
+            {% for k,v in data %}
+            <li {% if k=='1' %}class="active"{% endif %} name="tab_{{k}}">
+                <a href="#tab_{{k}}" data-toggle="tab" aria-expanded="true">{{v.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            {% for k,v in data %}
+            <div class="tab-pane {% if k=='1' %}active{% endif %}" id="tab_{{k}}">
+                <div class="form-group" style="margin-bottom:0px;">
+                    <label>
+                        <input type="checkbox" class="checkAll" data-id="{{k}}" value="0" /> 全选
+                    </label>
+                </div>
+                <div class="form-group">
+                    {% for i,el in v.country %}
+                    <label style="margin-right:10px;">
+                        <input type="checkbox" class="check continent{{k}}" id="country_{{el.code}}" data-name="{{el.name}}" value="{{el.code}}" /> {{el.name}}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="form-group mt-10 mb-5">
+            已选国家：
+        </div>
+        <div class="form-group" id="selCountryBox"></div>
+    </div>
+</div>

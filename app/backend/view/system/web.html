@@ -1,0 +1,35 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <!-- Begin: life time stats -->
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body">
+                <div class="tabbable tabbable-tabdrop">
+                    <ul class="nav nav-tabs">
+                        {% for k,v in data %}
+                        <li class="{{k|eq(0,'active','')}}">
+                            <a href="#tab_{{v.dict_id}}" data-toggle="tab" aria-expanded="false">{{v.dict_name}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        {% for k,v in data %}
+                        <div class="tab-pane {{k|eq(0,'active','')}}" id="tab_{{v.dict_id}}">
+                            <div class="row mt-20">
+                                {{ render("sys/dict/_fields",{data:v.children,name:v.dict_code}) }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End: life time stats -->
+    </div>
+</div>

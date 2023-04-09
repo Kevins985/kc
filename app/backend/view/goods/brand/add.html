@@ -1,0 +1,87 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/brand/add')}}" class="form-horizontal formValidation"
+                      method="post" data-callback="addSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">品牌名称</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="品牌名称" name="brand_name" id="brand_name"
+                                       required data-fv-notempty-message="品牌名称不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">网址</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="网址" name="url" id="url"
+                                       data-fv-field="url" data-fv-uri="true" data-fv-uri-message="请输入正确的网址" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Logo</label>
+                            <div class="col-md-4">
+                                <a class="btn btn-default"><i class="fa fa-upload"></i>上传</a>
+                                <input type="file" name="file" class="pic_file uploadImageBtn" data-type="brand" />
+                            </div>
+                            <div class="col-md-4 mt-10 ml-15 thumbnail" id='uploadImageContainer' style='position:relative;display:none;'>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">是否推荐
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['不推荐','推荐'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="is_rec_{{key}}" name="is_rec" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==0 %}checked=""{% endif %} >
+                                        <label for="is_rec_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">排序值
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                           <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="排序值" id="sort" name="sort" step="1" max="255" value="100"
+                                       required data-fv-notempty-message="排序值不能为空"
+                                       data-fv-lessthan-inclusive="true" data-fv-lessthan-message="最大值不能超过255" />
+                           </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">描述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="descr"  maxlength="250" id="descr" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

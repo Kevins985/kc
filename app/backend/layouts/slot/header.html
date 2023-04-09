@@ -1,0 +1,34 @@
+<header class="page-header navbar navbar-fixed-top">
+    <div class="page-header-inner ">
+        <div class="page-logo">
+            <span class="text">
+                <b>系统</b>后台管理
+            </span>
+            <!--
+            <a href="javascript:;">
+                {{ asset("/static/backend/images/logo.png","image",{"class":"logo-default"}) }}
+            </a>
+            -->
+            <div class="menu-toggler sidebar-toggler">
+                <span></span>
+            </div>
+        </div>
+        <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            <span></span>
+        </a>
+        <div class="top-menu">
+            <ul class="nav navbar-nav">
+                {% for key,v  in menus("header") %}
+                <li {% if v.menu_id==cmenu.top_id %}class="active"{% endif %}>
+                    <a href="{{ v.route_url|default('javascript:void(0)') }}">
+                        {{ v.menu_name }}
+                    </a>
+                </li>
+                {% endfor %}
+                <li>
+                    <a href="javascript:;" class="control-sidebar"><i class="fa fa-gears"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>

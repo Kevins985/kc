@@ -1,0 +1,105 @@
+<tr class="child" pid="{{data.spu_id}}">
+    <td colspan="12" style="text-align:left;padding:0px;word-break:break-all;">
+        <div class="row goodsInfo" style="margin:0px;">
+            <div class="tabbable tabbable-tabdrop">
+                <ul class="nav nav-tabs">
+                    <li class="active" name="tab_info">
+                        <a href="#tab_info" data-toggle="tab" aria-expanded="true">基本信息</a>
+                    </li>
+                    <li class="" name="tab_images">
+                        <a href="#tab_images" data-toggle="tab" aria-expanded="false">商品轮播图</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_info">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 商品编号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.spu_no }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 商品名称 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{data.title}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 市场价格 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.market_price }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 销售价格 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.sell_price }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 销售量 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.sales_cnt }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 排序 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{data.sort}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 创建时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.created_time|date('Y-m-d H:i:s') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 上架时间 </div>
+                                    <div class="profile-info-value">
+                                        {% if data.up_time %}
+                                        <span>{{ data.up_time|date('Y-m-d H:i:s') }}</span>
+                                        {% else %}
+                                        <span>&nbsp;</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 简述 </div>
+                                <div class="profile-info-value">
+                                    <span>{{spu.brief|default('&nbsp;')}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_images">
+                        <div class="mt-element-card mt-element-overlay mt-5">
+                            {% for k,v in imagesList %}
+                            <div class="col-md-2 col-sm-3 col-xs-4 imagesBox portlet-sortable" rel="{{k+1}}" role="yes">
+                                <div class="mt-card-item">
+                                    <div class="mt-card-avatar mt-overlay-1" style="margin-bottom: 5px;height:100px;border-bottom:1px solid #e7ecf1">
+                                        <img  src="{{v.image_url}}"  >
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

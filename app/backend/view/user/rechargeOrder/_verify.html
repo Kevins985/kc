@@ -1,0 +1,47 @@
+<div class="row mt-15 pl-5">
+    <input type="hidden" id="id" value="{{data.order_id}}" />
+    <div class="portlet-body form">
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">充值金额:</label>
+            <div class="col-md-8">
+                <input class="form-control" disabled="" value="{{data.money}}" />
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">充值凭证:</label>
+            {% if data.image_url %}
+            <div class="col-md-4">
+                <a target="_blank" href="{{data.image_url}}">
+                    <img width="160px" src="{{data.image_url}}" />
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">操作:</label>
+            <div class="col-md-8">
+                <div class="md-radio-inline mt-0">
+                    <input type="radio" id="status_1" checked="" name="reply_status" value="1" class="md-radiobtn" />
+                    <label for="status_1">
+                        <span class="check"></span>
+                        <span class="box"></span> 同意
+                    </label>
+                    <input type="radio" id="status_2" name="reply_status" value="2" class="md-radiobtn" />
+                    <label for="status_2">
+                        <span class="check"></span>
+                        <span class="box"></span> 拒绝
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">备注:</label>
+            <div class="col-md-8">
+                <textarea class="form-control" id="reply_content" cols="3"></textarea>
+            </div>
+        </div>
+    </div>
+</div>

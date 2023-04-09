@@ -1,0 +1,11 @@
+.login-bg{background: url(../images/login-bg-2.jpg) no-repeat center center fixed;background-size:100% 100%;}
+.login-box {width: 450px;height: 330px;margin: 10% auto;background-color: rgba(255, 255, 255, 0.407843);border-radius: 10px;color: aliceblue;}
+.login-box header {height:60px;text-align:center;padding:10px;line-height:40px;font-size: 24px;border-bottom: 1px solid aliceblue;}
+.login-box .login-main {height: 185px;padding:30px 50px 0;}
+.login-box .col-xs-9{padding-left:0px;}
+.login-box .col-xs-3{text-align:right;line-height:30px;padding:0px 10px 0px;}
+.form-horizontal{width:380px}
+.form-group{width:90%;margin-bottom:20px;}
+.login-box .remember{padding-left:20px;text-align: center;}
+.login-box .captchaBox{position:relative;}
+.login-box #captchaImg{position:absolute;right:20px;top:4px;cursor:pointer}

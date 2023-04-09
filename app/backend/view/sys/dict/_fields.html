@@ -1,0 +1,125 @@
+<form action="{{url('/backend/dict/saveConfig',{type:name})}}" class="form-horizontal formValidation"
+      method="post" data-callback="{{name}}Submit" >
+    <div class="form-body">
+        {% for k,v in data %}
+        <div class="form-group">
+            <label class="col-md-2 control-label">{{v.field_name}}
+                {% if v.field_required=='Y' %}
+                <span class="required" aria-required="true">*</span>
+                {% endif %}
+            </label>
+            {% if v.field_type in ['text','number','date'] %}
+            <div class="col-md-6">
+                {% if v.addon %}
+                <div class="input-group">
+                    <input type="{{v.field_type}}" class="form-control {% if v.field_type=='date' %}form_datetime{% endif %}" placeholder="{{v.field_name}}"
+                           id="{{v.field_code}}" name="{{v.field_code}}" value="{{v.field_value}}"
+                           {% if v.field_type=='number' %}step="0.01"{% endif %}
+                           {% if v.field_required=='Y' %}required data-fv-notempty-message="{{v.field_name}}不能为空"{% endif %} />
+                    <span class="input-group-addon">{{v.addon}}</span>
+                </div>
+                {% else %}
+                <input type="{{v.field_type}}" class="form-control {% if v.field_type=='date' %}form_datetime{% endif %}" placeholder="{{v.field_name}}"
+                       id="{{v.field_code}}" name="{{v.field_code}}" value="{{v.field_value}}"
+                       {% if v.field_type=='number' %}step="0.01"{% endif %}
+                       {% if v.field_required=='Y' %}required data-fv-notempty-message="{{v.field_name}}不能为空"{% endif %} />
+                {% endif %}
+                {% if v.field_tips %}
+                <span class="help-block">{{v.field_tips}}</span>
+                {% endif %}
+            </div>
+            {% elseif v.field_type=='file' %}
+            <div class="col-md-6" style='position:relative;{% if v.field_value!="" %}display:none;{% endif %}'>
+                <a class="btn btn-default"><i class="fa fa-upload"></i>上传</a>
+                <input type="file" name="file" class="pic_file uploadImageBtn" data-dom="{{v.field_code}}" data-type="dict">
+            </div>
+            <div class="col-md-4 mt-10 ml-15 thumbnail" id='uploadImageContainer' style='position:relative;{% if v.field_value=="" %}display:none;{% endif %}'>
+                {% if v.field_value!="" %}
+                <a href="javascript:;" class="delImageBtn"><i class="fa fa-remove"></i></a>
+                <img class="img-rounded" src="{{v.field_value}}" />
+                <input type="hidden" id="{{v.field_code}}" name="{{v.field_code}}" value="{{v.field_value}}" />
+                {% endif %}
+            </div>
+            {% if v.field_tips %}
+            <span class="help-block">{{v.field_tips}}</span>
+            {% endif %}
+            {% elseif v.field_type=='select' %}
+            {% set value_range_txt = v.value_range_txt|split('|') %}
+            {% set value_range = v.value_range|split('|') %}
+            <div class="col-md-8">
+                <select class="form-control" name="{{v.field_code}}" id="{{v.field_code}}"
+                        {% if v.field_required=='Y' %}required data-fv-notempty-message="{{v.field_name}}不能为空"{% endif %}>
+                    <option value="">请选择</option>
+                    {% for rk,rv in value_range_txt %}
+                    <option value="{{value_range[rk]}}" {{value_range[rk]|eq(v.field_value,'selected','')}}>{{rv}}</option>
+                    {% endfor %}
+                </select>
+                {% if v.field_tips %}
+                <span class="help-block">{{v.field_tips}}</span>
+                {% endif %}
+            </div>
+            {% elseif v.field_type=='radio' %}
+            {% set value_range_txt = v.value_range_txt|split('|') %}
+            {% set value_range = v.value_range|split('|') %}
+            <div class="col-md-8">
+                <div class="md-radio-inline">
+                    {% for rk,rv in value_range %}
+                    <div class="md-radio">
+                        <input type="radio" id="{{v.field_code}}_{{rk}}" name="{{v.field_code}}" value="{{rv}}"
+                               class="md-radiobtn" {% if rv==v.field_value %}checked=""{% endif %}
+                               {% if v.field_required=='Y' and rk==0 %}required data-fv-notempty-message="{{v.field_name}}不能为空"{% endif %} >
+                        <label for="{{v.field_code}}_{{rk}}">
+                            <span></span>
+                            <span class="check"></span>
+                            <span class="box"></span> {{value_range_txt[rk]}}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if v.field_tips %}
+                <span class="help-block">{{v.field_tips}}</span>
+                {% endif %}
+            </div>
+            {% elseif v.field_type=='checkbox' %}
+            {% set value_range_txt = v.value_range_txt|split('|') %}
+            {% set value_range = v.value_range|split('|') %}
+            {% set values = v.field_value|split(',') %}
+            <div class="col-md-8">
+                <div class="md-checkbox-inline">
+                    {% for rk,rv in value_range %}
+                    <div class="md-checkbox">
+                        <input type="checkbox" id="{{v.field_code}}_{{rk}}" name="{{v.field_code}}[]" value="{{rv}}"
+                               class="md-check"  {% if rv in values %}checked=""{% endif %}
+                               {% if v.field_required=='Y' and rk==0 %}required data-fv-notempty-message="{{v.field_name}}不能为空"{% endif %} >
+                        <label for="{{v.field_code}}_{{rk}}">
+                            <span></span>
+                            <span class="check"></span>
+                            <span class="box"></span> {{value_range_txt[rk]}}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if v.field_tips %}
+                <span class="help-block">{{v.field_tips}}</span>
+                {% endif %}
+            </div>
+            {% elseif v.field_type=='textarea' %}
+            <div class="col-md-8">
+                <textarea class="form-control" name="{{v.field_code}}" id="{{v.field_code}}" rows="3"
+                  {% if v.field_required=='Y' %}required data-fv-notempty-message="{{v.field_name}}不能为空"{% endif %}>{{v.field_value}}</textarea>
+                {% if v.field_tips %}
+                <span class="help-block">{{v.field_tips}}</span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-6">
+                <button type="submit" class="btn green">保存</button>
+            </div>
+        </div>
+    </div>
+</form>

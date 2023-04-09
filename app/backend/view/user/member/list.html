@@ -1,0 +1,78 @@
+<div class="row mt-20" >
+    {{ render("user/member/_search") }}
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                            <tr role="row">
+                                <th class="width50">
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="group-checkable">
+                                        <span></span>
+                                    </label>
+                                </th>
+                                <th>会员ID(UID)</th>
+                                <th>登陆账号</th>
+                                <th>充值金额</th>
+                                <th>提现金额</th>
+                                <th>钱包余额</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr id="{{ v.user_id }}">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.user_id }}" />
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="socicons" style="width: 140px;">
+                                        <i class="operator fa fa-plus-square-o getExtendTrBtn" data-close="1" data-callback="memberJs.showListChild"></i>
+                                        {{v.user_no}}<span style="color:red;">({{v.user_id}})</span>
+                                    </div>
+                                </td>
+                                <td>{{v.account}}</td>
+                                <td>{{ memberExtend[v.user_id]['recharge_money'] }}</td>
+                                <td>{{ memberExtend[v.user_id]['withdraw_money'] }}</td>
+                                <td>{{ memberExtend[v.user_id]['wallet'] }}</td>
+                                <td>
+                                    {% if v.remark %}
+                                    {% if v.remark|length<10 %}
+                                    {{ v.remark }}
+                                    {% else %}
+                                    <span class="fa fa-commenting  tooltips" data-id="{{ v.user_id }}" title="{{ v.remark }}" ></span>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
