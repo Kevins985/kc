@@ -1,0 +1,44 @@
+<div class="col-md-12 {% if params.searchType is empty %}hide{% endif %}" id="listSearchBox">
+    <div class="portlet box green">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-search"></i>搜索
+            </div>
+            <div class="tools">
+                <a class="clearSearchBtn" href="javascript:;" title="重置表单">
+                    <i class="fa fa-refresh font-white" aria-hidden="true"></i>
+                </a>
+                <a class="searchBoxBtn" href="javascript:;" title="关闭搜索框">
+                    <i class="fa fa-close font-white" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body flip-scroll">
+            <div class="form-inline mt-5">
+                <form id="searchForm" action="{{url('/backend/admin/list')}}" method="post">
+                    <div class="form-group">
+                        <label>所属角色:</label>
+                        <select id="role_id" name="role_id" class="form-control" style="width:120px">
+                            <option value="">请选择</option>
+                            {% for k,v in roles %}
+                            <option value="{{v.role_id}}" {{v.role_id|eq(params.role_id,'selected','')}}>{{v.role_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>筛选条件:</label>
+                        <select id="searchType" name="searchType" class="form-control">
+                            <option value="username" {{params.searchType|eq('username','selected','')}}>登陆账号</option>
+                            <option value="realname" {{params.searchType|eq('realname','selected','')}}>真实姓名</option>
+                            <option value="created_time" {{params.searchType|eq('created_time','selected','')}}>创建时间</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchValue" name="searchValue" value="{{params.searchValue}}" placeholder="搜索">
+                        <button type="button" id="searchBtn" class="btn btn-success">搜索</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

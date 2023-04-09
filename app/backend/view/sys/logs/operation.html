@@ -1,0 +1,68 @@
+<div class="row mt-20" >
+    {{ render("sys/logs/_search_operation") }}
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th>
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>模块类型</th>
+                                    <th>访问URL</th>
+                                    <th>请求类型</th>
+                                    <th>IP地址</th>
+                                    <th>UID</th>
+                                    <th>登陆时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row" id="{{v.log_id}}" >
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.log_id }}">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td class="col-md-2">
+                                    <i class="operator fa fa-plus-square-o getExtendTrBtn" data-callback="logsJs.getLogsData"></i>
+                                    {{ v.app }}
+                                </td>
+                                <td>{{ v.request_url }}</td>
+                                <td>{{ v.request_method }}</td>
+                                <td>{{ v.client_ip }}</td>
+                                <td>{{ v.user_id }}</td>
+                                <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

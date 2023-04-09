@@ -1,0 +1,11 @@
+<aside class="control-sidebar control-sidebar-dark">
+    <ul class="control-sidebar-menu">
+        <li><a href="{{ url('/') }}" target="_blank"><i class="fa fa-circle-o text-blue"></i> 前台首页</a></li>
+        <li><a href="{{ url('/backend/main/index') }}"><i class="fa fa-circle-o text-green"></i> 后台首页</a></li>
+        <li><a href="{{ url('/backend/admin/userInfo',{type:'modifyPwd'}) }}"><i class="fa fa-circle-o text-yellow"></i> 修改密码</a></li>
+        {% if null is admin %}
+        <li><a href="{{ url('/backend/main/route') }}"><i class="fa fa-circle-o text-aqua"></i> 路由地址</a></li>
+        {% endif %}
+        <li><a href="{{ url('/backend/logout') }}"><i class="fa fa-circle-o text-red"></i> 退出系统</a></li>
+    </ul>
+</aside>

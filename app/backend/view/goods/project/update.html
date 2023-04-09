@@ -1,0 +1,146 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/project/update')}}" class="form-horizontal formValidation"
+                      method="put" data-callback="updateSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">项目名称
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="hidden" name="project_id" id="project_id" value="0" />
+                                <input type="text" class="form-control" placeholder="项目名称" id="project_name" name="project_name"
+                                       required data-fv-notempty-message="项目名称不能为空" />
+                            </div>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">项目类型
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in {1:'活动类型'} %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="project_type_{{key}}" name="project_type" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==1 %}checked=""{% endif %} >
+                                        <label for="project_type_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <span class="help-block">实时收益是利息每天存入钱包,预期收益是每天存入收益金，混合收益是钱包/收益金各存入一部分,收益金到期自动存入钱包</span>
+                            </div>
+                        </div>
+                        -->
+                        <div class="form-group" >
+                            <label class="col-md-2 control-label">项目第X期前缀
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="项目第X期前缀" id="project_prefix" name="project_prefix"
+                                       required data-fv-notempty-message="项目第X期前缀不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label class="col-md-2 control-label">项目成团人数
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" placeholder="项目成团人数" id="user_cnt" name="user_cnt" value="50"
+                                           required data-fv-notempty-message="项目成团人数不能为空" />
+                                    <span class="input-group-addon">人</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">项目开始时间
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text"  class="form-control form_datetime" placeholder="开始时间" autocomplete="off" id="start_time" name="start_time"
+                                       required data-fv-notempty-message="开始时间不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">项目结束时间
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text"  class="form-control form_datetime" placeholder="结束时间" autocomplete="off"  id="end_time" name="end_time"
+                                       required data-fv-notempty-message="结束时间不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">限购数量
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="限购数量" id="limit_num" name="limit_num" step="1" value="1"
+                                       required data-fv-notempty-message="限购数量不能为空"  />
+                                <span class="help-block">该项目每个用户最多可以购买的次数,0:不限购</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">排序值
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="排序值" id="sort" name="sort" step="1" max="255" value="100"
+                                       required data-fv-notempty-message="排序值不能为空"
+                                       data-fv-lessthan-inclusive="true" data-fv-lessthan-message="最大值不能超过255" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">状态
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['待审核','进行中','已结束'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="status_{{key}}" name="status" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==0 %}checked=""{% endif %} >
+                                        <label for="status_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">项目描述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="descr"  id="descr" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" id="projectSubmitBtn" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/spu/add')}}" id="goodsForm" class="form-horizontal formValidation"
+                      method="post" data-callback="addSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">商品名称
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="hidden" id="spu_no" name="spu_no" value="{{spu_no}}" />
+                                <input type="text" class="form-control" placeholder="商品名称" id="title" name="title" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">商品分类
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="category_id" id="category_id">
+                                    <option value="0">无分类</option>
+                                    {% for k,v in categoryList %}
+                                    <option value="{{v.category_id}}">{{v.category_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">市场价格
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control"  name="market_price" id="market_price"  placeholder="市场价"   />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">销售价格
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control"  name="sell_price" id="sell_price" placeholder="销售价格"   />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">出彩积分
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control"  name="point" id="point" placeholder="出彩积分"   />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">展示图
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-5">
+                                <a class="btn btn-default"><i class="fa fa-upload"></i>上传</a>
+                                <input type="file" name="file" class="pic_file uploadImageBtn" data-type="spu" />
+                                <span class="help-block">图片尺寸建议500x500像素,不要上传太大的图片</span>
+                            </div>
+                            <div class="col-md-4 mt-10 ml-15 thumbnail" id='uploadImageContainer' style='position:relative;display:none;'>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">状态
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['待审核','上架'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="status_{{key}}" name="status" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==0 %}checked=""{% endif %} >
+                                        <label for="status_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">简述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="brief"  id="brief" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">商品详情</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="description" id="description" rows="12"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="button" id="spuSubmitBtn" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

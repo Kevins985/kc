@@ -1,0 +1,660 @@
+<style>
+    .ui-widget-content{background: #FFF;}
+    .ui-widget-header{
+            margin-bottom: 5px;
+            border: solid #ddd;
+            border-width: 0 0 1px;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            background: 0 0;
+    }
+    .ui-spinner-input{margin:0px;}
+    .state-success{padding-left:20px;}
+    .layui-layer-page .layui-layer-content{overflow:hidden}
+    .checkbox-inline, .radio-inline{width:30px;}
+</style>
+<div id="tabs">
+    <ul>
+        <li>
+            <a href="#tabs-a">秒</a>
+        </li>
+        <li>
+            <a href="#tabs-b">分钟</a>
+        </li>
+        <li>
+            <a href="#tabs-c">小时</a>
+        </li>
+        <li>
+            <a href="#tabs-d">日</a>
+        </li>
+        <li>
+            <a href="#tabs-e">月</a>
+        </li>
+        <li>
+            <a href="#tabs-f">周</a>
+        </li>
+    </ul>
+    <div id="tabs-a">
+        <div class="row">
+            <div class="col col-6">
+                <label class="radio state-success"><input type="radio" name="v_second" value="1" ><i></i>每秒 允许的通配符[, - * /]</label>
+                <label class="radio state-success">
+                    <input type="radio" name="v_second" value="2"><i></i>周期,从第<span id="v_secondX_0">X</span>秒到第<span id="v_secondY_0">Y</span>秒
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_secondStart_0" value="0"  type="text">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_secondEnd_0" value="1"  type="text">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_second" value="3"><i></i>从<span id="v_secondX_1">X</span>秒开始,到<span id="v_secondY_1">Y</span>,每<span id="v_secondZ_1">Z</span>秒执行一次</label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_secondStart_1" value="0" type="text">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_secondEnd_1" value="59" type="text">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_secondLoop_1" value="1"   type="text">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" checked="" name="v_second" value="4"><i></i>勾选具体值</label>
+                {% set n=0 %}
+                {% for i in 1..4 %}
+                <div class="row" style="padding-left: 40px">
+                    <div class="col-md-12">
+                        {% for j in 1..15 %}
+                        <label class="checkbox-inline v_secondList">
+                            <input name="v_secondCheckbox" type="checkbox" for="v_second" {% if n==0 %}checked=""{% endif %} class="checkbox style-0" value="{{n}}">
+                            <span style="margin-left:0px"> {{n}} </span>
+                        </label>
+                        {% set n=n+1 %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="tabs-b">
+        <div class="row">
+            <div class="col col-6">
+                <label class="radio state-success"><input type="radio" checked="" name="v_min" value="1" ><i></i>每分钟 允许的通配符[, - * /]</label>
+                <label class="radio state-success">
+                    <input type="radio" name="v_min" value="2"><i></i>周期,从第<span id="v_minX_0">X</span>分钟到第<span id="v_minY_0">Y</span>分钟
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_minStart_0" type="text" value="0">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_minEnd_0"  type="text" value="1">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_min" value="3"><i></i>
+                    从<span id="v_minX_1">X</span>分钟开始,到<span id="v_minY_1">Y</span>分钟,每<span id="v_minZ_1">Z</span>执行一次
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_minStart_1"  type="text" value="0">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_minEnd_1" type="text" value="59">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_minLoop_1" value="1"   type="text">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_min" value="4"><i></i>勾选具体值</label>
+                {% set n=0 %}
+                {% for i in 1..4 %}
+                <div class="row" style="padding-left: 40px">
+                    <div class="col-md-12">
+                        {% for j in 1..15 %}
+                        <label class="checkbox-inline v_minList">
+                            <input name="v_minCheckbox" type="checkbox" for="v_min" class="checkbox style-0" value="{{n}}">
+                            <span style="margin-left:0px"> {{n}} </span>
+                        </label>
+                        {% set n=n+1 %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="tabs-c">
+        <div class="row">
+            <div class="col col-6">
+                <label class="radio state-success"><input type="radio" name="v_hour" checked="" value="1" ><i></i>每小时 允许的通配符[, - * /]</label>
+                <label class="radio state-success">
+                    <input type="radio" name="v_hour" value="2"><i></i>周期,从第<span id="v_hourX_0">X</span>小时到第<span id="v_hourY_0">Y</span>小时
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_hourStart_0"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_hourEnd_0"  type="text" value="2">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_hour" value="3"><i></i>
+                    从<span id="v_hourX_1">X</span>小时开始,到<span id="v_hourY_1">Y</span>小时,每<span id="v_hourZ_1">Z</span>小时执行一次
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_hourStart_1"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_hourEnd_1"  type="text" value="23">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_hourLoop_1" value="1"   type="text">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_hour" value="4"><i></i>勾选具体值</label>
+                {% set n=0 %}
+                {% for i in 1..2 %}
+                <div class="row" style="padding-left: 40px">
+                    <div class="col-md-12">
+                        {% for j in 1..12 %}
+                        <label class="checkbox-inline v_hourList">
+                            <input name="v_hourCheckbox" type="checkbox" for="v_hour" class="checkbox style-0" value="{{n}}">
+                            <span style="margin-left:0px"> {{n}} </span>
+                        </label>
+                        {% set n=n+1 %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="tabs-d">
+        <div class="row">
+            <div class="col col-6">
+                <label class="radio state-success"><input type="radio" checked="" name="v_day" value="1" ><i></i>日 允许的通配符[, - * /]</label>
+                <label class="radio state-success">
+                    <input type="radio" name="v_day" value="2"><i></i>周期,从第<span id="v_dayX_0">X</span>天到第<span id="v_dayY_0">Y</span>天
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_dayStart_0"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_dayEnd_0"  type="text" value="2">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_day" value="3"><i></i>
+                    从<span id="v_dayX_1">X</span>天开始,到<span id="v_dayY_1">Y</span>天,每<span id="v_dayZ_1">Z</span>天执行一次
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_dayStart_1"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner"  id="v_dayEnd_1"  type="text" value="31">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_dayLoop_1" value="1"   type="text">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_day" value="4"><i></i>勾选具体值</label>
+                {% set n=1 %}
+                {% for i in 1..3 %}
+                <div class="row" style="padding-left: 40px">
+                    <div class="col-md-12">
+                        {% for j in 1..11 %}
+                        {% if n<=31 %}
+                        <label class="checkbox-inline v_dayList">
+                            <input name="v_dayCheckbox" type="checkbox" for="v_day" class="checkbox style-0" value="{{n}}">
+                            <span style="margin-left:0px"> {{n}} </span>
+                        </label>
+                        {% set n=n+1 %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="tabs-e">
+        <div class="row">
+            <div class="col col-6">
+                <label class="radio state-success"><input type="radio" checked="" name="v_mon"  value="1" ><i></i>月 允许的通配符[, - * /]</label>
+                <label class="radio state-success">
+                    <input type="radio" name="v_mon" value="2"><i></i>周期,从第<span id="v_monX_0">X</span>月到第<span id="v_monY_0">Y</span>月
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_monStart_0"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_monEnd_0"  type="text" value="2">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_mon" value="3"><i></i>
+                    从<span id="v_monX_1">X</span>月开始,到<span id="v_monY_1">Y</span>月,每<span id="v_monZ_1">Z</span>月执行一次
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_monStart_1"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_monEnd_1"  type="text" value="12">
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_monLoop_1" value="1"   type="text">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_mon" value="4"><i></i>勾选具体值</label>
+                <div class="row" style="padding-left: 40px">
+                    <div class="col-md-12">
+                        {% for j in 1..12 %}
+                        <label class="checkbox-inline v_monList">
+                            <input name="v_monCheckbox" type="checkbox" for="v_mon" class="checkbox style-0" value="{{j}}">
+                            <span style="margin-left:0px"> {{j}}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tabs-f">
+        <div class="row">
+            <div class="col col-6">
+                <label class="radio state-success"><input type="radio" checked="" name="v_week" value="1" ><i></i>周 允许的通配符[, - * /]</label>
+                <label class="radio state-success">
+                    <input type="radio" name="v_week" value="2"><i></i>周期,从星期<span id="v_weekX_0">X</span>到星期<span id="v_weekY_0">Y</span>
+                </label>
+                <div class="row" style="padding-left: 50px">
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_weekStart_0"  type="text" value="1">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control spinner-left spinner" id="v_weekEnd_0"  type="text" value="2">
+                    </div>
+                </div>
+                <label class="radio state-success"><input type="radio" name="v_week" value="4"><i></i>勾选具体值</label>
+                    <div class="row" style="padding-left: 40px">
+                        <div class="col-md-12">
+                            {% for j in 0..6 %}
+                            <label class="checkbox-inline v_weekList">
+                                <input name="v_weekCheckbox" type="checkbox" for="v_week"  class="checkbox style-0" value="{{j}}">
+                                <span style="margin-left:0px"> {{j}} </span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function (){
+        var Crontab = {
+            init: function (ruleObj) {
+                var str = ruleObj.val();
+                var rule = str.split(" ");
+                if (rule.length < 5)
+                    return;
+                if (rule.length == 5) {
+                    this.cron_parse(rule[0], "v_min");
+                    this.cron_parse(rule[1], "v_hour");
+                    this.cron_parse(rule[2], "v_day");
+                    this.cron_parse(rule[3], "v_mon");
+                    this.cron_parse(rule[4], "v_week");
+                } else {
+                    //解析秒
+                    this.cron_parse(rule[0], "v_second");
+                    this.cron_parse(rule[1], "v_min");
+                    this.cron_parse(rule[2], "v_hour");
+                    this.cron_parse(rule[3], "v_day");
+                    this.cron_parse(rule[4], "v_mon");
+                    this.cron_parse(rule[5], "v_week");
+                }
+
+            },
+            bind: function () {
+                var list = ["v_second", "v_min", "v_hour", "v_day", "v_mon", "v_week"];
+                for (var i = 0; i < list.length; i++) {
+                    $("input:radio[name='" + list[i] + "']").change(function () {
+                        Crontab.cron_write();
+                    });
+                    $("." + list[i] + "List input[name='" + list[i] + "Checkbox']").change(function () {
+                        if ($("input[name=" + $(this).attr("for") + " ]:checked").val() == 4) {
+                            Crontab.cron_write();
+                        }
+                    });
+                }
+                var spinnerList = {
+                    v_secondStart_0: {
+                        min: 0,
+                        max: 58
+                    },
+                    v_secondEnd_0: {
+                        min: 1,
+                        max: 59
+                    },
+                    v_secondStart_1: {
+                        min: 0,
+                        max: 58
+                    },
+                    v_secondEnd_1: {
+                        min: 2,
+                        max: 59
+                    },
+                    v_secondLoop_1: {
+                        min: 1,
+                        max: 30
+                    },
+                    v_minStart_0: {
+                        min: 0,
+                        max: 58
+                    },
+                    v_minEnd_0: {
+                        min: 1,
+                        max: 59
+                    },
+                    v_minStart_1: {
+                        min: 0,
+                        max: 58
+                    },
+                    v_minEnd_1: {
+                        min: 1,
+                        max: 29
+                    },
+                    v_minLoop_1: {
+                        min: 1,
+                        max: 30
+                    },
+                    v_hourStart_0: {
+                        min: 0,
+                        max: 58
+                    },
+                    v_hourEnd_0: {
+                        min: 1,
+                        max: 59
+                    },
+                    v_hourStart_1: {
+                        min: 0,
+                        max: 24
+                    },
+                    v_hourEnd_1: {
+                        min: 1,
+                        max: 24
+                    },
+                    v_hourLoop_1: {
+                        min: 1,
+                        max: 12
+                    },
+                    v_dayStart_0: {
+                        min: 1,
+                        max: 30
+                    },
+                    v_dayEnd_0: {
+                        min: 2,
+                        max: 31
+                    },
+                    v_dayStart_1: {
+                        min: 1,
+                        max: 30
+                    },
+                    v_dayEnd_1: {
+                        min: 1,
+                        max: 31
+                    },
+                    v_dayLoop_1: {
+                        min: 1,
+                        max: 15
+                    },
+                    v_monStart_0: {
+                        min: 1,
+                        max: 11
+                    },
+                    v_monEnd_0: {
+                        min: 2,
+                        max: 12
+                    },
+                    v_monStart_1: {
+                        min: 1,
+                        max: 11
+                    },
+                    v_monEnd_1: {
+                        min: 2,
+                        max: 12
+                    },
+                    v_monLoop_1: {
+                        min: 1,
+                        max: 6
+                    },
+                    v_weekStart_0: {
+                        min: 1,
+                        max: 6
+                    },
+                    v_weekEnd_0: {
+                        min: 2,
+                        max: 7
+                    }
+
+                };
+                for (var spinner  in spinnerList)
+                {
+                    $("#" + spinner).spinner($.merge(spinnerList[spinner], {change: function (event, ui) {
+                        var val = $(this).val();
+                        var max = $(this).spinner("option", "max");
+                        var min = $(this).spinner("option", "min");
+                        if (val < min)
+                            $(this).val(min);
+                        if (val > max)
+                            $(this).val(max);
+                        Crontab.cron_write();
+                    }}));
+                }
+            },
+            cron_write: function () {
+                var second = Crontab.cron_create("v_second");
+                var min = Crontab.cron_create("v_min");
+                var hour = Crontab.cron_create("v_hour");
+                var day = Crontab.cron_create("v_day");
+                var mon = Crontab.cron_create("v_mon");
+                var week = Crontab.cron_create("v_week");
+                if (typeof (second) == "undefined")
+                    second = '*';
+                if (typeof (min) == "undefined")
+                    min = '*';
+                if (typeof (hour) == "undefined")
+                    hour = '*';
+                if (typeof (day) == "undefined")
+                    day = '*';
+                if (typeof (mon) == "undefined")
+                    mon = '*';
+                if (typeof (week) == "undefined")
+                    week = '*';
+                var cron = second + " " + min + " " + hour + " " + day + " " + mon + " " + week;
+                $('#cron_expression').val(cron);
+            },
+            cron_parse: function (strVal, strid)
+            {
+                var ary = null;
+                var end;
+                var objRadio = $("input[name='" + strid + "']");
+                if (strVal == '*') {
+                    objRadio.eq(0).prop("checked", true);
+                }
+                //1-23 结构
+                else if (strVal.split('-').length > 1 && strVal.split('/').length <= 1) {
+                    ary = strVal.split('-');
+                    objRadio.eq(1).prop("checked", true);
+                    $("#" + strid + "Start_0").val(ary[0]);
+                    $("#" + strid + "X_0").text(ary[0]);
+                    $("#" + strid + "End_0").val(ary[1]);
+                    $("#" + strid + "Y_0").text(ary[1]);
+                }
+                //*/5 结构
+                else if (strVal.split('/').length > 1 && strVal.split('-').length <= 1)
+                {
+                    ary = strVal.split('/');
+                    objRadio.eq(2).prop("checked", true);
+                    if (ary[0] == '*') {
+                        ary[0] = 1;
+                        switch (strid) {
+                            case "v_second":
+                            case "v_min":
+                                ary[0] = 0;
+                                end = 59;
+                                break;
+                            case "v_hour":
+                                end = 23;
+                                break;
+                            case "v_day":
+                                end = 31;
+                                break;
+                            case "v_mon":
+                                end = 12;
+                                break;
+                        }
+                    }
+                    $("#" + strid + "Start_1").val(ary[0]);
+                    $("#" + strid + "X_1").text(ary[0]);
+                    $("#" + strid + "End_1").val(end);
+                    $("#" + strid + "Y_1").text(end);
+                    $("#" + strid + "Loop_1").val(ary[1]);
+                    $("#" + strid + "Z_1").text(ary[1]);
+                }
+                //1-23/1 结构
+                else if (strVal.split('/').length > 1 && strVal.split('-').length > 1) {
+                    ary = strVal.split('/');
+                    objRadio.eq(2).prop("checked", true);
+                    if (ary[0] == '*') {
+                        ary[0] = 1;
+                        switch (strid) {
+                            case "v_second":
+                            case "v_min":
+                                ary[0] = 0;
+                                end = 59;
+                                break;
+                            case "v_hour":
+                                end = 23;
+                                break;
+                            case "v_day":
+                                end = 31;
+                                break;
+                            case "v_mon":
+                                end = 12;
+                                break;
+
+                        }
+                    } else if (ary[0].split("-").length > 1) {
+                        var ary1 = ary[0].split("-");
+                        ary[0] = ary1[0];
+                        end = ary1[1];
+                    }
+                    $("#" + strid + "Start_1").val(ary[0]);
+                    $("#" + strid + "X_1").text(ary[0]);
+                    $("#" + strid + "End_1").val(end);
+                    $("#" + strid + "Y_1").text(end);
+                    $("#" + strid + "Loop_1").val(ary[1]);
+                    $("#" + strid + "Z_1").text(ary[1]);
+
+                }
+                // 1,2,3 规则
+                else
+                {
+                    if (strid == 'v_week') {
+                        objRadio.eq(2).attr("checked", "checked");
+                    } 
+                    else {
+                        objRadio.eq(3).attr("checked", "checked");
+                    }
+                    if (strVal != "?")
+                    {
+                        ary = strVal.split(",");
+                        $("input[name='" + strid + "Checkbox']").each(function (i,el) {
+                            if ($.inArray($(el).val(),ary)!==-1) {
+                                $(el).prop("checked", true);
+                            } else {
+                                $(el).prop("checked", false);
+                            }
+                        });
+                    }
+                }
+            },
+            cron_create: function (strid)
+            {
+                if (typeof (strid) == "undefined") {
+                    return;
+                }
+                var objRadio = $("input[name=" + strid + " ]:checked");
+                var type = objRadio.val();
+                if (type == 1) {
+                    return "*";
+                }
+                var n1, n2, n3;
+                if (type == 2) {
+                    n1 = $("#" + strid + "Start_0").val();
+                    n2 = $("#" + strid + "End_0").val();
+                    return n1 + "-" + n2;
+                }
+                if (type == 3) {
+                    n1 = $("#" + strid + "Start_1").val();
+                    n2 = $("#" + strid + "End_1").val();
+                    n3 = $("#" + strid + "Loop_1").val();
+                    return n1 + "-" + n2 + "/" + n3;
+                }
+                if (type == 4) {
+                    var arry = [];
+                    $.each($("." + strid + "List input[name='" + strid + "Checkbox']:checked"), function () {
+                        arry.push($(this).val());
+                    });
+                    if (arry.length == 0) {
+                        return "*";
+                    }
+                    return arry.join(",");
+                }
+            }
+        };
+        require(['jquery', 'jquery_ui'],
+        function ($) {
+            $('#tabs').tabs();
+            Crontab.bind();
+            Crontab.init($('#cron_expression'));
+        });
+    });
+</script>

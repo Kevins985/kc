@@ -1,0 +1,135 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/flowing/update')}}" class="form-horizontal formValidation"
+                      method="put" data-callback="updateSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">流水单据名称
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="hidden" id="flow_id" name="flow_id" />
+                                <input type="text" class="form-control" placeholder="流水单据名称" id="flow_name" name="flow_name"
+                                       required data-fv-notempty-message="流水单据名称不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">来源表单
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="来源表单" id="from_table" name="from_table"
+                                       required data-fv-notempty-message="来源表单不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">流水号规则
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['无','年','年月','年月日','年月日时','年月日时分','年月日时分秒'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="flow_rule_{{key}}" name="flow_rule" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==0 %}checked="" required data-fv-notempty-message="流水号规则不能为空"{% endif %} >
+                                        <label for="flow_rule_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">生成规则类型</label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['正常','随机'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="flow_random{{key}}" {% if key==data.flow_random %}checked=""{% endif %} name="flow_random" value="{{key}}"  class="md-radiobtn">
+                                        <label for="flow_random{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">流水前缀
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="流水前缀" id="flow_prefix" name="flow_prefix"
+                                       required data-fv-notempty-message="流水前缀不能为空"
+                                       pattern="^[a-zA-Z0-9]+$" data-fv-regexp-message="流水前缀只能是英文和数字" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="normalCreate">
+                            <label class="col-md-2 control-label">流水号起始值
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="流水号起始值" id="flow_start_val" name="flow_start_val" step="1" max="100" value="1"
+                                       required data-fv-notempty-message="流水号起始值不能为空"
+                                       data-fv-lessthan-inclusive="true" data-fv-lessthan-message="流水号起始值不能超过100" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">流水号位数
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="流水号位数" id="flow_digit" name="flow_digit" step="1" max="12" value="3"
+                                       required data-fv-notempty-message="流水号位数不能为空"
+                                       data-fv-lessThan-inclusive="true" data-fv-lessThan-message="流水号位数不能超过12"
+                                       data-fv-greaterThan-inclusive="true" data-fv-greaterThan-message="流水号位数不能小于3" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">流水后缀</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="流水后缀" id="flow_suffix" name="flow_suffix"
+                                       pattern="^[a-zA-Z0-9]+$" data-fv-regexp-message="流水后缀只能是英文和数字" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">预览</label>
+                            <div class="col-md-8 choiceBtnBox">
+                                <input type="text" class="form-control" id="flow_sn" name="flow_sn" readonly=""  />
+                                <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" id="exampleBtn">计算</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">描述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="descr" id="descr" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="dt-buttons">
+    <!--
+    <a class="dt-button buttons-print btn dark btn-outline"><span>Print</span></a>
+    <a class="dt-button buttons-copy buttons-html5 btn red btn-outline"><span>Copy</span></a>
+    <a class="dt-button buttons-pdf buttons-html5 btn green btn-outline"><span>PDF</span></a>
+    <a class="dt-button buttons-excel buttons-html5 btn yellow btn-outline"><span>Excel</span></a>
+    <a class="dt-button buttons-csv buttons-html5 btn purple btn-outline"><span>CSV</span></a>
+    <a class="dt-button buttons-collection buttons-colvis btn dark btn-outline"><span>Columns</span></a>
+    -->
+    {% for k,link in buttons %}
+    {{link}}
+    {% endfor %}
+    <a class="refreshListBtn btn yellow btn-outline"><span>刷新</span></a>
+    <a class="searchBoxBtn btn green btn-outline"><span>搜索</span></a>
+</div>

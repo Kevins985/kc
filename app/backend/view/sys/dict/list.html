@@ -1,0 +1,65 @@
+<div class="row mt-20" >
+    {{ render("sys/dict/_search") }}
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="width50">
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="col-md-2">字典名称</th>
+                                    <th class="col-md-2">字典标识码</th>
+                                    <th class="col-md-1">类型</th>
+                                    <th class="col-md-1">排序值</th>
+                                    <th>描述</th>
+                                    <th class="col-md-3">更新时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.dict_id }}">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>{{ v.dict_name }}</td>
+                                <td>{{ v.dict_code }}</td>
+                                <td>{{ types[v.dict_type] }}</td>
+                                <td>{{ v.sort }}</td>
+                                <td>{{ v.descr }}</td>
+                                <td>{{ v.updated_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

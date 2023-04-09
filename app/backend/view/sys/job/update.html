@@ -1,0 +1,133 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/job/update')}}" class="form-horizontal formValidation"
+                      method="put" data-callback="updateSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">任务名称
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="hidden" id="job_id" name="job_id" />
+                                <input type="text" class="form-control" placeholder="任务名称" id="job_name" name="job_name"
+                                       required data-fv-notempty-message="任务名称不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">任务分组
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="job_group_id" id="job_group_id" >
+                                    <option value="">请选择</option>
+                                    {% for k,v in groupList %}
+                                    <option value="{{v.group_id}}" {{params.job_group_id|eq(v.group_id,'selected','')}}>{{v.group_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">表达式
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8 choiceBtnBox">
+                                <input type="text" class="form-control" placeholder="表达式" id="cron_expression" name="cron_expression"
+                                       required data-fv-notempty-message="表达式不能为空" />
+                                <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" id="cronChoiceBtn">选择</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">命令
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8 choiceBtnBox">
+                                <input type="text" class="form-control" readonly="" placeholder="命令" id="job_command" name="job_command"
+                                       required data-fv-notempty-message="命令不能为空" />
+                                <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" id="cmdChoiceBtn">选择</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label tooltips" data-placement="right" data-original-title="任务超时时间(单位是秒) 0不限制 其他表示超时时间">超时时间</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="任务超时时间" value="0" name="timeout" id="timeout" aria-required="true" aria-invalid="false" aria-describedby="timeout-error"><span id="timeout-error" class="help-block help-block-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">排序值
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="排序值" id="sort" name="sort" step="1" max="255" value="100"
+                                       required data-fv-notempty-message="排序值不能为空"
+                                       data-fv-lessthan-inclusive="true" data-fv-lessthan-message="最大值不能超过255" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">是否邮件通知</label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['否','是'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="is_notify_{{key}}" name="is_notify" value="{{key}}"  class="md-radiobtn">
+                                        <label for="is_notify_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group {% if data.is_notify==0 %}hide{% endif %}" id="notifyBox">
+                            <label class="col-md-2 control-label">邮件</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="命令" id="notify_email" name="notify_email" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">状态</label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in {2:'关闭',1:'正常'} %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="status_{{key}}" name="status" value="{{key}}"  class="md-radiobtn">
+                                        <label for="status_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">描述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="descr" id="descr" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

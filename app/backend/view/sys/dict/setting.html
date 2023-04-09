@@ -1,0 +1,134 @@
+<div class="row mt-20" >
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{data.dict_name}}</span>
+                </div>
+                <div class="actions">
+                    <input type="hidden" id="dict_code" value="{{data.dict_code}}" />
+                    <a href="javascript:;" id="addDataBtn" class="btn btn-default btn-sm btn-circle">
+                        <i class="fa fa-plus"></i> 添加
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                            <tr role="row">
+                                <th style="width:4%"></th>
+                                <th style="width:15%">字段名称</th>
+                                <th style="width:13%">字段代码</th>
+                                <th style="width:10%">字段类型</th>
+                                <th style="width:13%">字段值</th>
+                                <th style="width:7%">必填</th>
+                                <th style="width:10%">字段提示</th>
+                                <th style="width:11%">范围值名称</th>
+                                <th style="width:12%">范围值</th>
+                                <th style="width:4%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in list %}
+                            <tr role="row" data-id="{{ v.id }}">
+                                <td style="padding:6px 0px 0px 5px">
+                                    <button type="button" class="btn btn-xs default fa fa-arrow-up moveUpBtn"></button>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_name" style="border:0px" value="{{ v.field_name }}">
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_code" style="border:0px" value="{{ v.field_code }}">
+                                </td>
+                                <td style="padding:0px;">
+                                    <select class="form-control field_type" style="border:0px" >
+                                        <option value="">请选择</option>
+                                        {% for name in fieldTypes %}
+                                        <option value="{{name}}" {{ v.field_type|eq(name,'selected','') }}>{{name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_value" style="border:0px" value="{{ v.field_value }}">
+                                </td>
+                                <td style="padding:0px;">
+                                    <select class="form-control field_required" style="border:0px" >
+                                        <option value="N" {{ v.field_required|eq('N','selected','') }}>N</option>
+                                        <option value="Y" {{ v.field_required|eq('Y','selected','') }}>Y</option>
+                                    </select>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_tips" style="border:0px" value="{{ v.field_tips }}">
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control value_range_txt" style="border:0px" value="{{ v.value_range_txt }}">
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control value_range" style="border:0px" value="{{ v.value_range }}">
+                                </td>
+                                <td style="padding:6px 0px 0px 10px">
+                                    <button type="button" class="btn btn-xs red fa fa-remove delDataBtn"></button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr role="row">
+                                <td style="padding:6px 0px 0px 5px">
+                                    <button type="button" class="btn btn-xs default fa fa-arrow-up moveUpBtn"></button>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_name" style="border:0px" >
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_code" style="border:0px" >
+                                </td>
+                                <td style="padding:0px;">
+                                    <select class="form-control field_type" style="border:0px" >
+                                        <option value="">请选择</option>
+                                        {% for name in fieldTypes %}
+                                        <option value="{{name}}">{{name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_value" style="border:0px" >
+                                </td>
+                                <td style="padding:0px;">
+                                    <select class="form-control field_required" style="border:0px" >
+                                        <option value="N">N</option>
+                                        <option value="Y">Y</option>
+                                    </select>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control field_tips" style="border:0px" >
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control value_range_txt" style="border:0px" >
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control value_range" style="border:0px" >
+                                </td>
+                                <td style="padding:6px 0px 0px 10px">
+                                    <button type="button" class="btn btn-xs red fa fa-remove delDataBtn"></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" id="submitDictBtn" class="btn green">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

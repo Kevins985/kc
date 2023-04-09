@@ -1,0 +1,103 @@
+<div class="row mt-20" >
+    {{ render("user/rechargeOrder/_search") }}
+    <div class="col-md-12">
+        <div class="tabbable tabbable-tabdrop tabbable-custom">
+            <ul class="nav nav-tabs mb-20">
+                <li {% if params.order_status=='' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/rechargeOrder/list')}}">
+                        所有订单
+                        <span class="badge badge-default"> {{countList['total']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <!--
+                <li {% if params.order_status=='unpaid' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/rechargeOrder/list',{'order_status':'unpaid'})}}">
+                        待支付 <span class="badge badge-info"> {{countList['unpaid']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                -->
+                <li {% if params.order_status=='pending' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/rechargeOrder/list',{'order_status':'pending'})}}">
+                        待处理  <span class="badge badge-warning"> {{countList['pending']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.order_status=='completed' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/rechargeOrder/list',{'order_status':'completed'})}}">
+                        已完成  <span class="badge badge-success"> {{countList['completed']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.order_status=='refused' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/rechargeOrder/list',{'order_status':'refused'})}}">
+                        已拒绝 <span class="badge badge-danger"> {{countList['refused']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.order_status=='closed' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/rechargeOrder/list',{'order_status':'closed'})}}">
+                        已关闭 <span class="badge badge-danger"> {{countList['closed']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li class="pull-right">
+                    {{ render("main/_tools") }}
+                </li>
+            </ul>
+            <div class="tab-content">
+                {% if params.order_status=='pending' %}
+                {{ render("main/_actions") }}
+                {% endif %}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="width50">
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>订单号码</th>
+                                    <th>会员ID(UID)</th>
+                                    <th>登陆账号</th>
+                                    <th>充值金额</th>
+                                    <th>状态</th>
+                                    <th>申请时间</th>
+                                    <th>审核人</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row" id="{{ v.order_id }}">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" data-status="{{v.status}}" id="chk{{v.order_id}}" data-order="{{ v.order_no }}" value="{{ v.order_id }}">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="socicons pull-left">
+                                        <i class="operator fa fa-plus-square-o getExtendTrBtn" data-close="1" data-callback="rechargeOrderJs.showListChild"></i>
+                                        {{ v.order_no }}
+                                    </div>
+                                </td>
+                                <td>{{ memberList[v.user_id].user_no }}<span style="color:red;">({{v.user_id}})</span></td>
+                                <td>{{ memberList[v.user_id].account}}</td>
+                                <td>{{ v.money }}</td>
+                                <td>{{ label(v.status,{0:['danger','待审核'],2:['success','已完成']}) }}</td>
+                                <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ adminList[v.admin_id].realname }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

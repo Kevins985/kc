@@ -1,0 +1,79 @@
+<tr class="child" pid="{{data.order_id}}">
+    <td colspan="12" style="text-align:left;padding:0px;word-break:break-all;">
+        <div class="row goodsInfo" style="margin:0px;">
+            <div class="tabbable tabbable-tabdrop">
+                <ul class="nav nav-tabs">
+                    <li class="active"  name="tab_recharge">
+                        <a href="#tab_recharge" data-toggle="tab" aria-expanded="false">充值信息</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_recharge">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 订单编号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.order_no }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 状态 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.order_status }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 充值金额 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{data.money}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 充值赠送金额 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.reward_money|default(0) }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            {% if adminObj %}
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 审核时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.updated_time|date('Y-m-d H:i:s') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 审核人 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ adminObj.realname }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            {% endif %}
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 充值凭证 </div>
+                                    <div class="profile-info-value">
+                                        <span>
+                                            <a href="{{ data.image_url }}" target="_blank">
+                                                <img src="{{data.image_url}}" height="100" />
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

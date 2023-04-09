@@ -1,0 +1,55 @@
+<div class="portlet box">
+    <div class="portlet-body">
+        <div class="tabbable-custom nav-justified"  id="imagesModelContainer">
+            <ul class="nav nav-tabs nav-justified">
+                <li class="active" data-type="local">
+                    <a href="#local" data-toggle="tab" aria-expanded="true"> 本地上传 </a>
+                </li>
+                <li class="" data-type="images">
+                    <a href="#images" data-toggle="tab" aria-expanded="false"> 使用图库 </a>
+                </li>
+                <li class="" data-type="curl">
+                    <a href="#curl" data-toggle="tab" aria-expanded="false"> 外部图片 </a>
+                </li>
+            </ul>
+            <div class="tab-content" style="height:340px;">
+                <div class="tab-pane active" id="local">
+                    <div class="form-group">
+                        <div class="clearfix" style="position:relative;">
+                            <a class="btn btn-default blue btn-block"><i class="fa fa-upload"></i>上传图片</a>
+                            <input type="file" accept="image/*" name="file" style="width: 100%;left: 0px" class="pic_file uploadImageBtn" data-type="{{type}}" />
+                            <span class="help-block">提示：选择的文件大小不超过3M，支持JPG、GIF和PNG格式。</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="socicons">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="images">
+                    <div class="portlet-body">
+                        <div class="socicons">
+                            {% for k,v in data.items %}
+                            <img class="img-thumbnail" src="{{uploadUrl(v.file_url)}}" data-md5="{{v.file_md5}}" width="55px" height="55px">
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="curl">
+                    <div class="form-group form-md-line-input choiceBtnBox">
+                        <input type="text" class="form-control" id="curl_images" placeholder="请输入图片地址">
+                        <a href="javascript:;" class="btn btn-default btn-xs choiceBtn" style="top:25px;" data-type="{{type}}" id="getImagesBtn">获取</a>
+                        <label for="curl_images">网络图片地址：</label>
+                        <span class="help-block">提示：您只需要找到网络图片复制到输入框，例如：https://www.abc.com/images/pic.jpg</span>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="socicons">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

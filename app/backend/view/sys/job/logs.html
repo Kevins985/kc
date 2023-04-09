@@ -1,0 +1,86 @@
+<div class="row mt-20" >
+    <div class="col-md-12 {% if params.searchType is empty %}hide{% endif %}" id="listSearchBox">
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-search"></i>搜索
+                </div>
+                <div class="tools">
+                    <a class="clearSearchBtn" href="javascript:;" title="重置表单">
+                        <i class="fa fa-refresh font-white" aria-hidden="true"></i>
+                    </a>
+                    <a class="searchBoxBtn" href="javascript:;" title="关闭搜索框">
+                        <i class="fa fa-close font-white" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body flip-scroll">
+                <div class="form-inline mt-5">
+                    <form id="searchForm" action="{{url('/backend/job/logs/'~job.job_id)}}" method="post">
+                        <div class="form-group">
+                            <label>任务分组:</label>
+                            <select class="form-control" name="status" id="status" >
+                                <option value="" {% if params.status=='' %}selected=""{% endif %}>请选择</option>
+                                <option value="0" {% if params.status=='0' %}selected=""{% endif %}>未开始</option>
+                                <option value="1" {{params.status|eq(1,'selected','')}}>准备运行</option>
+                                <option value="2" {{params.status|eq(1,'selected','')}}>运行成功</option>
+                                <option value="3" {{params.status|eq(3,'selected','')}}>运行失败</option>
+                                <option value="-1" {{params.status|eq('-1','selected','')}}>不符合条件</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="searchBtn" class="btn btn-success">搜索</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}-{{ job.job_name }}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="col-md-4">命令脚本</th>
+                                    <th class="col-md-1">执行时间(毫秒)</th>
+                                    <th class="col-md-4">响应信息</th>
+                                    <th class="col-md-1">状态</th>
+                                    <th class="col-md-2">创建时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row">
+                                <td>{{ v.job_command }}</td>
+                                <td>{{ v.duration }}</td>
+                                <td>{% if v.status==2 %}{{v.message}}{% else %}{{v.exception_info}}{% endif %}</td>
+                                <td>{{ label(v.status,{'-1':['danger','不符合条件'],0:['default','未开始'],1:['primary','运行中'],2:['success','成功'],3:['danger','失败']}) }}</td>
+                                <td>{{v.created_time|date('Y-m-d H:i:s')}}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

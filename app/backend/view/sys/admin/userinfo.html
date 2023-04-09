@@ -1,0 +1,141 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon|default("fa fa-user font-dark") }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name|default("资料管理")}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs nav-tabs-lg">
+                        <li class="{{type|eq('modifyPwd','','active')}}">
+                            <a href="#tab_info" data-toggle="tab" aria-expanded="true"> 个人资料 </a>
+                        </li>
+                        <li class="{{type|eq('modifyPwd','active','')}}">
+                            <a href="#tab_pass" data-toggle="tab" aria-expanded="false"> 修改密码 </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane {{type|eq('modifyPwd','','active')}}" id="tab_info">
+                            <form action="{{url('/backend/admin/saveUserinfo')}}" class="form-horizontal formValidation" id="formFieldData"
+                                  method="PUT" data-callback="saveUserInfoSubmit">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="account">账号
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" disabled="" class="form-control" placeholder="账号" id="account" name="account">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">头像</label>
+                                        <div class="col-md-4" style='position:relative;{% if data.photo_url!="" %}display:none;{% endif %}'>
+                                            <a class="btn btn-default"><i class="fa fa-upload"></i>上传头像</a>
+                                            <input type="file" name="file" class="pic_file uploadImageBtn" data-type="admin">
+                                        </div>
+                                        <div class="col-md-4 mt-10 ml-15 thumbnail" id='uploadImageContainer' style='position:relative;{% if data.photo_url=="" %}display:none;{% endif %}'>
+                                            {% if data.photo_url!="" %}
+                                            <a href="javascript:;" class="delImageBtn"><i class="fa fa-remove"></i></a>
+                                            <img class="img-rounded" src="{{data.photo_url}}" />
+                                            <input type="hidden" id="photo_url" name="photo_url" value="{{data.photo_url}}" />
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="email">邮箱
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="邮箱" id="email" name="email"
+                                                   required data-fv-notempty-message="邮箱不能为空"
+                                                   data-fv-emailaddress-message="请输入正确的邮箱"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="mobile">手机号码
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="手机号码" id="mobile" name="mobile"
+                                                   required data-fv-notempty-message="手机号码不能为空"  />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="realname">真实姓名
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="真实姓名" id="realname" name="realname"
+                                                   required data-fv-notempty-message="真实姓名不能为空"  />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="descr">描述</label>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" name="descr" id="descr" rows="3"></textarea>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-6">
+                                            <button type="submit" class="btn green">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane {{type|eq('modifyPwd','active','')}}" id="tab_pass">
+                           <form action="{{url('/backend/admin/modifyPassword')}}" class="form-horizontal formValidation"
+                                      method="put" data-callback="modifyPasswordSubmit">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">当前密码
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="password" class="form-control" placeholder="当前密码" id="old_pass" name="old_pass"
+                                                   required data-fv-notempty-message="当前密码不能为空" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">新密码
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="password" class="form-control" placeholder="新密码" name="new_pass" value="" id="new_pass"
+                                                   required data-fv-notempty-message="新密码不能为空"
+                                                   data-fv-stringlength="true" data-fv-stringlength-min="6" data-fv-stringlength-max="30" data-fv-stringlength-message="密码的长度必须在6-30个字符之间" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">确认密码
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="password" class="form-control" placeholder="确认密码" id="confirm_pass" name="confirm_pass"
+                                                   required data-fv-notempty-message="确认密码不能为空"
+                                                   data-fv-identical="true" data-fv-identical-field="new_pass" data-fv-identical-message="跟新密码不一致"  />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-6">
+                                            <button type="submit" class="btn green">保存</button>
+                                            <button type="reset" class="btn default">重置</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

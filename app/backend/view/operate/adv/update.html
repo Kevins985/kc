@@ -1,0 +1,158 @@
+<div class="row mt-20">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="{{url('/backend/adv/update')}}" class="form-horizontal formValidation"
+                      method="put" data-callback="updateSubmit" >
+                    <div class="form-body" id="formFieldData">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">广告名称
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="hidden" id="adv_id" name="adv_id" />
+                                <input type="text" class="form-control" placeholder="广告名称" id="adv_name" name="adv_name"
+                                       required data-fv-notempty-message="广告名称不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">投放终端
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in {'pc':'PC端','wap':'WAP端','android':'Android端','ios':'IOS端'} %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="from_term_{{key}}" {% if key==data.from_term %}checked=""{% endif %} name="from_term" value="{{key}}"  class="md-radiobtn">
+                                        <label for="from_term_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">广告类型
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select id="type_id" name="type_id" class="form-control"
+                                        required data-fv-notempty-message="广告类型不能为空">
+                                    <option value="">请选择</option>
+                                    {% for k,v in typeList %}
+                                    <option value="{{v.type_id}}" {{params.type_id|eq(v.type_id,'selected','')}}>{{v.type_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">广告位
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select id="location_id" name="location_id" class="form-control"
+                                        required data-fv-notempty-message="广告位不能为空">
+                                    <option value="">请选择</option>
+                                    {% for k,v in locationList %}
+                                    <option value="{{v.location_id}}"  {{params.location_id|eq(v.location_id,'selected','')}}>{{v.location_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">广告图片
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-4" style='position:relative;display:none;'>
+                                <a class="btn btn-default"><i class="fa fa-upload"></i>上传</a>
+                                <input type="file" name="file" class="pic_file uploadImageBtn" data-type="adv">
+                            </div>
+                            <div class="col-md-4 mt-10 ml-15 thumbnail" id='uploadImageContainer' style='position:relative;'>
+                                <a href="javascript:;" class="delImageBtn"><i class="fa fa-remove"></i></a>
+                                <img class="img-rounded" src="{{data.adv_image}}" />
+                                <input type="hidden" id="adv_image" name="adv_image" value="{{data.adv_image}}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">广告链接地址</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="广告链接地址" id="adv_url" name="adv_url"
+                                       data-fv-field="url" data-fv-uri="true" data-fv-uri-message="请输入正确的网址" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">开始时间
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text"  class="form-control form_datetime" placeholder="开始时间" id="start_date" name="start_date"
+                                       required data-fv-notempty-message="开始时间不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">结束时间
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text"  class="form-control form_datetime" placeholder="结束时间" id="end_date" name="end_date"
+                                       required data-fv-notempty-message="结束时间不能为空" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">排序值
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number"  class="form-control" placeholder="排序值" id="sort" name="sort" step="1" max="255" value="100"
+                                       required data-fv-notempty-message="排序值不能为空"
+                                       data-fv-lessthan-inclusive="true" data-fv-lessthan-message="最大值不能超过255" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">广告描述</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">状态</label>
+                            <div class="col-md-8">
+                                <div class="md-radio-inline">
+                                    {% for key,val in ['隐藏','显示'] %}
+                                    <div class="md-radio">
+                                        <input type="radio" id="status_{{key}}" name="status" value="{{key}}"  class="md-radiobtn"
+                                               {% if key==data.status %}checked=""{% endif %} >
+                                        <label for="status_{{key}}">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> {{val}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-6">
+                                <button type="submit" id="advSubmitBtn" class="btn green">保存</button>
+                                <button type="reset" class="btn default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

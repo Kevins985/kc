@@ -1,0 +1,63 @@
+<div class="row mt-20" >
+    {{ render("operate/help/_search") }}
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="width50">
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="col-md-5">标题</th>
+                                    <th class="col-md-2">所属分类</th>
+                                    <th class="col-md-1">排序</th>
+                                    <th class="col-md-1">是否显示</th>
+                                    <th>添加时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.help_id }}">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>{{ v.title }}</td>
+                                <td>{{ categoryList[v.category_id].category_name }}</td>
+                                <td>{{ v.sort }}</td>
+                                <td>{{ label(v.status,{0:['danger','隐藏'],1:['success','显示']}) }}</td>
+                                <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

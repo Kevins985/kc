@@ -1,0 +1,34 @@
+<div class="col-md-12 mt-5 form-inline">
+    <div class="form-group">
+        <label>翻译语言:</label>
+        <select id="tran_lang_id" name="tran_lang_id" class="form-control" style="width:200px">
+            <option value="0">请选择</option>
+            {% for k,v in langList %}
+            <option value="{{v.lang_id}}" {{params.lang_id|eq(v.lang_id,'selected','')}}>{{v.lang_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="button" id="translateBtn" class="btn btn-success">翻译</button>
+    </div>
+</div>
+<div class="table-scrollable  col-md-12 ">
+    <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+        <thead>
+        <tr role="row">
+            <th style="width:30%;">Lang键名</th>
+            <th>翻译内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for k,v in data %}
+        <tr role="row">
+            <td>{{ v.key_name }}</td>
+            <td style="padding:0px;">
+                <input type="text"  data-id="{{v.key_id}}" class="form-control key_value" style="border:0px;" />
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

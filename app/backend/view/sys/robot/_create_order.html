@@ -1,0 +1,41 @@
+<div class="row mt-15 pl-5">
+    <div class="portlet-body form">
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">物流方式:</label>
+            <div class="col-md-8">
+                <select class="form-control" id="tran_id" name="tran_id">
+                    <option value="0">随机</option>
+                    {% for k,v in tranList %}
+                    <option value={{v.tran_id}} {% if v.is_default==1 %}selected=""{% endif %}>{{v.tran_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">店铺产品ID:</label>
+            <div class="col-md-8">
+                <input type="number" class="form-control" placeholder="店铺产品ID" id="product_id" name="product_id"  />
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">产品SKU:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" placeholder="产品SKU编号" id="sku_no" name="sku_no"  />
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group mt-10">
+            <label class="col-md-3 text-right">购买用户ID:</label>
+            <div class="col-md-8">
+                <select class="form-control" id="user_id" name="user_id">
+                    <option value="0">随机</option>
+                    {% for k,v in memberList %}
+                    <option value="{{v.user_id}}">{{v.nickname}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

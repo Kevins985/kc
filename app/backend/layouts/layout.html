@@ -1,0 +1,39 @@
+{{ layout.doctype }}
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ layout.seo.title }}</title>
+        <meta name="keywords" content="{{ layout.seo.keywords }}" >
+        <meta name="description" content="{{ layout.seo.description }}" >
+        <meta id="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="black" name="apple-mobile-web-app-status-bar-style">
+        {{ asset("/static/plugins/font-awesome/css/font-awesome.min.css","css",{"media":"screen"}) }}
+        {{ asset("/static/plugins/simple-line-icons/simple-line-icons.min.css","css",{"media":"screen"}) }}
+        {{ asset("/static/plugins/bootstrap/3.3.6/css/bootstrap.min.css","css",{"media":"screen"}) }}
+        {{ asset("/static/plugins/bootstrap-switch/css/bootstrap-switch.min.css","css",{"media":"screen"}) }}
+        {{ asset("/static/backend/css/plugins.min.css","css",{"media":"screen"}) }}
+        {{ asset("/static/backend/css/components.min.css","css",{"media":"screen"}) }}
+        {{ asset("/static/backend/css/layout.css","css",{"media":"screen"}) }}
+        {{ asset("/static/backend/css/themes/default.css","css",{"media":"screen"}) }}
+        {{ asset("/static/backend/css/common.css","css",{"media":"screen"}) }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+        {{ layout.script }}
+    </head>
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        {% include 'slot/header.html' %}
+        <section class="clearfix"></section>
+        <section class="page-container">
+            {% include 'slot/sidebar.html' %}
+            <div class="page-content-wrapper" id="pageContentContainer">
+                <div class="page-content">
+                    {% include 'slot/crumb.html' %}
+                    {{ layout.content }}
+                </div>
+            </div>
+            {% include 'slot/right.html' %}
+        </section>
+        <div id="toastTips"></div>
+        {% include 'slot/footer.html' %}
+    </body>
+</html> 

@@ -1,0 +1,232 @@
+<tr class="child" pid="{{data.order_id}}">
+    <td colspan="12" style="text-align:left;padding:0px;word-break:break-all;">
+        <div class="row goodsInfo" style="margin:0px;">
+            <div class="tabbable tabbable-tabdrop">
+                <ul class="nav nav-tabs">
+                    <li class="active" name="tab_info">
+                        <a href="#tab_info" data-toggle="tab" aria-expanded="true">订单信息</a>
+                    </li>
+                    <li class="" name="tab_spu">
+                        <a href="#tab_spu" data-toggle="tab" aria-expanded="false">商品信息</a>
+                    </li>
+                    <li class="" name="tab_address">
+                        <a href="#tab_address" data-toggle="tab" aria-expanded="false">地址信息</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_info">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 订单编号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.order_no }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 订单状态 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.order_status }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 积分数 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{data.point}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 购买数量 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{data.quantity}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 快递公司 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.tracking_name|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 快递单号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{data.tracking_url|default('&nbsp;')}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 创建时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.created_time|default(' ') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 查询网址 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ data.tracking_url }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_spu">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 商品编号 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.spu_no }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 商品名称 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{spu.title}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 商品类型 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.goods_type|eq('0','虚拟商品','实物商品') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 市场价格 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.market_price }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 销售价格 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.sell_price }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 兑换积分 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{spu.point}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 重量 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.weight|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 单位 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{spu.unit|default('&nbsp;')}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 库存数量 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.store_num|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 销售数量 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{spu.sales_cnt|default('&nbsp;')}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 创建时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ spu.created_time|date('Y-m-d H:i:s') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 上架时间 </div>
+                                    <div class="profile-info-value">
+                                        {% if spu.up_time %}
+                                        <span>{{ spu.up_time }}</span>
+                                        {% else %}
+                                        <span>&nbsp;</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_address">
+                        <div class="profile-user-info" style="background-color:#fff;margin:0px;">
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 收件人 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ address.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 联系电话 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{address.mobile|default(' ')}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 地址 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ address.local|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 详细地址 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ address.address|default('&nbsp;') }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 邮编 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ address.post_code }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 创建时间 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{ address.created_time|date('Y-m-d H:i:s') }}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

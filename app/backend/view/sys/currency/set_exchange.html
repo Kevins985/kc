@@ -1,0 +1,55 @@
+<div class="row mt-20" >
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}({{currencyObj.currency_name}})</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    <input type="hidden" id="currency_id" value="{{currencyObj.currency_id}}" data-name="{{currencyObj.currency_name}}" data-code="{{currencyObj.currency_code}}" />
+                    <button type="button" id="addExchangeBtn" class="btn green">添加</button>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                            <tr role="row">
+                                <th style="width:50px;">编号</th>
+                                <th class="col-md-2">当前币种名称</th>
+                                <th class="col-md-1">当前币种代码</th>
+                                <th class="col-md-2">目标币种名称</th>
+                                <th class="col-md-1">目标币种代码</th>
+                                <th class="col-md-1">币种兑换汇率</th>
+                                <th>更新时间</th>
+                                <th class="col-md-1">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data %}
+                            <tr role="row" class="items" data-id="{{v.id}}">
+                                <td class="sort">{{ k+1 }}</td>
+                                <td class="current_name">{{ v.current_name }}</td>
+                                <td class="current_code">{{ v.current_currency }}</td>
+                                <td class="target_name">{{ v.target_name }}</td>
+                                <td class="target_currency">{{ v.target_currency }}</td>
+                                <td class="currency_rate">{{ v.currency_rate }}</td>
+                                <td>{{ v.updated_time|date('Y-m-d H:i:s') }}</td>
+                                <td>
+                                    <a class="editExchangeBtn"><i class="fa fa-edit" style="font-size:20px"></i></a>
+                                    <a class="saveExchangeBtn hide" data-id="{{v.id}}"><i class="fa fa-save" style="font-size:20px"></i></a>
+                                    <a class="deleteExchangeBtn" data-id="{{v.id}}"><i class="fa fa-remove" style="font-size:20px"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

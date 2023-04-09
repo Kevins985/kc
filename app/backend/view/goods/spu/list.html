@@ -1,0 +1,121 @@
+<div class="row mt-20" >
+    {{ render("goods/spu/_search") }}
+    {% set hasSpuStatusGrant = hasGrant('setStatus','spu','backend','PUT') %}
+    <div class="col-md-12">
+        <div class="tabbable tabbable-tabdrop tabbable-custom">
+            <ul class="nav nav-tabs mb-20">
+                <li {% if params.status=='' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/spu/list')}}">
+                        所有商品
+                        <span class="badge badge-default"> {{countList['total']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.status=='0' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/spu/list',{'status':'0'})}}">
+                        等待审核 <span class="badge badge-warning"> {{countList['0']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.status=='1' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/spu/list',{'status':'1'})}}">
+                        已上架 <span class="badge badge-success"> {{countList['1']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.status=='2' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/spu/list',{'status':'2'})}}">
+                        已下架
+                        <span class="badge badge-danger"> {{countList['2']|default(0)}} </span>
+                    </a>
+                </li>
+                <li class="pull-right">
+                    {{ render("main/_tools") }}
+                </li>
+            </ul>
+            <div class="tab-content">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="width50">
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="col-md-4">商品名称</th>
+                                    <th>分类</th>
+                                    <th class="col-md-1">销售价</th>
+                                    <th class="col-md-1">市场价</th>
+                                    <th class="col-md-1">状态</th>
+                                    <th class="col-md-2">最后修改时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            {% set category_ids = json_decode(v.category_ids) %}
+                            <tr role="row" id="{{ v.spu_id }}">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.spu_id }}">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="socicons pull-left">
+                                        <i class="operator fa fa-plus-square-o getExtendTrBtn" data-close="1" data-callback="spuJs.showListChild"></i>
+                                        <img class="img-thumbnail" src="{{v.image_url}}" width="60px" height="60px">
+                                     </div>
+                                    <div class="pull-left" style="width:220px;word-break: break-all;padding:2px 3px;">
+                                        {{ v.title }}
+                                    </div>
+                                </td>
+                                <td>
+                                    {{categoryList[v.category_id]['category_name']|default('暂无分类')}}
+                                </td>
+                                <td>{{v.sell_price}}</td>
+                                <td>{{v.market_price}}</td>
+                                <td>
+                                    {% if hasSpuStatusGrant %}
+                                        {% if v.status==1 %}
+                                        <button class="btn btn-xs btn-success setSpuStatusBtn" data-id="{{v.spu_id}}" data-status="{{v.status}}" data-toggle="confirmation"  data-placement="top"  data-original-title="设置状态"
+                                                data-btn-ok-label="待审核" data-btn-ok-class="btn-info" data-btn-ok-icon=""
+                                                data-btn-cancel-label="下架" data-btn-cancel-class="btn-danger"  data-btn-cancel-icon="">
+                                            已上架
+                                        </button>
+                                        {% elseif v.status==2 %}
+                                        <button class="btn btn-xs btn-danger setSpuStatusBtn" data-id="{{v.spu_id}}" data-status="{{v.status}}" data-toggle="confirmation" data-placement="top"  data-original-title="设置状态"
+                                                data-btn-ok-label="上架" data-btn-ok-class="btn-success" data-btn-ok-icon=""
+                                                data-btn-cancel-label="待审核" data-btn-cancel-class="btn-info" data-btn-cancel-icon="">
+                                            已下架
+                                        </button>
+                                        {% elseif v.status==-1 %}
+                                        已删除
+                                        {% else %}
+                                        <button class="btn btn-xs btn-info setSpuStatusBtn" data-id="{{v.spu_id}}" data-status="{{v.status}}" data-toggle="confirmation" data-placement="top" data-original-title="设置状态"
+                                                data-btn-ok-label="上架" data-btn-ok-class="btn-success"
+                                                data-btn-cancel-label="下架" data-btn-cancel-class="btn-danger">
+                                            待审核
+                                        </button>
+                                        {% endif %}
+                                    {% else %}
+                                    {{ label(v.status,{2:['danger','已下架'],1:['success','已上架'],0:['info','待审核'],'-1':['info','已删除']}) }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ v.updated_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="10">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

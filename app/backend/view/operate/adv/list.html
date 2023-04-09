@@ -1,0 +1,75 @@
+<div class="row mt-20" >
+    {{ render("operate/adv/_search") }}
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="{{ cmenu.icon }} font-dark"></i>
+                    <span class="caption-subject bold uppercase">{{cmenu.name}}</span>
+                </div>
+                <div class="tools" style="padding:0px;">
+                    {{ render("main/_tools") }}
+                </div>
+            </div>
+            <div class="portlet-body">
+                {{ render("main/_actions") }}
+                <div class="table-responsive">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
+                            <thead>
+                                <tr role="row">
+                                    <th class="width50">
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input type="checkbox" class="group-checkable">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="col-md-1">广告图片</th>
+                                    <th class="col-md-1">广告名称</th>
+                                    <th class="col-md-1">广告类型</th>
+                                    <th class="col-md-1">广告位</th>
+                                    <th class="col-md-1">投放终端</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th class="width50">排序</th>
+                                    <th class="width50">状态</th>
+                                    <th class="col-md-2">添加时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for k,v in data.items %}
+                            <tr role="row">
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" class="checkboxes" value="{{ v.adv_id }}">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <img class="img-thumbnail" src="{{ v.adv_image}}" width="55px" height="55px">
+                                </td>
+                                <td><a href="{{ v.adv_url }}" target="_blank">{{ v.adv_name }}</a></td>
+                                <td>{{ typeList[v.type_id].type_name }}</td>
+                                <td>{{ locationList[v.location_id].location_name }}</td>
+                                <td>{{ v.from_term }}</td>
+                                <td>{{ v.start_date }}</td>
+                                <td>{{ v.end_date }}</td>
+                                <td>{{ v.sort }}</td>
+                                <td>{{ label(v.status,{0:['danger','隐藏'],1:['success','显示']}) }}</td>
+                                <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="nodata" colspan="12">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include '_paginators/web.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
