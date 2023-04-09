@@ -229,7 +229,7 @@ var appCallback = {
     },
     upload:function(response){
         if(response.data.type=='spu_images'){
-            var image_cnt = $('#uploadPhotoContainer').find('.photo').length;
+            var image_cnt = $('#uploadPhotoContainer').find('img').length;
             if(image_cnt<spuJs.images_cnt){
                 global.appendUploadData('photo',response,'uploadPhotoContainer');
             }
