@@ -73,6 +73,22 @@
                                 <input type="hidden" id="image_url" name="image_url" value="{{data.image_url}}" />
                             </div>
                         </div>
+                        <div class="form-group" >
+                            <label class="col-md-2 control-label">轮播图片</label>
+                            <div class="col-md-10 uploadImagesBox" id="uploadPhotoContainer">
+                                {% for k,v in imagesList %}
+                                <div class="col-md-2 images">
+                                    <a href="javascript:;" class="delImageListBtn fa fa-remove"></a>
+                                    <img class="img-rounded" src="{{v.image_url}}"/>
+                                    <input type="hidden" class="photo" value="{{v.image_url}}"/>
+                                </div>
+                                {% endfor %}
+                                <div class="col-md-2 images clearfix">
+                                    <i class="fa fa-plus addImages"></i>
+                                    <input type="file" name="file" class="pic_file uploadImageBtn" data-type="spu_images" />
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">状态
                                 <span class="required" aria-required="true">*</span>

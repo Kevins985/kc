@@ -37,6 +37,7 @@ class MemberModel extends Model
 		"identity",
 		"login_time",
 		"modify_pwd_time",
+		"is_robot",
 		"remark",
 		"status",
     ];

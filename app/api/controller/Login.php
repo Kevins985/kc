@@ -128,7 +128,7 @@ class Login extends Api
             if($post['type']=='mobile'){
                 $account = $post['num_code'].$account;
             }
-            if(empty($vcode) || $vcode != verifyCodeMsg($account,$vcode,$post['type'])) {
+            if(verifyCodeMsg($account,$post['vcode'],$post['type'])) {
                 throw new VerifyException("输入的验证码不正确");
             }
             $memberService = Container::get(MemberService::class);

@@ -332,21 +332,36 @@
     z-index: 100;
     text-decoration:none
 }
-.uploadListBox{
-    position:relative;
-    width:150px;
-    height: 120px;
-    padding:0px;
-    margin: 0px 8px 5px 0px;
+#uploadImageContainer{
+    width:200px;
+    min-height:200px;
 }
-.uploadListBox img{
+#uploadImageContainer img{
     width:100%;
 }
-.uploadListBox .delImageListBtn{
+.uploadImagesBox .delImageListBtn{
     position: absolute;
     top: 5px;
     font-size: 15px;
     right: 8px;
     color: red;
     text-decoration: none;
+}
+.uploadImagesBox .images{
+    border:1px solid #c2cad8;
+    width:100px;
+    height:100px;
+    margin:0px 10px 10px 0px;
+}
+.uploadImagesBox .images img{
+    width:100%;
+}
+.uploadImagesBox .images .pic_file{
+    width:100%;
+    height:100%;
+    left:0px;
+}
+.uploadImagesBox .images .addImages{
+    margin: 40px 20px;
+    font-size: 35px;
 }

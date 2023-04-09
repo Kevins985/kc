@@ -13,7 +13,7 @@ class OrderModel extends Model
     public $primaryKey = 'order_id';
     public $connection = 'mysql';
      
-    protected $fillable = [
+    protected $fillable=[
 		"order_id",
 		"order_no",
 		"project_id",
@@ -27,6 +27,7 @@ class OrderModel extends Model
 		"order_status",
 		"pay_money",
 		"verify_time",
+		"invite_cnt",
 		"tracking_name",
 		"tracking_number",
 		"tracking_url",

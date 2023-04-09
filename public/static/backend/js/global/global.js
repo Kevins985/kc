@@ -612,16 +612,15 @@ global = {
             var data = response.data;
             var img_url = (data.cut[1] ? data.cut[1] :data.file_url);
             var dom_value = (file_type=='md5'?data.file_md5:img_url);
-            var html = '<div class="col-md-2 uploadListBox">\
+            var html = '<div class="col-md-2 images">\
                             <a href="javascript:;" class="delImageListBtn fa fa-remove"></a>\
                             <img class="img-rounded" src="' + img_url + '"/>\
                             <input type="hidden" class="'+dom+'" value="'+dom_value+'"/>\
                         </div>';
-            $('#'+container).show().append(html);
+            $('#'+container).find('.images:last').before(html);
             $('.delImageListBtn').bind('click', function (e) {
                 e.preventDefault();
-                $(this).parent().prev().show();
-                $(this).parent().hide().html('');
+                $(this).parent().remove();
             });
         }
         else{
