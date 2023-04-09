@@ -102,8 +102,12 @@ class OrderLogic extends Logic
             if(empty($projectObj)){
                 throw new BusinessException('暂无找到进行中的项目');
             }
-            $conn->beginTransaction();
             $orderService = Container::get(OrderService::class);
+            $orderObj = $orderService->fetch(['user_id'=>$data['user_id'],'project_id'=>$projectObj['project_id'],'status'=>1]);
+            if(!empty($orderObj)){
+                throw new BusinessException('你已经报名参加过该项目了');
+            }
+            $conn->beginTransaction();
             $data['order_no'] = $orderService->getOrderNo();
             $data['project_id'] = $projectObj['project_id'];
             $data['qty'] = 1;

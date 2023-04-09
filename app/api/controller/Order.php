@@ -3,10 +3,8 @@
 namespace app\api\controller;
 
 use library\logic\OrderLogic;
-use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\user\OrderService;
-use library\service\user\ProjectOrderService;
 use library\validator\user\OrderValidation;
 use support\Container;
 use support\controller\Api;
@@ -91,7 +89,7 @@ class Order extends Api
 
     /**
      * 提交积分订单
-     * @param {address_id,spu_id,sku_id}
+     * @param {address_id,spu_id}
      */
     public function createGoodsOrder(Request $request)
     {
