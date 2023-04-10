@@ -25,6 +25,7 @@ class OrderModel extends Model
 		"point",
 		"address_id",
 		"order_status",
+		"file_url",
 		"pay_money",
 		"verify_time",
 		"invite_cnt",
@@ -55,5 +56,7 @@ class OrderModel extends Model
         return $this->belongsTo(MemberModel::class,'user_id','user_id');
     }
 
-
+    function memberTeam(){
+        return $this->belongsTo(MemberTeamModel::class,'user_id','user_id');
+    }
 }

@@ -44,8 +44,9 @@
                                     </th>
                                     <th class="col-md-2">项目名称</th>
                                     <th class="col-md-1">项目编号</th>
+                                    <th class="col-md-1">发起人账号</th>
                                     <th class="col-md-1">项目成团人数</th>
-                                    <th class="col-md-1">项目X期</th>
+                                    <th class="col-md-1">项目排期</th>
                                     <th class="col-md-1">销量</th>
                                     <th style="width:110px;">项目开始时间</th>
                                     <th style="width:110px;">项目结束时间</th>
@@ -61,8 +62,12 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td>{{ v.project_name }}</td>
+                                <td>
+                                    <i class="operator fa fa-plus-square-o getExtendTrBtn" data-close="1" data-callback="projectJs.showListChild"></i>
+                                    {{ v.project_name }}
+                                </td>
                                 <td>{{ v.project_no }}</td>
+                                <td>{{ v.member.account }}</td>
                                 <td>{{ v.user_cnt }}</td>
                                 <td>{{ v.getViewNumber() }}</td>
                                 <td>{{ v.sales_cnt }}</td>

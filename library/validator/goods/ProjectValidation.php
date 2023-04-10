@@ -15,6 +15,7 @@ class ProjectValidation extends Validator{
             'project_name' => 'required|string',
             'project_prefix' => 'required|string',
             'user_cnt'=>'required|numeric|gt:0',
+            'user_id'=>'required|numeric',
             'start_time' => 'required|date',
             'end_time' => 'required|date',
         ]);
@@ -22,6 +23,7 @@ class ProjectValidation extends Validator{
             'project_name' => '项目名称',
             'project_prefix'=> '前缀',
             'user_cnt'=>'项目成团人数',
+            'user_id'=>'用户ID',
             'start_time' => '开始时间',
             'end_time' => '结束时间',
         ]);

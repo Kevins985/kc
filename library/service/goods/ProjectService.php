@@ -3,6 +3,7 @@
 namespace library\service\goods;
 
 use library\service\sys\FlowNumbersService;
+use library\service\user\MemberService;
 use support\Container;
 use support\exception\BusinessException;
 use support\extend\Service;
@@ -65,11 +66,30 @@ class ProjectService extends Service
      */
     public function createProject($data){
         $data['project_no'] = $this->getProjectNo();
-        $project = $this->getActiveProject();
-        if(!empty($project)){
-            throw new BusinessException($project['project_name'].'该项目还在进行中，不能在添加');
+        $memberService = Container::get(MemberService::class);
+        $memberObj = $memberService->get($data['user_id']);
+        if(empty($memberObj)){
+            throw new BusinessException('该发起人用户ID不存在');
         }
-        return $this->create($data);
+        $userProjectObj = $this->get($data['user_id'],'user_id');
+        if(!empty($userProjectObj)){
+            throw new BusinessException('该发起人用户已经创建了一个项目');
+        }
+        $conn = $this->connection();
+        try{
+            $conn->beginTransaction();
+            $projectObj = $this->create($data);
+            $projectNumberService = Container::get(ProjectNumberService::class);
+            if(!empty($projectObj)){
+                $projectNumberService->createProjectNumber($projectObj['project_id'],$projectObj['project_prefix'],$projectObj['number']);
+            }
+            $conn->commit();
+            return $projectObj;
+        }
+        catch (\Throwable $e){
+            $conn->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -80,12 +100,6 @@ class ProjectService extends Service
         $projectObj = $this->get($id);
         if(empty($projectObj)){
             throw new BusinessException("项目不存在");
-        }
-        elseif($projectObj['status']==1){
-            $project = $this->getActiveProject();
-            if(!empty($project) && $project['project_id']==$id){
-                throw new BusinessException($project['project_name'].'该项目还在进行中，不能开启其他项目');
-            }
         }
         return $projectObj->update($data);
     }

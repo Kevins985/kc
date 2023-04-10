@@ -2,6 +2,7 @@
 
 namespace library\model\goods;
 
+use library\model\user\MemberModel;
 use library\service\user\OrderService;
 use support\extend\Model;
 
@@ -38,5 +39,19 @@ class ProjectModel extends Model
      */
     function orders(){
         return $this->hasMany(OrderService::class,'project_id','project_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function member(){
+        return $this->belongsTo(MemberModel::class,'user_id','user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    function projectNumber(){
+        return $this->hasMany(ProjectNumberModel::class,'project_id','project_id');
     }
 }

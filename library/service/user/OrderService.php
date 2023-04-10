@@ -6,6 +6,7 @@ use library\service\sys\FlowNumbersService;
 use support\Container;
 use support\extend\Service;
 use library\model\user\OrderModel;
+use support\utils\Data;
 
 class OrderService extends Service
 {
@@ -21,7 +22,21 @@ class OrderService extends Service
      */
     public function getOrderNo($suffix=''){
         $flowNumberServer = Container::get(FlowNumbersService::class);
-        return $flowNumberServer->getFlowOrderNo($this->model->getTable(),$suffix);
+        $number = $flowNumberServer->getFlowOrderNo($this->model->getTable(),$suffix);
+        $orderObj = $this->get($number,'order_no');
+        if(empty($orderObj)){
+            return $number;
+        }
+        return $this->getOrderNo($suffix);
+    }
+
+    /**
+     * 获取指定商品列表
+     * @param array $spu_ids
+     */
+    public function getOrderList(array $order_ids,$fields=[]){
+        $rows = $this->fetchAll(['order_id'=>['in',$order_ids]],[],$fields);
+        return Data::toKeyArray($rows,'order_id');
     }
 
     /**
@@ -38,6 +53,16 @@ class OrderService extends Service
             $data['total']['point']+=$v['point'];
         }
         return $data;
+    }
+
+    /**
+     * 验证用户是否参加过该项目
+     * @param $project_id
+     * @param $user_id
+     */
+    public function verifyUserBuyOrder($project_id,$user_id){
+        $res = $this->fetch(['project_id'=>$project_id,'user_id'=>$user_id]);
+        return !empty($res)?true:false;
     }
 
     /**

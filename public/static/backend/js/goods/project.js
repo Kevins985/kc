@@ -115,6 +115,21 @@ var appCallback = {
             dialog.msg(response.msg,'error');
         }
     },
+    addProjectNumber:function (url, ids) {
+        dialog.confirm({
+            content:'确定为该项目添加一个排期号',
+            icon:1,
+            ok_callback:function(){
+                App.ajax('POST', url, {project_id:ids[0]}, function (response) {
+                    if (response.status) {
+                        dialog.msg('添加成功', 'success');
+                    } else {
+                        dialog.msg(response.msg, 'error');
+                    }
+                });
+            }
+        });
+    },
     delete: function (url, ids) {
         projectJs.delete(url,ids[0]);
     },
