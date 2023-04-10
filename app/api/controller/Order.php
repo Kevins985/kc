@@ -5,6 +5,7 @@ namespace app\api\controller;
 use library\logic\OrderLogic;
 use library\service\goods\SpuService;
 use library\service\user\OrderService;
+use library\service\user\ProjectOrderService;
 use library\validator\user\OrderValidation;
 use support\Container;
 use support\controller\Api;
@@ -67,6 +68,7 @@ class Order extends Api
     {
         try{
             $params['page'] = $this->getParams('page',1);
+            $params['status'] = $this->getParams('status');
             $params['user_id'] = $request->getUserID();
             $orderService = Container::get(OrderService::class);
             $data = $orderService->paginateData($params,['order_id'=>'desc']);
@@ -75,9 +77,7 @@ class Order extends Api
                 $spuService = Container::get(SpuService::class);
                 $goodsList = $spuService->getGoodsList($spu_ids);
                 foreach($data['data'] as $k=>$v){
-                    $goods = $goodsList[$v['spu_id']];
-                    $goods['image'] = upload_md5_url($goods['image']);
-                    $data['data'][$k]['goods'] = $goods;
+                    $data['data'][$k]['goods'] = $goodsList[$v['spu_id']];
                 }
             }
             return $this->response->json(true,$data);
@@ -94,7 +94,7 @@ class Order extends Api
     public function createGoodsOrder(Request $request)
     {
         try {
-            $post = $this->getPost();
+            $post = $this->getPost(['spu_id','file_url','payment']);
             $post['user_id'] = $request->getUserID();
             $orderObj = $this->logic->createOrder($post);
             if(empty($orderObj)){
@@ -125,6 +125,58 @@ class Order extends Api
             return $this->response->json(true,$orderObj);
         }
         catch (\Exception $e) {
+            return $this->response->json(false,null,$e->getMessage());
+        }
+    }
+
+    /**
+     * 获取本期项目
+     */
+    public function getCurrencyProject(Request $request){
+        try{
+            $projectOrderService = Container::get(ProjectOrderService::class);
+            $where = [
+                'user_id'=>$request->getUserID(),
+                'status'=>1
+            ];
+            $projectOrderObj = $projectOrderService->fetch($where,['id'=>'desc']);
+            if(empty($projectOrderObj)){
+                throw new BusinessException("暂无活动数据");
+            }
+            $data = $projectOrderObj->toArray();
+            $orderObj = $projectOrderObj->order;
+            $data['invite_cnt'] = $orderObj['invite_cnt'];
+            $data['point'] = $orderObj['point'];
+            $data['progress'] = 2;
+            return $this->response->json(true,$data);
+        }
+        catch (\Exception $e){
+            return $this->response->json(false,null,$e->getMessage());
+        }
+    }
+
+    /**
+     * 获取往期项目
+     * @param Request $request
+     */
+    public function getProjectNumber(Request $request){
+        try{
+            $params['page'] = $this->getParams('page',1);
+//            $params['status'] = $this->getParams('status');
+            $params['user_id'] = $request->getUserID();
+            $projectOrderService = Container::get(ProjectOrderService::class);
+            $data = $projectOrderService->paginateData($params,['id'=>'desc']);
+            $order_ids = Data::toFlatArray($data['data'],'order_id');
+            if(!empty($order_ids)){
+                $orderService = Container::get(OrderService::class);
+                $orderList = $orderService->getOrderList($order_ids);
+                foreach($data['data'] as $k=>$v){
+                    $data['data'][$k]['invite_cnt'] = $orderList[$v['order_id']]['invite_cnt']??0;
+                }
+            }
+            return $this->response->json(true,$data);
+        }
+        catch (\Exception $e){
             return $this->response->json(false,null,$e->getMessage());
         }
     }

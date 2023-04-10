@@ -2,6 +2,7 @@
 
 namespace app\backend\controller\goods;
 
+use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\validator\goods\ProjectValidation;
@@ -107,13 +108,14 @@ class Project extends Backend
             if (empty($id)) {
                 throw new VerifyException('Exception request');
             }
-            $ids = explode(',',$id);
-            if(count($ids)>1){
-                $res = $this->service->batchDelete($ids);
+            $projectObj = $this->service->get($id);
+            if(empty($projectObj)){
+                throw new VerifyException('项目数据不存在');
             }
-            else{
-                $res = $this->service->delete($id);
+            elseif($projectObj['status']==1){
+                throw new VerifyException('进行中的项目不能删除');
             }
+            $res = $this->service->delete($id);
             if(empty($res)){
                 throw new BusinessException('Execution failed');
             }
@@ -146,6 +148,29 @@ class Project extends Backend
     }
 
     /**
+     * @param Request $request
+     * @return \support\extend\Response
+     */
+    public function addProjectNumber(Request $request){
+        try{
+            $project_id = $this->getPost('project_id',0);
+            $projectObj = $this->service->get($project_id);
+            if (empty($projectObj) || !$request->isAjax()) {
+                throw new VerifyException('Exception request');
+            }
+            $projectNumberService = Container::get(ProjectNumberService::class);
+            $res = $projectNumberService->createProjectNumber($projectObj['project_id'],$projectObj['project_prefix'],$projectObj['number']);
+            if(empty($res)){
+                throw new BusinessException('Execution failed');
+            }
+            return $this->response->json(true);
+        }
+        catch (\Throwable $e){
+            return $this->response->json(false, [], $e->getMessage());
+        }
+    }
+
+    /**
      * 获取项目信息
      */
     public function getProjectInfo(Request $request)
@@ -155,8 +180,13 @@ class Project extends Backend
             if(!$request->isAjax() || empty($id)){
                 throw new VerifyException('Exception request');
             }
-            $spuObj = $this->service->get($id);
-            $this->response->assign('data',$spuObj);
+            $projectObj = $this->service->get($id);
+            if(empty($projectObj)){
+                throw new BusinessException('项目不存在');
+            }
+            $projectNumber = $projectObj->projectNumber;
+            $this->response->assign('data',$projectObj);
+            $this->response->assign('projectNumber',$projectNumber);
             return $this->response->view('goods/project/_info');
         }
         catch (\Exception $e) {

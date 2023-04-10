@@ -2,6 +2,8 @@
 
 namespace library\model\user;
 
+use library\model\goods\ProjectModel;
+use library\model\goods\ProjectNumberModel;
 use support\extend\Model;
 
 class ProjectOrderModel extends Model
@@ -20,4 +22,32 @@ class ProjectOrderModel extends Model
 		"order_status",
 		"status",
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function order(){
+        return $this->belongsTo(OrderModel::class,'order_id','order_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function project(){
+        return $this->belongsTo(ProjectModel::class,'project_id','project_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function projectNumber(){
+        return $this->belongsTo(ProjectNumberModel::class,'project_number','project_number');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function member(){
+        return $this->belongsTo(MemberModel::class,'user_id','user_id');
+    }
 }

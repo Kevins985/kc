@@ -1,10 +1,12 @@
 <?php
 
 namespace library\logic;
+use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\user\MemberBankService;
 use library\service\user\OrderService;
+use library\service\user\ProjectOrderService;
 use library\service\user\RechargeOrderService;
 use library\service\user\WithdrawOrderService;
 use support\Container;
@@ -84,32 +86,28 @@ class OrderLogic extends Logic
 
     /**
      * 创建积分兑换礼品订单
-     * @param $data {user_id,address_id,spu_id}
+     * @param $data {user_id,address_id,spu_id,file_url}
      */
     public function createOrder(array $data){
         $conn = $this->connection();
-        $spuService = Container::get(SpuService::class);
-        $spuObj = $spuService->get($data['spu_id']);
-        if(empty($spuObj) || $spuObj['status']!=1){
-            throw new BusinessException('暂未找到该商品');
-        }
-        elseif($spuObj['store_num']<1){
-            throw new BusinessException('商品库存数量不足');
-        }
         try{
-            $projectService = Container::get(ProjectService::class);
-            $projectObj = $projectService->getActiveProject();
-            if(empty($projectObj)){
-                throw new BusinessException('暂无找到进行中的项目');
+            $spuService = Container::get(SpuService::class);
+            $spuService->selector(['spu_id'=>$data['spu_id']])->lockForUpdate();
+            $spuObj = $spuService->get($data['spu_id']);
+            if(empty($spuObj) || $spuObj['status']!=1){
+                throw new BusinessException('暂未找到该商品');
+            }
+            elseif($spuObj['store_num']<1){
+                throw new BusinessException('商品库存数量不足');
             }
             $orderService = Container::get(OrderService::class);
-            $orderObj = $orderService->fetch(['user_id'=>$data['user_id'],'project_id'=>$projectObj['project_id'],'status'=>1]);
+            $orderObj = $orderService->fetch(['user_id'=>$data['user_id'],'status'=>1]);
             if(!empty($orderObj)){
                 throw new BusinessException('你已经报名参加过该项目了');
             }
             $conn->beginTransaction();
             $data['order_no'] = $orderService->getOrderNo();
-            $data['project_id'] = $projectObj['project_id'];
+            $data['project_id'] = 0;
             $data['qty'] = 1;
             $data['point'] = $spuObj['point'];
             $data['money'] = $spuObj['sell_price'];
@@ -130,7 +128,111 @@ class OrderLogic extends Logic
     /**
      * 审核订单
      */
-    public function verifyOrder($order_id){
+    public function verifyOrder($order_id,$order_status='paid',$remark=''){
+        $orderService = Container::get(OrderService::class);
+        $projectService = Container::get(ProjectService::class);
+        $projectOrderService = Container::get(ProjectOrderService::class);
+        $orderObj = $orderService->get($order_id);
+        if(empty($orderObj) || $orderObj['order_status']!='pending'){
+            throw new BusinessException("操作异常，只能审核待处理的订单");
+        }
+        if($order_status!='paid'){
+            return $orderObj->update([
+                'order_status'=>'refused',
+                'verify_time'=>time(),
+                'remark'=>$remark,
+                'status'=>2
+            ]);
+        }
+        $memberTeam = $orderObj->memberTeam;
+        $projectNumberObj = null;
+        $projectObj = null;
+        if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
+            $projectOrderService = Container::get(ProjectOrderService::class);
+            $parentArr = explode(',',$memberTeam['parents_path']);
+            $projectOrderObj = $projectOrderService->fetch(['user_id'=>['in',$parentArr],'status'=>1]);
+            if(!empty($projectOrderObj)){
+                $projectNumberObj = $projectOrderObj->projectNumber;
+                $projectObj = $projectOrderObj->project;
+            }
+            else{
+                $projectOrderObj = $projectOrderService->fetch(['order_id'=>$order_id,'status'=>2]);
+                if(!empty($projectOrderObj)){
+                    $projectObj = $projectOrderObj->project;
+                    $projectNumberObj = $projectObj->projectNumber()->where('status',1)->first();
+                }
+            }
+            $parentOrderWhere = [
+                'user_id'=>$memberTeam['parent_id'],
+                'status'=>1
+            ];
+            if(!empty($projectObj)){
+                $parentOrderWhere['project_id'] = $projectObj['project_id'];
+            }
+            $orderService->updateAll($parentOrderWhere,['invite_cnt'=>$orderService->raw('invite_cnt+1')]);
+        }
+        else{
+            $projectObj = $projectService->get($orderObj['user_id'],'user_id');
+            if(empty($projectObj)){
+                $projectObj = $projectService->getActiveProject();
+            }
+            if(!empty($projectObj)){
+                $projectNumberObj = $projectObj->projectNumber()->where('status',1)->first();
+            }
+        }
+        if(empty($projectObj)){
+            throw new BusinessException("暂未找到适合该用户的项目");
+        }
+        elseif(empty($projectNumberObj)){
+            throw new BusinessException("暂未找到适合该用户的项目期");
+        }
+        $conn = $this->connection();
+        try{
+            $conn->beginTransaction();
+            $projectService->selector(['project_id'=>$projectObj['project_id']])->lockForUpdate();
+            $projectUpdate = [
+                'sales_cnt'=> $projectService->raw('sales_cnt+1'),
+                'sales_money'=> $projectService->raw('sales_money+'.$orderObj['pay_money']),
+            ];
+            if(!$orderService->verifyUserBuyOrder($projectObj['project_id'],$orderObj['user_id'])){
+                $projectUpdate['user_cnt'] = ($projectObj['user_cnt']+1);
+            }
+            //修改项目数据
+            $projectObj->update($projectUpdate);
+            //修改订单数据
+            $orderObj->update([
+                'project_id'=>$projectObj['project_id'],
+                'project_sort'=>$projectObj['user_cnt'],
+                'order_status'=>'paid',
+                'pay_money'=>$orderObj['money'],
+                'verify_time'=>time(),
+            ]);
+            //修改项目排期数据
+            $projectNumberObj->update([
+                'user_cnt'=>($projectNumberObj['user_cnt']+1),
+            ]);
+            $projectOrderData = [
+                'order_id'=>$order_id,
+                'project_id'=>$projectObj['project_id'],
+                'project_number'=>$projectNumberObj['project_number'],
+                'user_id'=>$orderObj['user_id'],
+                'user_number'=>$projectNumberObj['user_cnt'],
+                'order_status'=>'pending',
+                'status'=>1,
+            ];
+            $projectOrderService->create($projectOrderData);
+            if($projectNumberObj['user_cnt']==50){
 
+            }
+            elseif($projectNumberObj['user_cnt']>12){
+
+            }
+            $conn->commit();
+            return $orderObj;
+        }
+        catch (\Exception $e){
+            $conn->rollBack();
+            throw $e;
+        }
     }
 }

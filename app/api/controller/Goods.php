@@ -40,7 +40,9 @@ class Goods extends Api
             $params['page'] = $this->getParams('page',1);
             $params['category_id'] = $this->getParams('category_id');
             $params['status'] = 1;
-            $data = $this->service->paginateData($params,['project_id'=>'desc']);
+            $params['images'] = ['with'];
+            $data = $this->service->paginateData($params);
+
             return $this->response->json(true,$data);
         }
         catch (\Throwable $e){

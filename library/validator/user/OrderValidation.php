@@ -14,9 +14,11 @@ class OrderValidation extends Validator{
     protected function checkingCreateGoodsOrder($data){
         $this->setRules([
             'spu_id' => 'required|integer',
+            'file_url'=> 'required|string',
         ]);
         $this->setAttributes([
             'spu_id'=>'产品ID',
+            'file_url'=>'凭证图片'
         ]);
         return $this->checkValidate($data);
     }
