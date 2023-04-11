@@ -60,4 +60,9 @@ class OrderModel extends Model
     function memberTeam(){
         return $this->belongsTo(MemberTeamModel::class,'user_id','user_id');
     }
+
+
+    public function projectOrder(){
+        return $this->hasMany(ProjectOrderModel::class,'order_id','order_id');
+    }
 }

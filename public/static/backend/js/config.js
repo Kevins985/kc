@@ -138,9 +138,6 @@ var configs = {
         "backend_database":{
             deps:[ "global"]
         },
-        "backend_order":{
-            deps:[ "global"]
-        },
         "backend_help":{
             deps:["global","kindeditor_cn"]
         },
@@ -192,7 +189,7 @@ var configs = {
         "backend_rechargeorder":{
             deps: ["global"]
         },
-        "backend_pointorder":{
+        "backend_order":{
             deps: ["global"]
         },
         "backend_lang":{
@@ -289,7 +286,7 @@ var configs = {
         "backend_memberextend":"backend/js/user/member_extend",
         "backend_withdraworder":"backend/js/user/withdraw_order",
         "backend_rechargeorder":"backend/js/user/recharge_order",
-        "backend_pointorder":"backend/js/user/point_order",
+        "backend_order":"backend/js/user/order",
         "backend_spu":"backend/js/goods/spu",
         "backend_project":"backend/js/goods/project",
         "backend_brand":"backend/js/goods/brand",
