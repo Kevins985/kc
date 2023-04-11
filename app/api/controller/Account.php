@@ -62,10 +62,12 @@ class Account extends Api
      */
     public function getUserinfo(Request $request){
         try{
-            $data = getTokenUser('user',$request->getUserToken());
-            if(!empty($data->photo_url)){
-                $data->photo_url = upload_md5_url($data->photo_url);
+            $userObj = getTokenUser('user',$request->getUserToken());
+            if(empty($userObj)){
+                throw new BusinessException('暂无信息');
             }
+            $data = $userObj->toArray();
+            $data['extra'] = $userObj->team;
             return $this->response->json(true,$data);
         }
         catch (\Throwable $e){
