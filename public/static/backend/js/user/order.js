@@ -1,5 +1,5 @@
-var pointOrderJs = pointOrderJs || {};
-pointOrderJs = {
+var orderJs = orderJs || {};
+orderJs = {
     init: function () {
         this.initFormScript();
         if(initScriptData.initData){
@@ -57,6 +57,18 @@ pointOrderJs = {
             $('[pid='+id+']').hide();
         }
     },
+    verifyOrder:function(url,data){
+        App.ajax('POST',url,data,function(response){
+            if (response.status) {
+                dialog.msg('操作成功','success',1000,function(){
+                    window.location.reload();
+                });
+            }
+            else {
+                dialog.msg(response.msg,'error');
+            }
+        });
+    },
     dispatched:function(url,data){
         dialog.confirm({
             content:'确定需要发货吗?',
@@ -78,7 +90,7 @@ pointOrderJs = {
 }
 var appCallback = {
     delete:function(url,ids){
-        pointOrderJs.delete(url,ids);
+        orderJs.delete(url,ids);
     },
     dispatched:function(url,ids){
         App.ajax('GET',url,{id:ids[0]},function(response){
@@ -102,7 +114,34 @@ var appCallback = {
                         dialog.msg('请输入快递单号','error');
                     }
                     else{
-                        pointOrderJs.dispatched(url,data);
+                        orderJs.dispatched(url,data);
+                    }
+                });
+            }
+            else if(!response.status){
+                dialog.msg(response.msg);
+            }
+        });
+    },
+    verifyOrder:function(url,ids){
+        App.ajax('GET',url,{},function(response){
+            if(typeof response=='string'){
+                dialog.open({
+                    title:'审核订单',
+                    content:response,
+                    area: ['450px', '300px'],
+                    btn:['确定', '取消'],
+                },function(index){
+                    var data = {
+                        id:ids,
+                        status:$('input[name=verify_status]:checked').val(),
+                        remark:$('#verify_remark').val()
+                    };
+                    if(data.status=='refused' && data.remark==''){
+                        dialog.msg('请输入拒绝的备注','error');
+                    }
+                    else{
+                        orderJs.verifyOrder(url,data);
                     }
                 });
             }
@@ -113,5 +152,5 @@ var appCallback = {
     },
 }
 jQuery(document).ready(function () {
-    pointOrderJs.init();
+    orderJs.init();
 });

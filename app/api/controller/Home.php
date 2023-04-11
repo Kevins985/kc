@@ -9,6 +9,7 @@ use library\service\operate\NoticeService;
 use library\service\sys\AreaService;
 use library\service\sys\CurrencyExchangeService;
 use library\service\sys\CurrencyService;
+use library\service\sys\DictListService;
 use support\Container;
 use support\controller\Api;
 use support\exception\BusinessException;
@@ -41,8 +42,8 @@ class Home extends Api
     public function getPaymentInfo(Request $request)
     {
         try{
-            $dictLogic = Container::get(DictLogic::class);
-            $config = $dictLogic->getDictConfigs('payment');
+            $dictListService = Container::get(DictListService::class);
+            $config = $dictListService->getDictList('payment');
             return $this->response->json(true,$config);
         }
         catch (\Exception $e){

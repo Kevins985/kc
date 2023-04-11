@@ -2,6 +2,7 @@
 
 namespace app\backend\controller\user;
 
+use library\logic\OrderLogic;
 use library\service\goods\SpuService;
 use library\service\user\MemberService;
 use library\service\user\OrderService;
@@ -14,9 +15,10 @@ use support\utils\Data;
 
 class Order extends Backend
 {
-    public function __construct(OrderService $service)
+    public function __construct(OrderService $service,OrderLogic $logic)
     {
         $this->service = $service;
+        $this->logic = $logic;
     }
 
     /**
@@ -95,6 +97,26 @@ class Order extends Backend
     }
 
     /**
+     * 删除
+     */
+    public function verifyOrder(Request $request)
+    {
+        try {
+            $post = $this->getPost(['id','status','remark']);
+            if (!empty($post['id'])) {
+                foreach($post['id'] as $id){
+                    $res = $this->logic->verifyOrder($id,$post['status'],$post['remark']);
+                }
+                return $this->response->json(true);
+            }
+            return $this->response->view('user/order/_verify');
+        }
+        catch (\Exception $e) {
+            return $this->response->json(false, [], $e->getMessage());
+        }
+    }
+
+    /**
      * 获取订单信息
      */
     public function getOrderInfo(Request $request)
@@ -106,10 +128,12 @@ class Order extends Backend
             }
             $orderObj = $this->service->get($id);
             $this->response->assign('data',$orderObj);
+            $projectObj = $orderObj->project;
+            $this->response->assign('project',$projectObj);
             $spuObj = $orderObj->spu;
             $this->response->assign('spu',$spuObj);
-            $addressObj = $orderObj->Address()->first();
-            $this->response->assign('address',$addressObj);
+            $projectOrder = $orderObj->projectOrder;
+            $this->response->assign('projectOrder',$projectOrder);
             return $this->response->view('user/order/_info');
         }
         catch (\Exception $e) {
