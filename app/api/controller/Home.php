@@ -34,6 +34,23 @@ class Home extends Api
     }
 
     /**
+     * 获取支付配置信息
+     * @param Request $request
+     * @return \support\extend\Response
+     */
+    public function getPaymentInfo(Request $request)
+    {
+        try{
+            $dictLogic = Container::get(DictLogic::class);
+            $config = $dictLogic->getDictConfigs('payment');
+            return $this->response->json(true,$config);
+        }
+        catch (\Exception $e){
+            return $this->response->json(false,[],$e->getMessage());
+        }
+    }
+
+    /**
      * 获取网站信息
      * @param $type  {website,recharge,withdraw}
      */

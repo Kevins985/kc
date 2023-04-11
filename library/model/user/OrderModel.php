@@ -29,6 +29,7 @@ class OrderModel extends Model
 		"pay_money",
 		"verify_time",
 		"invite_cnt",
+		"remark",
 		"tracking_name",
 		"tracking_number",
 		"tracking_url",

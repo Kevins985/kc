@@ -1,31 +1,36 @@
 <div class="row mt-20" >
-    {{ render("user/pointOrder/_search") }}
+    {{ render("user/order/_search") }}
     <div class="col-md-12">
         <div class="tabbable tabbable-tabdrop tabbable-custom">
             <ul class="nav nav-tabs mb-20">
                 <li {% if params.order_status=='' %}class="active"{% endif %}>
-                    <a href="{{url('/backend/pointOrder/list')}}">
+                    <a href="{{url('/backend/order/list')}}">
                         所有订单
                         <span class="badge badge-default"> {{countList['total']['ct']|default(0)}} </span>
                     </a>
                 </li>
-                <li {% if params.order_status=='paid' %}class="active"{% endif %}>
-                    <a href="{{url('/backend/pointOrder/list',{'order_status':'paid'})}}">
-                        未发货 <span class="badge badge-info"> {{countList['paid']['ct']|default(0)}} </span>
+                <li {% if params.order_status=='pending' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/order/list',{'order_status':'pending'})}}">
+                        待审核 <span class="badge badge-warning"> {{countList['pending']['ct']|default(0)}} </span>
                     </a>
                 </li>
-                <li {% if params.order_status=='dispatched' %}class="active"{% endif %}>
-                    <a href="{{url('/backend/pointOrder/list',{'order_status':'dispatched'})}}">
-                        已发货  <span class="badge badge-success"> {{countList['dispatched']['ct']|default(0)}} </span>
+                <li {% if params.order_status=='paid' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/order/list',{'order_status':'paid'})}}">
+                        已付款 <span class="badge badge-primary"> {{countList['paid']['ct']|default(0)}} </span>
+                    </a>
+                </li>
+                <li {% if params.order_status=='refused' %}class="active"{% endif %}>
+                    <a href="{{url('/backend/order/list',{'order_status':'refused'})}}">
+                        已拒绝  <span class="badge badge-danger"> {{countList['refused']['ct']|default(0)}} </span>
                     </a>
                 </li>
                 <li {% if params.order_status=='completed' %}class="active"{% endif %}>
-                    <a href="{{url('/backend/pointOrder/list',{'order_status':'completed'})}}">
+                    <a href="{{url('/backend/order/list',{'order_status':'completed'})}}">
                         已完成  <span class="badge badge-success"> {{countList['completed']['ct']|default(0)}} </span>
                     </a>
                 </li>
                 <li {% if params.order_status=='closed' %}class="active"{% endif %}>
-                    <a href="{{url('/backend/pointOrder/list',{'order_status':'closed'})}}">
+                    <a href="{{url('/backend/order/list',{'order_status':'closed'})}}">
                         已关闭 <span class="badge badge-danger"> {{countList['closed']['ct']|default(0)}} </span>
                     </a>
                 </li>
@@ -34,7 +39,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                {{ render("main/_actions",{param:'order_status='~params.order_status}) }}
+                {{ render("main/_actions") }}
                 <div class="table-responsive">
                     <div class="table-scrollable">
                         <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">
