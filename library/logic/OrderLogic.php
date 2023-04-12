@@ -282,7 +282,7 @@ class OrderLogic extends Logic
                 $projectNumberAry = [];
                 $projectNumberService = Container::get(ProjectNumberService::class);
                 for($i=0;$i<ProjectUserCnt;$i++){
-                    $projectNumberAry[$i] = $projectNumberService->createProjectNumber($projectObj['project_id'],$projectObj['project_prefix'],($projectObj['number']+$i));
+                    $projectNumberAry[$i] = $projectNumberService->createProjectNumber($projectObj['project_id'],$projectObj['project_prefix'],($projectObj['number']+$i),$projectOrderObj['project_number']);
                 }
                 foreach($projectOrderList as $v){
                     $index = ($v['user_number']%ProjectUserCnt) - 1;

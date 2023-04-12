@@ -2,7 +2,6 @@
 
 namespace library\service\goods;
 
-use library\model\goods\ProjectModel;
 use support\extend\Service;
 use library\model\goods\ProjectNumberModel;
 
@@ -13,13 +12,14 @@ class ProjectNumberService extends Service
         $this->model = $model;
     }
 
-    public function createProjectNumber($project_id,$project_prefix,$number,$user_cnt=0){
+    public function createProjectNumber($project_id,$project_prefix,$number,$from_number=null){
         $number+=1;
         $project_number = $project_prefix.$number;
         $projectNumberObj = $this->create([
             'project_id'=>$project_id,
             'project_number'=>$project_number,
-            'user_cnt'=>$user_cnt
+            'from_number'=>$from_number,
+            'user_cnt'=>0
         ]);
         if(!empty($projectNumberObj)){
             $projectNumberObj->project->update([
