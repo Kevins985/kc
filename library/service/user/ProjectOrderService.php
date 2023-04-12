@@ -22,9 +22,7 @@ class ProjectOrderService extends Service
     }
 
     public function createProjectOrder(ProjectNumberModel $projectNumberObj,$order_id,$user_id){
-        $projectNumberObj->update([
-            'user_cnt'=>($projectNumberObj['user_cnt']+1),
-        ]);
+        $projectNumberObj->increase('user_cnt')->save();
         $projectOrderData = [
             'order_id'=>$order_id,
             'project_id'=>$projectNumberObj['project_id'],

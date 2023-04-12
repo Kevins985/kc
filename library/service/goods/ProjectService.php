@@ -44,7 +44,8 @@ class ProjectService extends Service
         $projectObj = $this->fetch(['user_id'=>$user_id,'status'=>1]);
         if(empty($projectObj)){
             $date = date('Y-m-d');
-            $projectObj = $this->fetch(['status'=>1,'start_time'=>['lt',$date],'end_time'=>['gt',$date]]);
+            $where = ['status'=>1,'start_time'=>['lt',$date],'end_time'=>['gt',$date]];
+            $projectObj = $this->fetch($where);
         }
         return $projectObj;
     }
