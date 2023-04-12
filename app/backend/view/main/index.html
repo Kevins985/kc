@@ -10,7 +10,7 @@
         <div class="portlet-body">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 blue" href="{{url('/backend/member/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 blue" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-user"></i>
                         </div>
@@ -24,49 +24,49 @@
                 </div>
 
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 purple" href="{{url('/backend/merchant/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 blue" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-user-plus"></i>
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup">{{merchant_cnt}}</span>
+                                <span data-counter="counterup">{{member_point}}</span>
                             </div>
-                            <div class="desc"> 总商户注册数 </div>
+                            <div class="desc"> 总出彩积分数 </div>
                         </div>
                     </a>
                 </div>
 
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 blue" href="{{url('/backend/memberExtend/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 purple" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-user"></i>
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup">{{member_wallet}}</span>
+                                <span data-counter="counterup">{{spu_cnt}}</span>
                             </div>
-                            <div class="desc"> 用户总余额 </div>
+                            <div class="desc"> 总商品数 </div>
                         </div>
                     </a>
                 </div>
 
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 purple" href="{{url('/backend/memberExtend/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 purple" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-user-plus"></i>
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup">{{merchant_profit}}</span>
+                                <span data-counter="counterup">{{project_number_cnt}}</span>
                             </div>
-                            <div class="desc"> 商户总收益 </div>
+                            <div class="desc"> 总项目排期数 </div>
                         </div>
                     </a>
                 </div>
 
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 red" href="{{url('/backend/order/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 red" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-bar-chart-o"></i>
                         </div>
@@ -74,12 +74,12 @@
                             <div class="number">
                                 <span data-counter="counterup">{{order_cnt}}</span>
                             </div>
-                            <div class="desc"> 总店铺订单数 </div>
+                            <div class="desc"> 总支付订单数 </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 red" href="{{url('/backend/order/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 red" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-bar-chart-o"></i>
                         </div>
@@ -87,33 +87,33 @@
                             <div class="number">
                                 <span data-counter="counterup">{{order_money|default(0)}}</span>
                             </div>
-                            <div class="desc"> 总店铺订单额 </div>
+                            <div class="desc"> 总支付订单额 </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 green" href="{{url('/backend/withdrawOrder/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 green" href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-shopping-cart"></i>
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup">{{withdraw_order_cnt}}</span>
+                                <span data-counter="counterup">{{order_pending_cnt}}</span>
                             </div>
-                            <div class="desc"> 总提现订单数 </div>
+                            <div class="desc"> 待审核订单数 </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
-                    <a class="dashboard-stat dashboard-stat-v2 green" href="{{url('/backend/rechargeOrder/list')}}">
+                    <a class="dashboard-stat dashboard-stat-v2 green"  href="javascript:;">
                         <div class="visual">
                             <i class="fa fa-vine"></i>
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup">{{recharge_order_cnt}}</span>
+                                <span data-counter="counterup">{{order_completed_cnt}}</span>
                             </div>
-                            <div class="desc"> 总充值订单数 </div>
+                            <div class="desc"> 已出彩订单数 </div>
                         </div>
                     </a>
                 </div>
@@ -150,7 +150,7 @@
                             <i class="fa fa-road"></i>
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-text">周产品订单数</span>
+                            <span class="info-box-text">周支付订单数</span>
                             <span class="info-box-number">
                                 <a href="javascript:;">{{week_order_cnt}}</a>
                                 <small>个</small>
@@ -164,10 +164,10 @@
                             <i class="fa fa-vine"></i>
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-text">周充值订单数</span>
+                            <span class="info-box-text">周支付订单额</span>
                             <span class="info-box-number">
-                                <a href="javascript:;">{{week_recharge_cnt}}</a>
-                                <small>个</small>
+                                <a href="javascript:;">{{week_order_money}}</a>
+                                <small>元</small>
                             </span>
                         </div>
                     </div>
@@ -178,66 +178,10 @@
                             <i class="fa fa-cny"></i>
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-text">周提现订单数</span>
+                            <span class="info-box-text">周出彩单数数</span>
                             <span class="info-box-number">
-                                <a href="javascript:;">{{week_withdraw_cnt}}</a>
+                                <a href="javascript:;">{{week_order_finish}}</a>
                                 <small>个</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-user-plus"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">周注册商户数</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{week_merchant_cnt|default(0)}}</a>
-                                <small>个</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-road"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">周产品订单额</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{week_order_money|default(0)}}</a>
-                                <small>元</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-vine"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">周充值订单额</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{week_recharge_money|default(0)}}</a>
-                                <small>元</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-cny"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">周提现订单额</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{week_withdraw_money|default(0)}}</a>
-                                <small>元</small>
                             </span>
                         </div>
                     </div>
@@ -249,7 +193,7 @@
         <div class="portlet-title">
             <div class="caption">
                 <i class="icon-cursor font-dark hide"></i>
-                <span class="caption-subject font-dark bold uppercase">今日报表统计</span>
+                <span class="caption-subject font-dark bold uppercase">日报表统计</span>
             </div>
             <div class="actions">&nbsp;</div>
         </div>
@@ -275,7 +219,7 @@
                             <i class="fa fa-road"></i>
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-text">日产品订单数</span>
+                            <span class="info-box-text">日支付订单数</span>
                             <span class="info-box-number">
                                 <a href="javascript:;">{{today_order_cnt}}</a>
                                 <small>个</small>
@@ -289,10 +233,10 @@
                             <i class="fa fa-vine"></i>
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-text">日充值订单数</span>
+                            <span class="info-box-text">日支付订单额</span>
                             <span class="info-box-number">
-                                <a href="javascript:;">{{today_recharge_cnt}}</a>
-                                <small>个</small>
+                                <a href="javascript:;">{{today_order_money}}</a>
+                                <small>元</small>
                             </span>
                         </div>
                     </div>
@@ -303,66 +247,10 @@
                             <i class="fa fa-cny"></i>
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-text">日提现订单数</span>
+                            <span class="info-box-text">日出彩单数数</span>
                             <span class="info-box-number">
-                                <a href="javascript:;">{{today_withdraw_cnt}}</a>
+                                <a href="javascript:;">{{today_order_finish}}</a>
                                 <small>个</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-user-plus"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">日注册商户数</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{today_merchant_cnt|default(0)}}</a>
-                                <small>个</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-road"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">日产品订单额</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{today_order_money|default(0)}}</a>
-                                <small>元</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-vine"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">日充值订单额</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{today_recharge_money|default(0)}}</a>
-                                <small>元</small>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-maroon">
-                            <i class="fa fa-cny"></i>
-                        </span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">日提现订单额</span>
-                            <span class="info-box-number">
-                                <a href="javascript:;">{{today_withdraw_money|default(0)}}</a>
-                                <small>元</small>
                             </span>
                         </div>
                     </div>

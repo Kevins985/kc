@@ -84,9 +84,6 @@ class Order extends Backend
                 if(empty($spuObj)){
                     throw new BusinessException('商品不存在');
                 }
-                elseif($spuObj['goods_type']==0){
-                    throw new BusinessException('虚拟商品暂不支持发货');
-                }
                 $this->response->assign('data',$orderObj);
                 return $this->response->view('user/order/_dispatched');
             }
