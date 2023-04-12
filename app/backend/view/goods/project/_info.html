@@ -90,13 +90,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane active" id="tab_number">
+                    <div class="tab-pane" id="tab_number">
                         <div class="panel panel-default m-b-none">
                             <table class="table table-striped m-b-none">
                                 <thead>
                                 <tr>
                                     <th class="col-xs-2">项目排期号码</th>
                                     <th class="col-xs-2">项目人数</th>
+                                    <th class="col-xs-2">来源</th>
                                     <th class="col-xs-2">创建时间</th>
                                     <th class="col-xs-2">修改时间</th>
                                     <th class="col-xs-2">状态</th>
@@ -108,6 +109,7 @@
                                 <tr class="sku_node">
                                     <td>{{v['project_number']}}</td>
                                     <td>{{v['user_cnt']}}</td>
+                                    <td>{{v['from_number']}}</td>
                                     <td>{{v['created_time']|date('Y-m-d H:i:s') }}</td>
                                     <td>{{v['updated_time']|date('Y-m-d H:i:s') }}</td>
                                     <td>{{v['status']|replace({2:'已拆分',1:'进行中',0:'已关闭','-1':'已删除'}) }}</td>

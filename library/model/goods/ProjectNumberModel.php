@@ -10,10 +10,11 @@ class ProjectNumberModel extends Model
     public $primaryKey = 'id';
     public $connection = 'mysql';
      
-    protected $fillable = [
+    protected $fillable=[
 		"id",
 		"project_id",
 		"project_number",
+		"from_number",
 		"user_cnt",
 		"status",
     ];
