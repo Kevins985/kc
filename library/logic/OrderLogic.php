@@ -11,7 +11,9 @@ use library\service\user\RechargeOrderService;
 use library\service\user\WithdrawOrderService;
 use support\Container;
 use support\exception\BusinessException;
+use support\extend\Log;
 use support\extend\Logic;
+use Webman\Event\Event;
 
 class OrderLogic extends Logic
 {
@@ -101,8 +103,8 @@ class OrderLogic extends Logic
                 throw new BusinessException('商品库存数量不足');
             }
             $orderService = Container::get(OrderService::class);
-            $orderObj = $orderService->fetch(['user_id'=>$data['user_id'],'status'=>1]);
-            if(!empty($orderObj)){
+            $count = $orderService->count(['user_id'=>$data['user_id'],'status'=>1]);
+            if($count>0){
                 throw new BusinessException('你已经报名参加过该项目了');
             }
             $conn->beginTransaction();
@@ -172,16 +174,13 @@ class OrderLogic extends Logic
             $orderService->updateAll($parentOrderWhere,['invite_cnt'=>$orderService->raw('invite_cnt+1')]);
         }
         else{
-            $projectObj = $projectService->get($orderObj['user_id'],'user_id');
-            if(empty($projectObj)){
-                $projectObj = $projectService->getActiveProject();
-            }
+            $projectObj = $projectService->getActiveProject($orderObj['user_id']);
             if(!empty($projectObj)){
                 $projectNumberObj = $projectObj->projectNumber()->where('status',1)->first();
             }
         }
         if(empty($projectObj)){
-            throw new BusinessException("暂未找到适合该用户的项目");
+            throw new BusinessException("暂未找到匹配该用户的项目");
         }
         elseif(empty($projectNumberObj)){
             throw new BusinessException("暂未找到适合该用户的项目期");
@@ -207,32 +206,94 @@ class OrderLogic extends Logic
                 'pay_money'=>$orderObj['money'],
                 'verify_time'=>time(),
             ]);
-            //修改项目排期数据
-            $projectNumberObj->update([
-                'user_cnt'=>($projectNumberObj['user_cnt']+1),
-            ]);
-            $projectOrderData = [
-                'order_id'=>$order_id,
-                'project_id'=>$projectObj['project_id'],
-                'project_number'=>$projectNumberObj['project_number'],
-                'user_id'=>$orderObj['user_id'],
-                'user_number'=>$projectNumberObj['user_cnt'],
-                'order_status'=>'pending',
-                'status'=>1,
-            ];
-            $projectOrderService->create($projectOrderData);
-            if($projectNumberObj['user_cnt']==50){
-
-            }
-            elseif($projectNumberObj['user_cnt']>12){
-
+            //添加排期订单和修改项目数据
+            $projectOrderObj = $projectOrderService->createProjectOrder($projectNumberObj,$order_id,$orderObj['user_id']);
+            if(empty($projectOrderObj)){
+                throw new BusinessException('创建项目订单失败');
             }
             $conn->commit();
+            if($projectNumberObj['user_cnt']>=50){
+                $this->finishProjectOrder($projectOrderObj);
+            }
+            elseif($projectNumberObj['user_cnt']%4==0){
+                $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
+                $this->outProjectOrder($outProjectOrder);
+            }
             return $orderObj;
         }
         catch (\Exception $e){
             $conn->rollBack();
+            Log::channel('project')->error('verifyOrder:'.$order_id.'-'.$e->getMessage());
             throw $e;
+        }
+    }
+
+    /**
+     * 项目订单出彩
+     * @param $projectOrderObj 要出彩的项目订单
+     * @throws \Throwable
+     */
+    public function outProjectOrder($projectOrderObj){
+        if(!empty($projectOrderObj)){
+            $conn = $this->connection();
+            try {
+                $conn->beginTransaction();
+                $orderObj = $projectOrderObj->order;
+                $projectOrderObj->update([
+                    'order_status'=>'completed',
+                    'status'=>2,
+                ]);
+                $orderObj->update([
+                    'order_status'=>'completed',
+                    'status'=>2
+                ]);
+                $walletLogic = Container::get(WalletLogic::class);
+                $walletLogic->addUserPoint($projectOrderObj['user_id'],$orderObj['point'],$orderObj['order_no'].'结算');
+                $conn->commit();
+            }
+            catch (\Throwable $e){
+                Log::channel('project')->error('outProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
+                $conn->rollBack();
+            }
+        }
+    }
+
+    /**
+     * 完成项目期的拆分
+     * @param $projectOrderObj 触发拆分的项目订单
+     * @throws \Throwable
+     */
+    public function finishProjectOrder($projectOrderObj){
+        if(!empty($projectOrderObj)){
+            $conn = $this->connection();
+            try {
+                $conn->beginTransaction();
+                $projectObj = $projectOrderObj->project;
+                $projectOrderService = Container::get(ProjectOrderService::class);
+                $projectOrderList = $projectOrderService->getActiveProjectOrderList($projectOrderObj['project_id'],$projectOrderObj['project_number']);
+                $projectNumberAry = [];
+                $projectNumberService = Container::get(ProjectNumberService::class);
+                for($i=0;$i<4;$i++){
+                    $projectNumberAry[$i] = $projectNumberService->createProjectNumber($projectObj['project_id'],$projectObj['project_prefix'],($projectObj['number']+$i));
+                }
+                foreach($projectOrderList as $v){
+                    $index = ($v['user_number']%4) - 1;
+                    if($index<0){
+                        $index = 3;
+                    }
+                    if(isset($projectNumberAry[$index])){
+                        $projectOrderObj = $projectOrderService->createProjectOrder($projectNumberAry[$index],$v['order_id'],$v['user_id']);
+                        if(!empty($projectOrderObj)){
+                            $v->update(['status'=>0]);
+                        }
+                    }
+                }
+                $conn->commit();
+            }
+            catch (\Throwable $e){
+                Log::channel('project')->error('finishProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
+                $conn->rollBack();
+            }
         }
     }
 }

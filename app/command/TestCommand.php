@@ -5,8 +5,10 @@ namespace app\command;
 use library\logic\OrderLogic;
 use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
+use library\service\user\MemberExtendService;
 use library\service\user\MemberService;
 use library\service\user\OrderService;
+use library\service\user\ProjectOrderService;
 use support\Container;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +23,24 @@ class TestCommand extends Command
     {
 //        $this->addProjectNumber(2);
 //        $this->addOrder(1,1000);
-        $this->verifyOrder(10);
+//        $this->verifyOrder(50);
+
+//        $projectNumberService = Container::get(ProjectOrderService::class);
+//        $projectNumberObj  = $projectNumberService->get(50);
+//        $orderLogic = Container::get(OrderLogic::class);
+//        $orderLogic->finishProjectOrder($projectNumberObj);
+
+        $memberService = Container::get(MemberService::class);
+        $memberList = $memberService->fetchAll(['user_id'=>['lte',10000]]);
+        $memberExtendService = Container::get(MemberExtendService::class);
+        foreach($memberList as $v){
+            try{
+                $memberExtendService->create(['user_id'=>$v['user_id']]);
+            }
+            catch (\Throwable $e){
+
+            }
+        }
         return self::SUCCESS;
     }
 
@@ -38,7 +57,11 @@ class TestCommand extends Command
         $orderLogic = Container::get(OrderLogic::class);
         $memberService = Container::get(MemberService::class);
         $memberList = $memberService->fetchAll(['user_id'=>['gt',50],'size'=>$count]);
+        $memberExtendService = Container::get(MemberExtendService::class);
         foreach($memberList as $v){
+            $memberExtendService->create(['user_id'=>$v['user_id']]);
+
+
             $res = $orderLogic->createOrder([
                 'user_id'=>$v['user_id'],
                 'address_id'=>0,
