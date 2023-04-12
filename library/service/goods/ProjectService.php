@@ -40,9 +40,13 @@ class ProjectService extends Service
      * 获取进行中的活动
      * @return \support\extend\Model
      */
-    public function getActiveProject(){
-        $date = date('Y-m-d');
-        return $this->fetch(['status'=>1,'start_time'=>['lt',$date],'end_time'=>['gt',$date]]);
+    public function getActiveProject($user_id){
+        $projectObj = $this->fetch(['user_id'=>$user_id,'status'=>1]);
+        if(empty($projectObj)){
+            $date = date('Y-m-d');
+            $projectObj = $this->fetch(['status'=>1,'start_time'=>['lt',$date],'end_time'=>['gt',$date]]);
+        }
+        return $projectObj;
     }
 
     /**
