@@ -51,6 +51,19 @@ class ProjectOrderModel extends Model
         return $this->belongsTo(MemberModel::class,'user_id','user_id');
     }
 
+    /**
+     * 获取下级
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    function getOrderChildList(){
+        return $this->hasMany(ProjectOrderModel::class,'project_number','project_number')->where('project_id',$this->project_id)->get();
+    }
+
+    /**
+     * 获取进度
+     * @param $total_number
+     * @return float|int
+     */
     public function getProgress($total_number){
         $progress = $total_number - ($this->user_number * ProjectUserCnt-3);
         if($progress<0){

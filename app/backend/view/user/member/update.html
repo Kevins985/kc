@@ -18,10 +18,9 @@
                             </label>
                             <div class="col-md-8">
                                 <input type="hidden" id="user_id" name="user_id" />
-                                <input type="text" class="form-control" placeholder="账号" disabled="" id="account" name="account"
+                                <input type="text" class="form-control" placeholder="账号" id="account" name="account"
                                        required data-fv-notempty-message="账号不能为空"
-                                       pattern="^[a-zA-Z0-9]+$" data-fv-regexp-message="账号只能是英文和数字"
-                                       data-fv-stringlength="true" data-fv-stringlength-min="6" data-fv-stringlength-max="30" data-fv-stringlength-message="账号的长度必须在6-30个字符之间"
+                                       pattern="^1(\d)10$" data-fv-regexp-message="请输入手机号码"
                                        data-fv-remote="true" data-fv-remote-url="{{url('/backend/member/checkAccountExists')}}" data-fv-remote-message="该账号已经存在" data-fv-field="account" />
                             </div>
                         </div>

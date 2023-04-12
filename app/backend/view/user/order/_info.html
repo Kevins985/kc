@@ -54,13 +54,30 @@
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <div class="profile-info-name"> 邀请人数量 </div>
+                                    <div class="profile-info-name"> 邀请人订单数 </div>
                                     <div class="profile-info-value">
                                         <span>{{data.invite_cnt}}</span>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+                            {% if memberTeam %}
+                            <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 邀请人UID </div>
+                                    <div class="profile-info-value">
+                                        <span>{{memberTeam.parent_id}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 团队人数 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{memberTeam.team_cnt}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            {% endif %}
                             <div class="profile-info-row">
                                 <div class="col-2">
                                     <div class="profile-info-name"> 创建时间 </div>
