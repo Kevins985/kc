@@ -21,7 +21,8 @@
                         <select id="searchType" name="searchType" class="form-control">
                             <option value="order_no" {{params.searchType|eq('order_no','selected','')}}>订单号码</option>
                             <option value="user_id" {{params.searchType|eq('user_id','selected','')}}>UID</option>
-                            <option value="user_no" {{params.searchType|eq('user_no','selected','')}}>会员ID</option>
+                            <option value="account" {{params.searchType|eq('account','selected','')}}>用户账号</option>
+                            <option value="project_number" {{params.searchType|eq('project_number','selected','')}}>项目编排号</option>
                             <option value="created_time" {{params.searchType|eq('created_time','selected','')}}>创建时间</option>
                         </select>
                     </div>

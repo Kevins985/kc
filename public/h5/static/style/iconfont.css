@@ -1,0 +1,184 @@
+@font-face {
+	font-family: "iconfont"; /* Project id 2751907 */
+  src: url('@/static/style/iconfont.ttf?1');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pingguo:before {
+  content: "\e624";
+}
+
+.icon-anzhuo:before {
+  content: "\e61b";
+}
+
+.icon-icon_play:before {
+  content: "\e60f";
+}
+
+.icon-yaoqingmaguanli:before {
+  content: "\e61a";
+}
+
+.icon-fuzhi:before {
+  content: "\ec7a";
+}
+
+.icon-jiantou:before {
+  content: "\e699";
+}
+
+.icon-zhuxiao:before {
+  content: "\e622";
+}
+
+.icon-sanji:before {
+  content: "\e676";
+}
+
+.icon-erji:before {
+  content: "\e677";
+}
+
+.icon-yiji:before {
+  content: "\e678";
+}
+
+.icon-chehui:before {
+  content: "\e679";
+}
+
+.icon-wodeshouyi:before {
+  content: "\e673";
+}
+
+.icon-zhanghao:before {
+  content: "\e65b";
+}
+
+.icon-biaoti:before {
+  content: "\e65c";
+}
+
+.icon-mima:before {
+  content: "\e65d";
+}
+
+.icon-kefu:before {
+  content: "\e65e";
+}
+
+.icon-bi:before {
+  content: "\e65f";
+}
+
+.icon-shezhimima:before {
+  content: "\e660";
+}
+
+.icon-hangqing:before {
+  content: "\e661";
+}
+
+.icon-shezhizhifumima:before {
+  content: "\e662";
+}
+
+.icon-licai:before {
+  content: "\e663";
+}
+
+.icon-shaixuan:before {
+  content: "\e664";
+}
+
+.icon-guanbi:before {
+  content: "\e665";
+}
+
+.icon-lipinshangcheng:before {
+  content: "\e666";
+}
+
+.icon-shouhuodizhi:before {
+  content: "\e667";
+}
+
+.icon-tishi:before {
+  content: "\e668";
+}
+
+.icon-jianchagengxin:before {
+  content: "\e669";
+}
+
+.icon-pengyouquan:before {
+  content: "\e66a";
+}
+
+.icon-wode:before {
+  content: "\e66b";
+}
+
+.icon-wodefenxiang:before {
+  content: "\e66c";
+}
+
+.icon-wodeyinhangka:before {
+  content: "\e66d";
+}
+
+.icon-weixin:before {
+  content: "\e66e";
+}
+
+.icon-biaozhi:before {
+  content: "\e66f";
+}
+
+.icon-tubiao209:before {
+  content: "\e670";
+}
+
+.icon-dizhi:before {
+  content: "\e671";
+}
+
+.icon-guanyuwomen:before {
+  content: "\e672";
+}
+
+.icon-shanchu:before {
+  content: "\e674";
+}
+
+.icon-wodeduiyuan:before {
+  content: "\e675";
+}
+
+.icon-gengduo:before {
+  content: "\e73a";
+}
+
+.icon-youjiantou:before {
+  content: "\e735";
+}
+
+.icon-zuojiantou:before {
+  content: "\e736";
+}
+
+.icon-xiajiantou:before {
+  content: "\e737";
+}
+
+.icon-shangjiantou-copy:before {
+  content: "\e738";
+}
+

@@ -36,6 +36,8 @@ class OrderModel extends Model
 		"status",
     ];
 
+    protected $where = ['account','project_number'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

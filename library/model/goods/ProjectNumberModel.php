@@ -2,6 +2,7 @@
 
 namespace library\model\goods;
 
+use library\model\user\ProjectOrderModel;
 use support\extend\Model;
 
 class ProjectNumberModel extends Model
@@ -24,5 +25,13 @@ class ProjectNumberModel extends Model
      */
     function project(){
         return $this->belongsTo(ProjectModel::class,'project_id','project_id');
+    }
+
+    /**
+     * 获取下级
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    function getOrderChildList(){
+        return $this->hasMany(ProjectOrderModel::class,'project_number','project_number')->get();
     }
 }

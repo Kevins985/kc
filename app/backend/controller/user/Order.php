@@ -27,12 +27,18 @@ class Order extends Backend
     public function list(Request $request)
     {
         $params = $this->getAllRequest();
-        if(!empty($params['user_no'])){
-            $params['user_no'] = ['has','Member',$params['user_no']];
+        if(!empty($params['account'])){
+            $params['account'] = ['has','member',$params['account']];
+        }
+        elseif(!empty($params['project_number'])){
+            $params['project_number'] = ['has','projectOrder',$params['project_number']];
         }
         $data = $this->service->paginate('/backend/order/list',$params,['order_id'=>'desc']);
         if(!empty($params['order_status'])){
             unset($params['order_status']);
+        }
+        if(!empty($params['account'])){
+            unset($params['account']);
         }
         $countList = $this->service->getGroupAllStatusCnt($params);
         $this->response->assign('countList',$countList);
@@ -131,6 +137,8 @@ class Order extends Backend
             $this->response->assign('spu',$spuObj);
             $projectOrder = $orderObj->projectOrder;
             $this->response->assign('projectOrder',$projectOrder);
+            $memberTeam = $orderObj->memberTeam;
+            $this->response->assign('memberTeam',$memberTeam);
             return $this->response->view('user/order/_info');
         }
         catch (\Exception $e) {
