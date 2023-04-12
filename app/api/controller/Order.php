@@ -143,11 +143,23 @@ class Order extends Api
             if(empty($projectOrderObj)){
                 throw new BusinessException("暂无活动数据");
             }
-            $data = $projectOrderObj->toArray();
             $orderObj = $projectOrderObj->order;
-            $data['invite_cnt'] = $orderObj['invite_cnt'];
-            $data['point'] = $orderObj['point'];
-            $data['progress'] = 2;
+            $projectObj = $projectOrderObj->project;
+            $projectNumberObj = $projectOrderObj->projectNumber;
+            $user_progress = $projectOrderObj->getProgress($projectNumberObj['user_cnt']);
+            $data = [
+                'project_id'=>$projectOrderObj['project_id'],
+                'project_name'=>$projectObj['project_name'],
+                'project_number_name'=>$projectOrderObj['project_number'],
+                'project_total_cnt'=>$projectObj['user_cnt'],
+                'project_order_cnt'=>$projectNumberObj['user_cnt'],
+                'user_number'=>$projectOrderObj['user_number'],
+                'status'=>$projectOrderObj['status'],
+                'invite_cnt'=>$orderObj['invite_cnt'],
+                'point'=>$orderObj['point'],
+                'user_total_cnt'=>ProjectUserCnt,
+                'user_progress'=>$user_progress,
+            ];
             return $this->response->json(true,$data);
         }
         catch (\Exception $e){
@@ -161,8 +173,8 @@ class Order extends Api
      */
     public function getProjectNumber(Request $request){
         try{
-            $params['page'] = $this->getParams('page',1);
-//            $params['status'] = $this->getParams('status');
+            $params['page'] = $this->getPost('page',1);
+            $params['status'] = $this->getPost('status');
             $params['user_id'] = $request->getUserID();
             $projectOrderService = Container::get(ProjectOrderService::class);
             $data = $projectOrderService->paginateData($params,['id'=>'desc']);

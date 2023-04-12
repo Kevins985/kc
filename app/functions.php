@@ -15,6 +15,8 @@ const QueueWriteLogs = 12;
 const QueueJobLogs = 13;
 const QueueProject = 14;
 
+const ProjectUserCnt = 4;
+
 /**
  * 是否开启缓存
  * @return bool

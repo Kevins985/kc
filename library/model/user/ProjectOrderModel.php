@@ -50,4 +50,15 @@ class ProjectOrderModel extends Model
     function member(){
         return $this->belongsTo(MemberModel::class,'user_id','user_id');
     }
+
+    public function getProgress($total_number){
+        $progress = $total_number - ($this->user_number * ProjectUserCnt-3);
+        if($progress<0){
+            $progress = 0;
+        }
+        elseif($progress>ProjectUserCnt){
+            $progress = ProjectUserCnt;
+        }
+        return $progress;
+    }
 }

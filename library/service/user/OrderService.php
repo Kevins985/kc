@@ -60,9 +60,8 @@ class OrderService extends Service
      * @param $project_id
      * @param $user_id
      */
-    public function verifyUserBuyOrder($project_id,$user_id){
-        $res = $this->fetch(['project_id'=>$project_id,'user_id'=>$user_id]);
-        return !empty($res)?true:false;
+    public function getBuyProjectOrderCount($project_id,$user_id){
+        return $this->count(['project_id'=>$project_id,'user_id'=>$user_id]);
     }
 
     /**

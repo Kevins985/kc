@@ -54,4 +54,8 @@ class ProjectModel extends Model
     function projectNumber(){
         return $this->hasMany(ProjectNumberModel::class,'project_id','project_id');
     }
+
+    public function getProjectNumber(){
+        return $this->projectNumber()->where('status',1)->orderBy('id','asc')->first();
+    }
 }
