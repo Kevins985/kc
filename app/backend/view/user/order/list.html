@@ -39,7 +39,9 @@
                 </li>
             </ul>
             <div class="tab-content">
+                {% if params.order_status=='pending' %}
                 {{ render("main/_actions") }}
+                {% endif %}
                 <div class="table-responsive">
                     <div class="table-scrollable">
                         <table class="table table-bordered table-striped table-hover table-checkable order-column dataTable mt-20 mb-10">

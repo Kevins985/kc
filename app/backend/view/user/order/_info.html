@@ -91,6 +91,13 @@
                                     </span>
                                 </div>
                             </div>
+                            {% elseif data.order_status=='refused' %}
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 拒绝理由 </div>
+                                <div class="profile-info-value">
+                                    <span>{{data.remark}}</span>
+                                </div>
+                            </div>
                             {% elseif data.order_status=='paid' %}
                             <div class="profile-info-row">
                                 <div class="col-2">
