@@ -5,6 +5,7 @@ namespace app\backend\controller\goods;
 use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
+use library\service\user\ProjectOrderService;
 use library\validator\goods\ProjectValidation;
 use support\Container;
 use support\controller\Backend;
@@ -188,6 +189,32 @@ class Project extends Backend
             $this->response->assign('data',$projectObj);
             $this->response->assign('projectNumber',$projectNumber);
             return $this->response->view('goods/project/_info');
+        }
+        catch (\Exception $e) {
+            return $this->response->json(false,null,$e->getMessage());
+        }
+    }
+
+    /**
+     * 获取项目信息
+     */
+    public function getOrderMembers(Request $request)
+    {
+        try {
+            $type = $this->getParams('type','number');
+            $val = $this->getParams('val');
+            if(!$request->isAjax() || empty($val)){
+                throw new VerifyException('Exception request');
+            }
+            $projectOrderService = Container::get(ProjectOrderService::class);
+            if($type=='number'){
+                $data = $projectOrderService->fetchAll(['project_number'=>$val],['user_number'=>'asc']);
+            }
+            else{
+                $data = $projectOrderService->fetchAll(['project_id'=>$val,'status'=>1],['project_number'=>'asc','user_number'=>'asc']);
+            }
+            $this->response->assign('data',$data);
+            return $this->response->view('goods/project/_order_member');
         }
         catch (\Exception $e) {
             return $this->response->json(false,null,$e->getMessage());

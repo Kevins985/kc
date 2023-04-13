@@ -18,6 +18,11 @@ use support\extend\Request;
 
 class Home extends Api
 {
+
+    public function index(Request $request){
+        return $this->response->view('home/index');
+    }
+
     /**
      * 版本号
      * @param Request $request

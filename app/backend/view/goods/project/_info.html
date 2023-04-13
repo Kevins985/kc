@@ -96,11 +96,12 @@
                                 <thead>
                                 <tr>
                                     <th class="col-xs-2">项目排期号码</th>
-                                    <th class="col-xs-2">项目人数</th>
+                                    <th class="col-xs-1">项目人数</th>
                                     <th class="col-xs-2">来源</th>
                                     <th class="col-xs-2">创建时间</th>
                                     <th class="col-xs-2">修改时间</th>
-                                    <th class="col-xs-2">状态</th>
+                                    <th class="col-xs-1">状态</th>
+                                    <th class="col-xs-1">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -113,6 +114,7 @@
                                     <td>{{v['created_time']|date('Y-m-d H:i:s') }}</td>
                                     <td>{{v['updated_time']|date('Y-m-d H:i:s') }}</td>
                                     <td>{{v['status']|replace({2:'已拆分',1:'进行中',0:'已关闭','-1':'已删除'}) }}</td>
+                                    <td><a data-type="number" data-val="{{v['project_number']}}" class="btn btn-default btn-xs projectOrderBtn">查看</a></td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}

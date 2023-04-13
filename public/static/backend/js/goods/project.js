@@ -55,6 +55,20 @@ projectJs = {
             }
         });
     },
+    getProjectOrderData:function (params){
+        App.ajax('GET','/backend/project/getOrderMembers',params, function (response) {
+            if(typeof response == 'object' && !response.status){
+                dialog.msg(response.msg,'error');
+            }
+            else{
+                dialog.open({
+                    title:'查看数据',
+                    content:response,
+                    area:['700px','550px']
+                });
+            }
+        });
+    },
     showListChild:function (id,type){
         if(type=='show'){
             App.ajax('GET','/backend/project/getProjectInfo',{id:id}, function (response) {
@@ -64,6 +78,12 @@ projectJs = {
                 else{
                     $('tr.child').remove();
                     $('#'+id).after(response);
+                    $('.projectOrderBtn').on('click',function(){
+                        projectJs.getProjectOrderData({
+                            type:$(this).data('type'),
+                            val:$(this).data('val'),
+                        });
+                    });
                 }
             });
         }

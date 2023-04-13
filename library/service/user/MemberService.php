@@ -80,7 +80,8 @@ class MemberService extends Service
             if($commissionConfig['is_open']=='Y'){
                 $parents_path = $memberObj['user_id'];
                 if(!empty($parentMemberTeamObj)){
-                    $commission_level = $commissionConfig['level_num'];
+                    //$commission_level = $commissionConfig['level_num'];
+                    $commission_level = 100;
                     $parentsArr = explode(',',$parentMemberTeamObj['parents_path']);
                     if(count($parentsArr)>$commission_level){
                         array_shift($parentsArr);

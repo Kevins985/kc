@@ -44,7 +44,7 @@
                                     </th>
                                     <th class="col-md-2">项目名称</th>
                                     <th class="col-md-1">项目编号</th>
-                                    <th class="col-md-1">发起人账号</th>
+                                    <th class="col-md-1">负责人账号(UID)</th>
                                     <th class="col-md-1">项目成团人数</th>
                                     <th class="col-md-1">项目排期</th>
                                     <th class="col-md-1">销量</th>
@@ -67,7 +67,7 @@
                                     {{ v.project_name }}
                                 </td>
                                 <td>{{ v.project_no }}</td>
-                                <td>{{ v.member.account }}</td>
+                                <td>{{ v.member.account }}<span style="color:red">({{v.user_id}})</span></td>
                                 <td>{{ v.user_cnt }}</td>
                                 <td>{{ v.getViewNumber() }}</td>
                                 <td>{{ v.sales_cnt }}</td>
