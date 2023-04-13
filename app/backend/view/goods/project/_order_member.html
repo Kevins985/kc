@@ -1,0 +1,32 @@
+<div class="panel panel-default m-b-none">
+    <table class="table table-striped m-b-none">
+        <thead>
+        <tr>
+            <th>订单号</th>
+            <th>用户账号(UID)</th>
+            <th>项目编号</th>
+            <th>用户位置</th>
+            <th>创建时间</th>
+            <th>状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if data %}
+        {% for k,v in data %}
+        <tr class="sku_node">
+            <td>{{v.order.order_no}}</td>
+            <td>{{v.member.account}}<span style="color:red;">({{v.user_id}})</span></td>
+            <td>{{v.project_number}}</td>
+            <td>{{v.user_number}}</td>
+            <td>{{v['created_time']|date('Y-m-d H:i:s') }}</td>
+            <td>{{v.status|replace({2:"已出彩",1:"进行中",0:"已拆分","-1":"已删除"})}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td class="nodata" colspan="10">暂无数据</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>

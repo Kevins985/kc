@@ -20,7 +20,7 @@
                                 <input type="hidden" id="user_id" name="user_id" />
                                 <input type="text" class="form-control" placeholder="账号" id="account" name="account"
                                        required data-fv-notempty-message="账号不能为空"
-                                       pattern="^1(\d)10$" data-fv-regexp-message="请输入手机号码"
+                                       pattern="^1[\d]{10}$" data-fv-regexp-message="请输入手机号码"
                                        data-fv-remote="true" data-fv-remote-url="{{url('/backend/member/checkAccountExists')}}" data-fv-remote-message="该账号已经存在" data-fv-field="account" />
                             </div>
                         </div>
