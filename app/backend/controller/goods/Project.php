@@ -220,4 +220,17 @@ class Project extends Backend
             return $this->response->json(false,null,$e->getMessage());
         }
     }
+
+    public function getTreeNumbers(Request $request)
+    {
+        try {
+            $project_id = $this->getParams('project_id',0);
+            $projectNumberService = Container::get(ProjectNumberService::class);
+            $data =$projectNumberService->queryTreeNumbers($project_id);
+            return $this->response->json(true,$data);
+        }
+        catch (\Exception $e) {
+            return $this->response->json(false,null,$e->getMessage());
+        }
+    }
 }

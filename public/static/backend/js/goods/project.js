@@ -69,6 +69,17 @@ projectJs = {
             }
         });
     },
+    initTreeNumbers: function (project_id) {
+        var zNodes = [];
+        window.setTimeout(function () {
+            App.ajax( 'GET', '/backend/project/getTreeNumbers',{project_id: project_id}, function (result) {
+                if (result.status) {
+                    zNodes = result.data;
+                    $.fn.zTree.init($("#projectNumberTree"), {check: {enable: false}, data: {simpleData: {enable: true}}}, zNodes);
+                }
+            }, 'json');
+        }, 500);
+    },
     showListChild:function (id,type){
         if(type=='show'){
             App.ajax('GET','/backend/project/getProjectInfo',{id:id}, function (response) {
@@ -84,6 +95,7 @@ projectJs = {
                             val:$(this).data('val'),
                         });
                     });
+                    projectJs.initTreeNumbers(id);
                 }
             });
         }

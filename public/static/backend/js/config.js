@@ -178,7 +178,7 @@ var configs = {
             deps: ["global"]
         },
         "backend_member":{
-            deps: ["bootstrap-select","global","select2"]
+            deps: ["bootstrap-select","ztree","global","select2"]
         },
         "backend_memberextend":{
             deps: ["global","datetimepicker"]
@@ -202,7 +202,7 @@ var configs = {
             deps:["global","kindeditor_cn","bootstrap_confirmation","select2"]
         },
         "backend_project":{
-            deps:["global","datetimepicker"]
+            deps:["global","ztree","datetimepicker"]
         },
         "backend_brand":{
             deps:["global"]

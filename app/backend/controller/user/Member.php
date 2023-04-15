@@ -2,6 +2,7 @@
 
 namespace app\backend\controller\user;
 
+use library\service\goods\ProjectNumberService;
 use library\service\user\LevelService;
 use library\service\user\MemberExtendService;
 use library\service\user\MemberService;
@@ -35,7 +36,7 @@ class Member extends Backend
         if(!empty($params['mobile'])){
             $params['mobile'] = ['like',$params['mobile']];
         }
-        $params['is_robot'] = 0;
+//        $params['is_robot'] = 0;
         if(!empty($params['invite_userid'])){
             $memberTeamService = Container::get(MemberTeamService::class);
             $invite_userids = $memberTeamService->pluck('user_id',['parent_id'=>$params['invite_userid']]);
@@ -265,6 +266,19 @@ class Member extends Backend
             return $this->response->json(true);
         } catch (\Exception $e) {
             return $this->response->json(false, [], $e->getMessage());
+        }
+    }
+
+    public function getTreeMembers(Request $request)
+    {
+        try {
+            $user_id = $this->getParams('user_id',0);
+            $projectNumberService = Container::get(MemberTeamService::class);
+            $data =$projectNumberService->queryTreeMembers($user_id);
+            return $this->response->json(true,$data);
+        }
+        catch (\Exception $e) {
+            return $this->response->json(false,null,$e->getMessage());
         }
     }
 }

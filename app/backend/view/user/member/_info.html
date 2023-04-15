@@ -12,6 +12,9 @@
                     <li class="" name="tab_invite">
                         <a href="#tab_invite" data-toggle="tab" aria-expanded="false">直推用户</a>
                     </li>
+                    <li class="" name="tab_tree">
+                        <a href="#tab_tree" data-toggle="tab" aria-expanded="false">用户关系图</a>
+                    </li>
                     <li class="" name="tab_extend">
                         <a href="#tab_extend" data-toggle="tab" aria-expanded="false">用户资产</a>
                     </li>
@@ -228,6 +231,11 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_tree">
+                        <div class="panel panel-default m-b-none zTreeBox">
+                            <ul id="memberTree" class="ztree"></ul>
                         </div>
                     </div>
                     <div class="tab-pane" id="tab_extend">

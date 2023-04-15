@@ -7,6 +7,7 @@ use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\user\MemberExtendService;
 use library\service\user\MemberService;
+use library\service\user\MemberTeamService;
 use library\service\user\OrderService;
 use library\service\user\ProjectOrderService;
 use support\Container;
@@ -23,7 +24,10 @@ class TestCommand extends Command
     {
 //        $this->addProjectNumber(2);
 //        $this->addOrder(1,500);
-        $this->verifyOrder(50);
+        $projectNumberService = Container::get(MemberTeamService::class);
+        $data =$projectNumberService->queryTreeMembers(2);
+        print_r($data);exit;
+//        $this->verifyOrder(50);
 
 //        $projectNumberService = Container::get(ProjectOrderService::class);
 //        $projectNumberObj  = $projectNumberService->get(50);

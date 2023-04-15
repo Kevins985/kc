@@ -44,6 +44,17 @@ memberJs = {
             }
         });
     },
+    initTreeMembers: function (user_id) {
+        var zNodes = [];
+        window.setTimeout(function () {
+            App.ajax( 'GET', '/backend/member/getTreeMembers',{user_id: user_id}, function (result) {
+                if (result.status) {
+                    zNodes = result.data;
+                    $.fn.zTree.init($("#memberTree"), {check: {enable: false}, data: {simpleData: {enable: true}}}, zNodes);
+                }
+            }, 'json');
+        }, 500);
+    },
     showListChild:function (id,type){
         if(type=='show'){
             App.ajax('GET','/backend/member/getMemberInfo',{id:id}, function (response) {
@@ -65,6 +76,7 @@ memberJs = {
                             memberJs.setMemberRemark(user_id,$('#remark').val());
                         });
                     });
+                    memberJs.initTreeMembers(id);
                 }
             });
         }
