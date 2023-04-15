@@ -15,6 +15,7 @@ class ProjectNumberModel extends Model
 		"id",
 		"project_id",
 		"project_number",
+		"parent_id",
 		"from_number",
 		"user_cnt",
 		"status",

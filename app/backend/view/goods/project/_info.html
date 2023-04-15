@@ -9,6 +9,9 @@
                     <li class="" name="tab_number">
                         <a href="#tab_number" data-toggle="tab" aria-expanded="false">项目排期</a>
                     </li>
+                    <li class="" name="tab_tree">
+                        <a href="#tab_tree" data-toggle="tab" aria-expanded="false">项目关系图</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_info">
@@ -124,6 +127,11 @@
                                 {% endif %}
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_tree">
+                        <div class="panel panel-default m-b-none zTreeBox">
+                            <ul id="projectNumberTree" class="ztree"></ul>
                         </div>
                     </div>
                 </div>
