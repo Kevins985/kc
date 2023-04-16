@@ -19,12 +19,16 @@ class Member implements Consumer
 
     /**
      * 消费数据
-     * @param $data
+     * @param $data member用户对象
      */
     public function consume($data)
     {
         try{
             Log::channel("queue")->info('member queue',$data);
+            $memberTeamService = Container::get(MemberTeamService::class);
+            $memberTeamObj = $memberTeamService->get($data['user_id']);
+            $cdata = $memberTeamObj->toArray();
+            $data = array_merge($data,$cdata);
             $memberTeamService = Container::get(MemberTeamService::class);
             $memberTeamService->updateTeamInviteData($data);
         }

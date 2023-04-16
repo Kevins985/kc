@@ -63,6 +63,10 @@ class MemberTeamService extends Service
         return $data;
     }
 
+    /**
+     * @param $memberTeam
+     * @throws \Throwable
+     */
     public function updateTeamInviteData($memberTeam){
         $conn = $this->connection();
         try{
@@ -89,7 +93,6 @@ class MemberTeamService extends Service
                 $projectObj = $projectService->getActiveProject($topParentId,false);
                 if(!empty($projectObj)){
                     $memberService = Container::get(MemberService::class);
-                    print_r([$memberTeam['user_id'],['source'=>$projectObj['project_no']]]);
                     $memberService->update($memberTeam['user_id'],['source'=>$projectObj['project_no']]);
                 }
             }
@@ -99,6 +102,37 @@ class MemberTeamService extends Service
         catch (\Throwable $e){
             $conn->rollBack();
             Log::error('updateTeamInviteData:'.$e->getMessage());
+        }
+    }
+
+    /**
+     * @param $memberTeam
+     * @throws \Throwable
+     */
+    public function updateTeamProjectData($memberTeam){
+        $conn = $this->connection();
+        try{
+            $conn->beginTransaction();
+            $topParentId = 0;
+            if(!empty($memberTeam['parent_id'])){
+                $parentArr = explode(',',$memberTeam['parents_path']);
+                array_pop($parentArr);
+                foreach($parentArr as $uid){
+                    $parentTeamObj = $this->get($uid);
+                    $update = [
+                        'team_money'=>($parentTeamObj['team_money']+$memberTeam['order_money']),
+                    ];
+                    if($uid==$memberTeam['parent_id']){
+                        $update['invite_money'] = ($parentTeamObj['invite_money']+$memberTeam['order_money']);
+                    }
+                    $parentTeamObj->update($update);
+                }
+            }
+            $conn->commit();
+        }
+        catch (\Throwable $e){
+            $conn->rollBack();
+            Log::error('updateTeamProjectData:'.$e->getMessage());
         }
     }
 }

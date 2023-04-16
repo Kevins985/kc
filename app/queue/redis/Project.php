@@ -3,6 +3,7 @@
 namespace app\queue\redis;
 
 use library\logic\ProjectOrderLogic;
+use library\service\user\MemberTeamService;
 use support\Container;
 use Webman\Event\Event;
 use Webman\RedisQueue\Consumer;
@@ -18,13 +19,18 @@ class Project implements Consumer
 
     /**
      * 消费数据
-     * @param $data {type,date,order_id}
+     * @param $data {user_id,order_id,order_money,project_id,project_number}
      */
     public function consume($data)
     {
         try{
             Log::channel("queue")->info('project queue',$data);
-
+            $memberTeamService = Container::get(MemberTeamService::class);
+            $memberTeamObj = $memberTeamService->get($data['user_id']);
+            $cdata = $memberTeamObj->toArray();
+            $data = array_merge($data,$cdata);
+            $memberTeamService = Container::get(MemberTeamService::class);
+            $memberTeamService->updateTeamProjectData($data);
         }
         catch (\Exception $e){
             Log::channel("queue")->error('project queue:'.$e->getMessage());

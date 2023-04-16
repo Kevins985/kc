@@ -52,6 +52,13 @@ class ProjectOrderModel extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function memberTeam(){
+        return $this->belongsTo(MemberTeamModel::class,'user_id','user_id');
+    }
+
+    /**
      * 获取下级
      * @return \Illuminate\Database\Eloquent\Collection
      */

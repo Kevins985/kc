@@ -106,8 +106,7 @@ class MemberService extends Service
             }
             $conn->commit();
             if(!empty($memberTeamObj)){
-                $queueData = $memberTeamObj->toArray();
-                $queueData['user_id'] = $memberObj['user_id'];
+                $queueData = $memberObj->toArray();
                 pushQueue(QueueMember,$queueData);
             }
 //            Event::emit('user.register',$mermber);
