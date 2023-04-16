@@ -119,9 +119,6 @@ class RechargeOrderService extends Service
             $walletLogic->addUserWallet($orderObj['user_id'],$reward_money,13,'首次充值奖励');
         }
         $res = $orderObj->update($updateData);
-        if($res){
-            Event::emit('user.payRechargeOrder',$orderObj);
-        }
         return $res;
     }
 }

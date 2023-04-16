@@ -14,6 +14,7 @@ const QueueSendMessage = 11;
 const QueueWriteLogs = 12;
 const QueueJobLogs = 13;
 const QueueProject = 14;
+const QueueMember = 15;
 
 const ProjectUserCnt = 4;
 
@@ -174,6 +175,17 @@ function validateEmail($email)
     } else {
         return true;
     }
+}
+
+/**
+ * 添加队列数据
+ * @param int $queueID
+ * @param array $data
+ * @param int $delay
+ */
+function pushQueue(int $queueID,array $data,int $delay=0){
+    $queue = Container::get(QueueInterface::class);
+    return $queue->send($queueID,$data,$delay);
 }
 
 /**

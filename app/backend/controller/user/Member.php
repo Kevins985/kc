@@ -2,7 +2,7 @@
 
 namespace app\backend\controller\user;
 
-use library\service\goods\ProjectNumberService;
+use library\service\goods\ProjectService;
 use library\service\user\LevelService;
 use library\service\user\MemberExtendService;
 use library\service\user\MemberService;
@@ -58,6 +58,16 @@ class Member extends Backend
                 $params['user_id'] = 0;
             }
             unset($params['invite_userid']);
+        }
+        if(!empty($this->loginUser['project_id'])){
+            $projectService = Container::get(ProjectService::class);
+            $projectObj = $projectService->get($this->loginUser['project_id']);
+            if(!empty($projectObj)){
+                $params['source'] = $projectObj['project_no'];
+            }
+            else{
+                $params['user_id'] = 0;
+            }
         }
         $data = $this->service->paginate('/backend/member/list',$params,['user_id'=>'desc']);
         $data->appends($this->getAllRequest('paginate'));

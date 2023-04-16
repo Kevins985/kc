@@ -24,11 +24,11 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th>会员ID(UID)</th>
-                                <th>登陆账号</th>
+                                <th>会员账号(UID)</th>
                                 <th>充值金额</th>
                                 <th>提现金额</th>
                                 <th>钱包余额</th>
+                                <th>注册时间</th>
                                 <th>备注</th>
                             </tr>
                             </thead>
@@ -42,15 +42,15 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <div class="socicons" style="width: 140px;">
+                                    <div class="socicons" style="width: 160px;">
                                         <i class="operator fa fa-plus-square-o getExtendTrBtn" data-close="1" data-callback="memberJs.showListChild"></i>
-                                        {{v.user_no}}<span style="color:red;">({{v.user_id}})</span>
+                                        {{v.account}}<span style="color:red;">({{v.user_id}})</span>
                                     </div>
                                 </td>
-                                <td>{{v.account}}</td>
                                 <td>{{ memberExtend[v.user_id]['recharge_money'] }}</td>
                                 <td>{{ memberExtend[v.user_id]['withdraw_money'] }}</td>
                                 <td>{{ memberExtend[v.user_id]['wallet'] }}</td>
+                                <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
                                 <td>
                                     {% if v.remark %}
                                     {% if v.remark|length<10 %}

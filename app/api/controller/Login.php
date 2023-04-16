@@ -38,7 +38,7 @@ class Login extends Api
     public function login(Request $request)
     {
         try{
-            $this->request->verifyRequestData();
+            $request->verifyRequestData();
             $data = $this->getPost(['account','vcode','num_code','password']);
             $this->logic->setUserGuard('user');
             $this->logic->setClientType('wap');
@@ -60,6 +60,7 @@ class Login extends Api
     public function register(Request $request)
     {
         try{
+            $request->verifyRequestData();
             $post = $this->getPost(['account','type','password','nickname','invitationCode','vcode']);
             $this->logic->setUserGuard('user');
             $account = $post['account'];

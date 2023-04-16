@@ -4,6 +4,7 @@ namespace library\service\goods;
 
 use library\service\sys\FlowNumbersService;
 use library\service\user\MemberService;
+use library\service\user\MemberTeamService;
 use support\Container;
 use support\exception\BusinessException;
 use support\extend\Service;
@@ -15,6 +16,13 @@ class ProjectService extends Service
     public function __construct(ProjectModel $model)
     {
         $this->model = $model;
+    }
+
+    /**
+     * 获取项目列表
+     */
+    public function getSelecttList(){
+        return $this->fetchAll();
     }
 
     /**
@@ -40,9 +48,9 @@ class ProjectService extends Service
      * 获取进行中的活动
      * @return \support\extend\Model
      */
-    public function getActiveProject($user_id){
+    public function getActiveProject($user_id,$is_match=true){
         $projectObj = $this->fetch(['user_id'=>$user_id,'status'=>1]);
-        if(empty($projectObj)){
+        if(empty($projectObj) && $is_match){
             $date = date('Y-m-d');
             $where = ['status'=>1,'start_time'=>['lt',$date],'end_time'=>['gt',$date]];
             $projectObj = $this->fetch($where);
@@ -71,10 +79,13 @@ class ProjectService extends Service
      */
     public function createProject($data){
         $data['project_no'] = $this->getProjectNo();
-        $memberService = Container::get(MemberService::class);
-        $memberObj = $memberService->get($data['user_id']);
-        if(empty($memberObj)){
-            throw new BusinessException('该发起人用户ID不存在');
+        $memberTeamService = Container::get(MemberTeamService::class);
+        $memberTeamObj = $memberTeamService->get($data['user_id']);
+        if(empty($memberTeamObj)){
+            throw new BusinessException('该项目负责人ID不存在');
+        }
+        elseif($memberTeamObj['parent_id']!=0){
+            throw new BusinessException('该项目负责人已有上级邀请人');
         }
         $userProjectObj = $this->get($data['user_id'],'user_id');
         if(!empty($userProjectObj)){

@@ -3,6 +3,7 @@
 namespace library\service\user;
 
 use library\logic\DictLogic;
+use library\service\goods\ProjectService;
 use library\service\sys\FlowNumbersService;
 use support\Container;
 use support\exception\BusinessException;
@@ -76,12 +77,11 @@ class MemberService extends Service
             $memberObj = $this->create($data);
             $memberExtendService = Container::get(MemberExtendService::class);
             $memberExtendService->create(['user_id'=>$memberObj['user_id']]);
-            $mermber = $memberObj->toArray();
+            $memberTeamObj = null;
             if($commissionConfig['is_open']=='Y'){
                 $parents_path = $memberObj['user_id'];
                 if(!empty($parentMemberTeamObj)){
-                    //$commission_level = $commissionConfig['level_num'];
-                    $commission_level = 100;
+                    $commission_level = 500;//$commissionConfig['level_num'];
                     $parentsArr = explode(',',$parentMemberTeamObj['parents_path']);
                     if(count($parentsArr)>$commission_level){
                         array_shift($parentsArr);
@@ -99,10 +99,14 @@ class MemberService extends Service
                     'parent_id'=>$parent_id,
                     'parents_path'=>$parents_path
                 ]);
-                $mermber['member_team'] = $memberTeamObj->toArray();
             }
             $conn->commit();
-            Event::emit('user.register',$mermber);
+            if(!empty($memberTeamObj)){
+                $queueData = $memberTeamObj->toArray();
+                $queueData['user_id'] = $memberObj['user_id'];
+                pushQueue(QueueMember,$queueData);
+            }
+//            Event::emit('user.register',$mermber);
             return $memberObj;
         }
         catch (\Exception $e){

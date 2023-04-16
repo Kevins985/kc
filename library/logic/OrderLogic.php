@@ -5,6 +5,7 @@ use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\user\MemberBankService;
+use library\service\user\MemberTeamService;
 use library\service\user\OrderService;
 use library\service\user\ProjectOrderService;
 use library\service\user\RechargeOrderService;
@@ -105,11 +106,34 @@ class OrderLogic extends Logic
             $orderService = Container::get(OrderService::class);
             $count = $orderService->count(['user_id'=>$data['user_id'],'status'=>1]);
             if($count>0){
-                throw new BusinessException('你已经报名参加过该项目了');
+                throw new BusinessException('你已经报名参加项目了');
+            }
+            $project_id = 0;
+            $memberTeamService = Container::get(MemberTeamService::class);
+            $memberTeam = $memberTeamService->get($data['user_id']);
+            if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
+                $projectOrderService = Container::get(ProjectOrderService::class);
+                $parentArr = explode(',',$memberTeam['parents_path']);
+                $parentProjectOrderObj = $projectOrderService->fetch(['user_id'=>['in',$parentArr],'status'=>1]);
+                if(!empty($parentProjectOrderObj)){
+                    $projectObj = $parentProjectOrderObj->project;
+                }
+                else{
+                    $parentOrderObj = $orderService->fetch(['project_id'=>['gt',0],'user_id'=>['in',$parentArr]],['status'=>'asc']);
+                    if(!empty($parentOrderObj)){
+                        $projectObj = $parentOrderObj->project;
+                    }
+                }
+                if(!empty($projectObj)){
+                    $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
+                    if($buy_number<$projectObj['limit_num']){
+                        $project_id = $projectObj['project_id'];
+                    }
+                }
             }
             $conn->beginTransaction();
             $data['order_no'] = $orderService->getOrderNo();
-            $data['project_id'] = 0;
+            $data['project_id'] = $project_id;
             $data['qty'] = 1;
             $data['point'] = $spuObj['point'];
             $data['money'] = $spuObj['sell_price'];
@@ -153,15 +177,23 @@ class OrderLogic extends Logic
         if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
             $projectOrderService = Container::get(ProjectOrderService::class);
             $parentArr = explode(',',$memberTeam['parents_path']);
-            $parentProjectOrderObj = $projectOrderService->fetch(['user_id'=>['in',$parentArr],'status'=>1]);
+            $where = ['user_id'=>['in',$parentArr],'status'=>1];
+            if(!empty($orderObj['project_id'])){
+                $where['project_id'] = $orderObj['project_id'];
+            }
+            $parentProjectOrderObj = $projectOrderService->fetch($where);
             if(!empty($parentProjectOrderObj)){
                 $projectNumberObj = $parentProjectOrderObj->projectNumber;
                 $projectObj = $parentProjectOrderObj->project;
             }
             else{
-                $parentProjectOrderObj = $projectOrderService->fetch(['order_id'=>$order_id,'status'=>2]);
-                if(!empty($parentProjectOrderObj)){
-                    $projectObj = $parentProjectOrderObj->project;
+                unset($where['status']);
+                if(!isset($where['project_id'])){
+                    $where['project_id']=['gt',0];
+                }
+                $parentOrderObj = $orderService->fetch($where,['status'=>'asc']);
+                if(!empty($parentOrderObj)){
+                    $projectObj = $parentOrderObj->project;
                     $projectNumberObj = $projectObj->getProjectNumber();
                 }
             }
@@ -178,7 +210,7 @@ class OrderLogic extends Logic
         elseif(empty($projectNumberObj)){
             throw new BusinessException("暂未找到适合该用户的项目期");
         }
-        $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],$orderObj['user_id']);
+        $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$orderObj['user_id'],'order_status'=>['neq','pending']]);
         if($buy_number>=$projectObj['limit_num']){
             throw new BusinessException($projectObj['project_name']."最多只能购买".$projectObj['limit_num'].'次');
         }

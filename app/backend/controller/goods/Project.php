@@ -27,6 +27,9 @@ class Project extends Backend
     public function list(Request $request)
     {
         $params = $this->getAllRequest();
+        if(!empty($this->loginUser['project_id'])){
+            $params['project_id'] = $this->loginUser['project_id'];
+        }
         $data = $this->service->paginate('/backend/project/list',$params);
         $data->appends($this->getAllRequest('paginate'));
         $this->response->assign('data',$data);

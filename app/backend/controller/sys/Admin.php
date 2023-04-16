@@ -3,9 +3,11 @@
 namespace app\backend\controller\sys;
 
 use library\logic\AuthLogic;
+use library\service\goods\ProjectService;
 use library\service\sys\AdminService;
 use library\service\sys\RoleService;
 use library\validator\sys\AdminValidation;
+use support\Container;
 use support\controller\Backend;
 use support\exception\BusinessException;
 use support\exception\VerifyException;
@@ -116,7 +118,11 @@ class Admin extends Backend
             }
         }
         $roles = $this->roleService->getSelectList(null,'tree');
-        return $this->response->layout('sys/admin/add',['roles'=>$roles]);
+        $this->response->assign("roles",$roles);
+        $projectService = Container::get(ProjectService::class);
+        $projectList = $projectService->getSelecttList();
+        $this->response->assign("projectList",$projectList);
+        return $this->response->layout('sys/admin/add');
     }
 
     /**
@@ -149,6 +155,9 @@ class Admin extends Backend
             $roles = $this->roleService->getSelectList(null,'tree');
             $this->response->assign("roles",$roles);
             $this->response->assign("data",$adminObj);
+            $projectService = Container::get(ProjectService::class);
+            $projectList = $projectService->getSelecttList();
+            $this->response->assign("projectList",$projectList);
             $this->response->addScriptAssign(['initData'=>$adminObj->toArray()]);
             return $this->response->layout('sys/admin/update');
         }

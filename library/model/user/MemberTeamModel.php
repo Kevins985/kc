@@ -23,6 +23,7 @@ class MemberTeamModel extends Model
 		"team_income_money",
 		"team_money",
 		"reward",
+		"sync_time",
     ];
 
     /**

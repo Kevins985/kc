@@ -6,7 +6,7 @@ return [
         // ...其它事件处理函数...
     ],
     'user.register' => [
-        [library\event\User::class, 'setUserTeamData'],
+        [library\event\User::class, 'register'],
     ],
     'user.logout' => [
         [library\event\User::class, 'logout'],

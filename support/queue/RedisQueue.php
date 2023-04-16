@@ -20,6 +20,7 @@ class RedisQueue implements QueueInterface
             QueueWriteLogs=>"write_logs",
             QueueJobLogs=>"job_logs",
             QueueProject=>"project",
+            QueueMember=>"member",
         ];
         return isset($data[$queueID])?$data[$queueID]:"";
     }
