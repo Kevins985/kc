@@ -57,7 +57,7 @@ class Goods extends Api
     {
         try{
             $spuObj = $this->service->get($id);
-            if(empty($data) || $data['status']<1){
+            if(empty($spuObj) || $spuObj['status']<1){
                 throw new BusinessException("该商品不存在");
             }
             $data = $spuObj->toArray();
