@@ -9,6 +9,7 @@
         </div>
         <div class="portlet-body">
             <div class="row">
+                {% if project==null %}
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
                     <a class="dashboard-stat dashboard-stat-v2 blue" href="javascript:;">
                         <div class="visual">
@@ -64,7 +65,7 @@
                         </div>
                     </a>
                 </div>
-
+                {% endif %}
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mt-10">
                     <a class="dashboard-stat dashboard-stat-v2 red" href="javascript:;">
                         <div class="visual">

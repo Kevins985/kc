@@ -3,6 +3,7 @@
 namespace app\backend\controller;
 
 use library\service\goods\ProjectNumberService;
+use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\sys\RouteService;
 use library\service\user\MemberExtendService;
@@ -31,6 +32,12 @@ class Main extends Backend
     public function index(Request $request)
     {
         try {
+            $projectService = Container::get(ProjectService::class);
+            $projectObj = null;
+            if(!empty($this->loginUser['project_id'])){
+                $projectObj = $projectService->get($this->loginUser['project_id']);
+            }
+            $this->response->assign('project',$projectObj);
             $memberService = Container::get(MemberService::class);
             $data['member_cnt'] = $memberService->count();
             $extendService = Container::get(MemberExtendService::class);
@@ -41,27 +48,27 @@ class Main extends Backend
             $projectNumberService = Container::get(ProjectNumberService::class);
             $data['project_number_cnt'] = $projectNumberService->count();
             $orderService = Container::get(OrderService::class);
-            $res = $orderService->selector()->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
+            $res = $orderService->selector(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null)])->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
             $data['order_cnt'] = $res['ct'];
             $data['order_money'] = $res['pay_money'];
-            $data['order_pending_cnt'] = $spuService->count(['order_status'=>'pending']);
-            $data['order_completed_cnt'] = $spuService->count(['order_status'=>'completed']);
+            $data['order_pending_cnt'] = $spuService->count(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'pending']);
+            $data['order_completed_cnt'] = $spuService->count(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'completed']);
             //周报表统计
             $start_time = (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600);
             $end_time = time();
-            $data['week_member_cnt'] = $memberService->selector(['created_time'=>['between',[$start_time,$end_time]]])->count();
-            $res = $orderService->selector(['verify_time'=>['between',[$start_time,$end_time]]])->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
+            $data['week_member_cnt'] = $memberService->selector(['source'=>(!empty($projectObj)?$projectObj['project_no']:null),'created_time'=>['between',[$start_time,$end_time]]])->count();
+            $res = $orderService->selector(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'verify_time'=>['between',[$start_time,$end_time]]])->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
             $data['week_order_cnt'] = $res['ct'];
             $data['week_order_money'] = $res['pay_money'];
-            $data['week_order_finish'] = $orderService->selector(['order_status'=>'completed','updated_time'=>['between',[$start_time,$end_time]]])->count();
+            $data['week_order_finish'] = $orderService->selector(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'completed','updated_time'=>['between',[$start_time,$end_time]]])->count();
             //日报表统计
             $start_time = strtotime(date('Y-m-d'));
             $end_time = strtotime(date('Y-m-d').' 23:59:59');
-            $data['today_member_cnt'] = $memberService->selector(['created_time'=>['between',[$start_time,$end_time]]])->count();
-            $res = $orderService->selector(['verify_time'=>['between',[$start_time,$end_time]]])->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
+            $data['today_member_cnt'] = $memberService->selector(['source'=>(!empty($projectObj)?$projectObj['project_no']:null),'created_time'=>['between',[$start_time,$end_time]]])->count();
+            $res = $orderService->selector(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'verify_time'=>['between',[$start_time,$end_time]]])->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
             $data['today_order_cnt'] = $res['ct'];
             $data['today_order_money'] = $res['pay_money'];
-            $data['today_order_finish'] = $orderService->selector(['order_status'=>'completed','updated_time'=>['between',[$start_time,$end_time]]])->count();
+            $data['today_order_finish'] = $orderService->selector(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'completed','updated_time'=>['between',[$start_time,$end_time]]])->count();
             return $this->response->layout("main/index", $data);
         } catch (\Exception $e) {
             return $this->response->output($e->getMessage());

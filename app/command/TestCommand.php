@@ -23,7 +23,7 @@ class TestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 //        $this->addProjectNumber(2);
-//        $this->addOrder(1,10);
+        $this->addOrder(1,10);
         $this->verifyOrder(50);
 
 //        $projectNumberService = Container::get(ProjectOrderService::class);

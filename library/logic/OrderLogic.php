@@ -262,11 +262,22 @@ class OrderLogic extends Logic
                 $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
                 $this->outProjectOrder($outProjectOrder);
             }
+            if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
+                $queueData = [
+                    'user_id'=>$memberTeam['user_id'],
+                    'order_id'=>$orderObj['order_id'],
+                    'order_money'=>$orderObj['money'],
+                    'project_id'=>$projectNumberObj['project_id'],
+                    'project_number'=>$projectNumberObj['project_number'],
+                ];
+                pushQueue(QueueProject,$queueData);
+            }
             return $orderObj;
         }
         catch (\Exception $e){
+            print_r($e->getTraceAsString());
             $conn->rollBack();
-            Log::channel('project')->error('verifyOrder:'.$order_id.'-'.$e->getMessage());
+            Log::channel('server')->error('verifyOrder:'.$order_id.'-'.$e->getMessage());
             throw $e;
         }
     }
@@ -295,7 +306,7 @@ class OrderLogic extends Logic
                 $conn->commit();
             }
             catch (\Throwable $e){
-                Log::channel('project')->error('outProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
+                Log::channel('server')->error('outProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
                 $conn->rollBack();
             }
         }
@@ -338,7 +349,7 @@ class OrderLogic extends Logic
                 $conn->commit();
             }
             catch (\Throwable $e){
-                Log::channel('project')->error('finishProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
+                Log::channel('server')->error('finishProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
                 $conn->rollBack();
             }
         }
