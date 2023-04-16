@@ -23,11 +23,8 @@ class TestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 //        $this->addProjectNumber(2);
-//        $this->addOrder(1,500);
-        $projectNumberService = Container::get(MemberTeamService::class);
-        $data =$projectNumberService->queryTreeMembers(2);
-        print_r($data);exit;
-//        $this->verifyOrder(50);
+//        $this->addOrder(1,10);
+        $this->verifyOrder(50);
 
 //        $projectNumberService = Container::get(ProjectOrderService::class);
 //        $projectNumberObj  = $projectNumberService->get(50);
@@ -76,7 +73,7 @@ class TestCommand extends Command
     private function verifyOrder($count=1){
         $orderLogic = Container::get(OrderLogic::class);
         $orderService = Container::get(OrderService::class);
-        $orderList = $orderService->fetchAll(['order_status'=>'pending','size'=>$count]);
+        $orderList = $orderService->fetchAll(['order_id'=>['gt',500],'order_status'=>'pending','size'=>$count]);
         foreach($orderList as $v){
             $res = $orderLogic->verifyOrder($v['order_id'],'paid');
             echo $v['order_id'].'-'.($res?'success':'fail').PHP_EOL;

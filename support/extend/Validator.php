@@ -88,7 +88,7 @@ class Validator
      * @param array $attributes
      */
     protected function setAttributes(array $attributes) {
-//        $this->attributes = $attributes;
+        $this->attributes = $attributes;
     }
 
     /**

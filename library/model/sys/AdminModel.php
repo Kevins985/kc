@@ -10,7 +10,7 @@ class AdminModel extends Model
     public $primaryKey = 'user_id';
     public $connection = 'mysql';
      
-    protected $fillable = [
+    protected $fillable=[
 		"user_id",
 		"account",
 		"password",
@@ -25,6 +25,8 @@ class AdminModel extends Model
 		"modify_pwd_time",
 		"login_cnt",
 		"login_time",
+		"project_id",
+		"verify_ip",
 		"client_ip",
 		"descr",
 		"status",

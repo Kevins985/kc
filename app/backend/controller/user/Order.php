@@ -33,6 +33,9 @@ class Order extends Backend
         elseif(!empty($params['project_number'])){
             $params['project_number'] = ['has','projectOrder',$params['project_number']];
         }
+        if(!empty($this->loginUser['project_id'])){
+            $params['project_id'] = $this->loginUser['project_id'];
+        }
         $data = $this->service->paginate('/backend/order/list',$params,['order_id'=>'desc']);
         if(!empty($params['order_status'])){
             unset($params['order_status']);

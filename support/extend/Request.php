@@ -4,6 +4,7 @@ namespace support\extend;
 
 use library\logic\AuthLogic;
 use library\logic\MenusLogic;
+use library\service\sys\AdminService;
 use library\service\sys\IpVisitService;
 use support\exception\BusinessException;
 use support\exception\VerifyException;
@@ -116,7 +117,7 @@ class Request extends \Webman\Http\Request
             }
         }
         if(!in_array($this->language,$this->getLangList())){
-            $this->language = "en";
+            $this->language = "zh";
         }
         return $this->language;
     }
@@ -130,7 +131,7 @@ class Request extends \Webman\Http\Request
             $language = $this->header('lang');
         }
         if(!in_array($language,$this->getLangList())){
-            $language = "en";
+            $language = "zh";
         }
         locale($language);
         $this->language = $language;
@@ -295,7 +296,9 @@ class Request extends \Webman\Http\Request
      */
     public function verifyIpWhiteList($account)
     {
-        if(!in_array($account,['administrator','admin'])){
+        $adminService = Container::get(AdminService::class);
+        $res = $adminService->fetch(['account'=>$account,'verify_ip'=>1]);
+        if(!empty($res)){
             $ip = $this->getLastRealIp();
             $ipVisitService = Container::get(IpVisitService::class);
             $res = $ipVisitService->fetch(['client_ip'=>$ip,'limit_type'=>2]);

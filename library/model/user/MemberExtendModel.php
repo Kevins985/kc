@@ -24,7 +24,7 @@ class MemberExtendModel extends Model
 		"status",
     ];
 
-    protected $where=['user_no'];
+    protected $where=['user_no','source'];
 
     public function getWallet(){
         return $this->wallet - $this->frozen;
@@ -49,5 +49,9 @@ class MemberExtendModel extends Model
      */
     function member(){
         return $this->hasOne(MemberModel::class,'user_id','user_id');
+    }
+
+    function projectMember($project_id){
+
     }
 }

@@ -3,6 +3,7 @@
 namespace app\backend\controller\user;
 
 use library\logic\WalletLogic;
+use library\service\goods\ProjectService;
 use library\service\user\MemberExpLogService;
 use library\service\user\MemberExtendService;
 use library\service\user\MemberPointLogService;
@@ -30,8 +31,15 @@ class MemberExtend extends Backend
     public function list(Request $request)
     {
         $params = $this->getAllRequest();
-        if(!empty($params['user_no'])){
-            $params['user_no'] = ['has','Member',$params['user_no']];
+        if(!empty($this->loginUser['project_id'])){
+            $projectService = Container::get(ProjectService::class);
+            $projectObj = $projectService->get($this->loginUser['project_id']);
+            if(!empty($projectObj)){
+                $params['source'] = ['has','member',$projectObj['project_no']];
+            }
+            else{
+                $params['user_id'] = 0;
+            }
         }
         $data = $this->service->paginate('/backend/memberExtend/list',$params,['user_id'=>'desc']);
         $data->appends($this->getAllRequest('paginate'));

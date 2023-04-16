@@ -60,8 +60,19 @@ class OrderService extends Service
      * @param $project_id
      * @param $user_id
      */
-    public function getBuyProjectOrderCount($project_id,$user_id){
-        return $this->count(['project_id'=>$project_id,'user_id'=>$user_id]);
+    public function getBuyProjectOrderCount($project_id=null,array $where=[]){
+        if(is_null($project_id)){
+            $rows = $this->groupBySelector(['project_id'],$where)->selectRaw('project_id, count(order_id) as ct');
+            $data = [];
+            foreach($rows as $v){
+                $data[$v['project_id']] = $v['ct'];
+            }
+            return $data;
+        }
+        else{
+            $where['project_id'] = $project_id;
+            return $this->count($where);
+        }
     }
 
     /**
