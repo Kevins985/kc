@@ -5,6 +5,7 @@ namespace app\backend\controller\goods;
 use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
+use library\service\user\MemberService;
 use library\service\user\ProjectOrderService;
 use library\validator\goods\ProjectValidation;
 use support\Container;
@@ -60,6 +61,9 @@ class Project extends Backend
                 return $this->response->json(false,null,$e->getMessage());
             }
         }
+        $memberService = Container::get(MemberService::class);
+        $memberList = $memberService->getLevelMemberList();
+        $this->response->assign('memberList',$memberList);
         $spuService = Container::get(SpuService::class);
         $spuList =$spuService->getGoodsSelect();
         $this->response->assign('spuList',$spuList);

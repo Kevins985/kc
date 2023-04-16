@@ -56,10 +56,12 @@ class Goods extends Api
     public function detail(Request $request,int $id)
     {
         try{
-            $data = $this->service->get($id);
+            $spuObj = $this->service->get($id);
             if(empty($data) || $data['status']<1){
                 throw new BusinessException("该商品不存在");
             }
+            $data = $spuObj->toArray();
+            $data['images'] = $spuObj->getImagesList();
             return $this->response->json(true,$data);
         }
         catch (\Throwable $e){
