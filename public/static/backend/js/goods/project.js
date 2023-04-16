@@ -75,7 +75,22 @@ projectJs = {
             App.ajax( 'GET', '/backend/project/getTreeNumbers',{project_id: project_id}, function (result) {
                 if (result.status) {
                     zNodes = result.data;
-                    $.fn.zTree.init($("#projectNumberTree"), {check: {enable: false}, data: {simpleData: {enable: true}}}, zNodes);
+                    var setting = {
+                        check: {enable: false},
+                        data : {
+                            simpleData: {enable: true},
+                            key : { title : "code"}
+                        },
+                        callback: {
+                            onClick: function (e){
+                                projectJs.getProjectOrderData({
+                                    type:'number',
+                                    val:$(e.target).text(),
+                                });
+                            }
+                        }
+                    };
+                    $.fn.zTree.init($("#projectNumberTree"),setting, zNodes);
                 }
             }, 'json');
         }, 500);

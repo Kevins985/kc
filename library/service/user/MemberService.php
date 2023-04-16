@@ -36,6 +36,10 @@ class MemberService extends Service
         return $this->getUserNo();
     }
 
+    public function getLevelMemberList(){
+        return $this->fetchAll(['level_id'=>['gt',0]]);
+    }
+
     /**
      * 获取指定客户列表
      * @param array $user_ids

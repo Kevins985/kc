@@ -131,6 +131,13 @@ class OrderLogic extends Logic
                     }
                 }
             }
+            else{
+                $projectService = Container::get(ProjectService::class);
+                $projectObj = $projectService->getActiveProject($data['user_id']);
+                if(!empty($projectObj)){
+                    $project_id = $projectObj['project_id'];
+                }
+            }
             $conn->beginTransaction();
             $data['order_no'] = $orderService->getOrderNo();
             $data['project_id'] = $project_id;

@@ -23,9 +23,27 @@ class Team extends Api
     /**
      * 获取的team信息
      */
-    public function myTeamData(Request $request){
+    public function info(Request $request){
         try{
-            $data = $this->service->get($request->getUserID());
+            $teamObj = $this->service->get($request->getUserID());
+            return $this->response->json(true,$teamObj);
+        }
+        catch (\Throwable $e){
+            return $this->response->json(false,null,$e->getMessage());
+        }
+    }
+
+    /**
+     * 我的团队成员
+     * @param Request $request
+     */
+    public function child(Request $request)
+    {
+        try{
+            $params['page'] = $this->getParams('page',1);
+            $teamObj = $this->service->get($request->getUserID());
+            $params['parents_path'] = ['left_like',$teamObj['parents_path'].','];
+            $data = $this->service->paginateData($params,['user_id'=>'desc']);
             return $this->response->json(true,$data);
         }
         catch (\Throwable $e){

@@ -54,12 +54,16 @@
                             </div>
                         </div>
                         <div class="form-group" >
-                            <label class="col-md-2 control-label">发起人用户ID
+                            <label class="col-md-2 control-label">项目负责人
                                 <span class="required" aria-required="true">*</span>
                             </label>
                             <div class="col-md-8">
-                                <input type="number" class="form-control" placeholder="发起人用户ID" id="user_id" name="user_id" value=""
-                                       required data-fv-notempty-message="发起人用户ID不能为空" />
+                                <select class="form-control" name="user_id" id="user_id">
+                                    <option value="">请选择</option>
+                                    {% for k,v in memberList %}
+                                    <option value="{{v.user_id}}">{{v.account}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group" >

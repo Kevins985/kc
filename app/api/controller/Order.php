@@ -156,6 +156,8 @@ class Order extends Api
                 'user_number'=>$projectOrderObj['user_number'],
                 'status'=>$projectOrderObj['status'],
                 'invite_cnt'=>$orderObj['invite_cnt'],
+                'team_cnt'=>2,
+                'team_money'=>123,22,
                 'point'=>$orderObj['point'],
                 'user_total_cnt'=>ProjectUserCnt,
                 'user_progress'=>$user_progress,
