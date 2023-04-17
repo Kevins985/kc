@@ -126,7 +126,7 @@ class OrderLogic extends Logic
                 }
                 if(!empty($projectObj)){
                     $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
-                    if($buy_number<$projectObj['limit_num']){
+                    if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
                         $project_id = $projectObj['project_id'];
                     }
                 }
@@ -218,7 +218,7 @@ class OrderLogic extends Logic
             throw new BusinessException("暂未找到适合该用户的项目期");
         }
         $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$orderObj['user_id'],'order_status'=>['neq','pending']]);
-        if($buy_number>=$projectObj['limit_num']){
+        if($buy_number>=$projectObj['limit_num'] && $projectObj['limit_num']>0){
             throw new BusinessException($projectObj['project_name']."最多只能购买".$projectObj['limit_num'].'次');
         }
         $conn = $this->connection();

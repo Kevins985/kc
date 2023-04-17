@@ -35,7 +35,7 @@
                                 <div class="col-2">
                                     <div class="profile-info-name"> 订单状态 </div>
                                     <div class="profile-info-value">
-                                        <span>{{ data.order_status }}</span>
+                                        <span>{{ data.order_status|replace({"pending":"待审核","refused":"已拒绝","paid":"已付款","completed":"已完成","closed":"已关闭"} }}</span>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -100,7 +100,7 @@
                                     <span>
                                         {% if data.file_url %}
                                         <div class="mt-card-avatar mt-overlay-1" style="margin-bottom: 5px;height:100px;border-bottom:1px solid #e7ecf1">
-                                            <a href="{{data.file_url}}" target="_blank"><img  src="{{data.file_url}}"  ></a>
+                                            <a href="{{data.file_url}}" target="_blank"><img  src="{{data.file_url}}" height="100px" ></a>
                                         </div>
                                         {% else %}
                                         暂无数据
