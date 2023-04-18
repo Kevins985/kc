@@ -47,18 +47,24 @@ class MemberTeamService extends Service
     /**
      * 查询树级菜单需要的数据
      */
-    public function queryTreeMembers($user_id) {
-        $memberTeamObj = $this->get($user_id);
+    public function queryTreeMembers($user_id=0) {
         $data = [];
-        if(!empty($memberTeamObj)){
-            $selector = $this->selector(['parents_path'=>['left_like',$memberTeamObj['parents_path'].',']],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'account as name','parents_path']);
+        if(!empty($user_id)){
+            $memberTeamObj = $this->get($user_id);
+            if(!empty($memberTeamObj)){
+                $selector = $this->selector(['parents_path'=>['left_like',$memberTeamObj['parents_path'].',']],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'account as name','parents_path']);
+                $data = $selector->get()->toArray();
+                array_unshift($data,[
+                    'id'=>$memberTeamObj['user_id'],
+                    'pId'=>$memberTeamObj['parent_id'],
+                    'name'=>$memberTeamObj['account'],
+                    'parents_path'=>$memberTeamObj['parents_path'],
+                ]);
+            }
+        }
+        else{
+            $selector = $this->selector([],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'account as name','parents_path']);
             $data = $selector->get()->toArray();
-            array_unshift($data,[
-                'id'=>$memberTeamObj['user_id'],
-                'pId'=>$memberTeamObj['parent_id'],
-                'name'=>$memberTeamObj['account'],
-                'parents_path'=>$memberTeamObj['parents_path'],
-            ]);
         }
         return $data;
     }
