@@ -279,6 +279,14 @@ class Member extends Backend
         }
     }
 
+    /**
+     * 获取用户所有的树形图
+     */
+    public function treeMember(Request $request){
+        $this->response->addScriptAssign(['tree'=>1]);
+        return $this->response->layout('user/member/tree');
+    }
+
     public function getTreeMembers(Request $request)
     {
         try {

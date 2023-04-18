@@ -5,18 +5,8 @@ memberJs = {
         if(initScriptData.initData){
             global.initData(initScriptData.initData);
         }
-        if($('#tags').get(0)){
-            $("#tags").select2();
-            if(initScriptData.initData.tags){
-                var val = JSON.parse(initScriptData.initData.tags);
-                $("#tags").select2("val", val);
-            }
-        }
-        if($('.bs-select').get(0)){
-            $('.bs-select').selectpicker({
-                iconBase: 'fa',
-                tickIcon: 'fa-check'
-            });
+        if(initScriptData.tree){
+            memberJs.initTreeMembers(0);
         }
     },
     initFormScript:function(){
@@ -31,6 +21,19 @@ memberJs = {
             }
             $('#searchForm').submit();
         });
+        if($('#tags').get(0)){
+            $("#tags").select2();
+            if(initScriptData.initData.tags){
+                var val = JSON.parse(initScriptData.initData.tags);
+                $("#tags").select2("val", val);
+            }
+        }
+        if($('.bs-select').get(0)){
+            $('.bs-select').selectpicker({
+                iconBase: 'fa',
+                tickIcon: 'fa-check'
+            });
+        }
     },
     setMemberRemark(id,remark){
         App.ajax('PUT','/backend/member/setRemark',{id:id,remark:remark}, function (response) {
