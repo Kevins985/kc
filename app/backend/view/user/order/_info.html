@@ -35,7 +35,7 @@
                                 <div class="col-2">
                                     <div class="profile-info-name"> 订单状态 </div>
                                     <div class="profile-info-value">
-                                        <span>{{ data.order_status|replace({"pending":"待审核","refused":"已拒绝","paid":"已付款","completed":"已完成","closed":"已关闭"} }}</span>
+                                        <span>{{ data.order_status|replace({"pending":"待审核","refused":"已拒绝","paid":"已付款","completed":"已完成","closed":"已关闭"}) }}</span>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -248,7 +248,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
