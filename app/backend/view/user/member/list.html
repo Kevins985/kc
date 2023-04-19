@@ -25,9 +25,9 @@
                                     </label>
                                 </th>
                                 <th>会员账号(UID)</th>
-                                <th>充值金额</th>
-                                <th>提现金额</th>
-                                <th>钱包余额</th>
+                                <th>会员等级</th>
+                                <th>出彩积分</th>
+                                <th>注册来源</th>
                                 <th>注册时间</th>
                                 <th>备注</th>
                             </tr>
@@ -47,9 +47,9 @@
                                         {{v.account}}<span style="color:red;">({{v.user_id}})</span>
                                     </div>
                                 </td>
-                                <td>{{ memberExtend[v.user_id]['recharge_money'] }}</td>
-                                <td>{{ memberExtend[v.user_id]['withdraw_money'] }}</td>
-                                <td>{{ memberExtend[v.user_id]['wallet'] }}</td>
+                                <td>{{ v.getLevelName() }}</td>
+                                <td>{{ memberExtend[v.user_id]['point'] }}</td>
+                                <td>{{ v.source }}</td>
                                 <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
                                 <td>
                                     {% if v.remark %}
