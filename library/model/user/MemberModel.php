@@ -84,4 +84,17 @@ class MemberModel extends Model
     {
         return $this->hasMany(MemberAddressModel::class,'user_id','user_id');
     }
+
+    function level(){
+        return $this->belongsTo(LevelModel::class,'level_id','level_id');
+    }
+
+    function getLevelName(){
+        if($this->level_id==0){
+            return '无';
+        }
+        else{
+            return $this->level->level_name;
+        }
+    }
 }

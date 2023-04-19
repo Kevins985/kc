@@ -50,7 +50,7 @@ memberJs = {
     initTreeMembers: function (user_id) {
         var zNodes = [];
         window.setTimeout(function () {
-            App.ajax( 'GET', '/backend/member/getTreeMembers',{user_id: user_id}, function (result) {
+            App.ajaxLoading( 'GET', '/backend/member/getTreeMembers',{user_id: user_id}, function (result) {
                 if (result.status) {
                     zNodes = result.data;
                     $.fn.zTree.init($("#memberTree"), {check: {enable: false}, data: {simpleData: {enable: true}}}, zNodes);

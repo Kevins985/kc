@@ -68,6 +68,7 @@ class Account extends Api
             }
             $data = $userObj->toArray();
             $data['extra'] = $userObj->team;
+            $data['level_name'] = $userObj->getLevelName();
             return $this->response->json(true,$data);
         }
         catch (\Throwable $e){
