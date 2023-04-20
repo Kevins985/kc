@@ -221,10 +221,7 @@ class Home extends Api
                 throw new VerifyException('未指定来源广告类型');
             }
             $advService = Container::get(AdvService::class);
-            $data = $advService->fetchAll($params);
-            foreach ($data as $k=>$v){
-                $data[$k]['adv_image'] = upload_md5_url($v['adv_image']);
-            }
+            $data = $advService->fetchAll($params,[],['adv_id','adv_image','adv_url']);
             return $this->response->json(true,$data);
         }
         catch (\Throwable $e){

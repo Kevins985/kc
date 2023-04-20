@@ -120,6 +120,7 @@ spuJs = {
             sell_price:$('#sell_price').val(),
             sales_cnt:$('#sales_cnt').val(),
             sort:$('#sort').val(),
+            point:$('#point').val(),
             status:$('input[name=status]:checked').val(),
             brief:$('#brief').val(),
             description:$('#description').val()
@@ -154,6 +155,10 @@ spuJs = {
         }
         else if(!data.sell_price){
             dialog.msg('请输入销售价格','error');
+            is_submit = false;
+        }
+        else if(!data.point){
+            dialog.msg('请输入出彩积分','error');
             is_submit = false;
         }
         else if(data.description==''){
