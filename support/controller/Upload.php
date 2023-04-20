@@ -17,7 +17,7 @@ class Upload extends Controller{
     protected $_extAllow = [
         'jpg','jpeg', 'png','gif'
     ];
-    protected $engine = 'oss';      //local
+    protected $engine = 'local';      //local
     protected $_maxSize = 5120000;
     protected $upload_dir =  null;
     protected $upload_path = null;

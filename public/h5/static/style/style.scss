@@ -1853,3 +1853,13 @@ body{
 	top: 50%;
 	transform: translate(-50%,-50%);
 }
+.descr {
+	max-width: 800rpx;
+}
+.descr img{
+	max-width: 100%;
+	max-height: 100%;
+	padding: 0;
+	width: auto;
+	height: auto;
+}
