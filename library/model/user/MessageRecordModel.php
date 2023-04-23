@@ -2,7 +2,6 @@
 
 namespace library\model\user;
 
-use library\service\user\MemberService;
 use support\extend\Model;
 
 class MessageRecordModel extends Model

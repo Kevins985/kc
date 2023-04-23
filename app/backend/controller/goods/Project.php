@@ -6,6 +6,7 @@ use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\user\MemberService;
+use library\service\user\OrderService;
 use library\service\user\ProjectOrderService;
 use library\validator\goods\ProjectValidation;
 use support\Container;
@@ -122,6 +123,11 @@ class Project extends Backend
             }
             elseif($projectObj['status']==1){
                 throw new VerifyException('进行中的项目不能删除');
+            }
+            $orderService = Container::get(OrderService::class);
+            $cnt = $orderService->getBuyProjectOrderCount($id,['status'=>1]);
+            if($cnt>0){
+                throw new VerifyException('该项目还有'.$cnt.'个订单，不能删除');
             }
             $res = $this->service->delete($id);
             if(empty($res)){

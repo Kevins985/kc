@@ -27,6 +27,7 @@
                                 <th>会员账号(UID)</th>
                                 <th>会员等级</th>
                                 <th>出彩积分</th>
+                                <th>出彩次数</th>
                                 <th>注册来源</th>
                                 <th>注册时间</th>
                                 <th>备注</th>
@@ -44,11 +45,12 @@
                                 <td>
                                     <div class="socicons" style="width: 160px;">
                                         <i class="operator fa fa-plus-square-o getExtendTrBtn" data-close="1" data-callback="memberJs.showListChild"></i>
-                                        {{v.account}}<span style="color:red;">({{v.user_id}})</span>
+                                        {{v.getViewName()}}<span style="color:red;">({{v.user_id}})</span>
                                     </div>
                                 </td>
                                 <td>{{ v.getLevelName() }}</td>
                                 <td>{{ memberExtend[v.user_id]['point'] }}</td>
+                                <td>{{ v.project_cnt }}</td>
                                 <td>{{ v.source }}</td>
                                 <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
                                 <td>

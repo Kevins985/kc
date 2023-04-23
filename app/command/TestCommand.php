@@ -22,6 +22,16 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $orderService = Container::get(OrderService::class);
+        $res  = $orderService->fetchAll(['status'=>2]);
+        foreach($res as $v){
+            $memberService = Container::get(MemberService::class);
+            $memberObj = $v->member;
+            $memberObj->update(['project_cnt'=>$memberService->raw('project_cnt+1')]);
+        }
+        exit;
+
 //        $this->addProjectNumber(2);
         $this->addOrder(1,10);
         $this->verifyOrder(50);

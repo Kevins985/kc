@@ -2,7 +2,7 @@
 
 namespace library\model\goods;
 
-use library\service\user\OrderService;
+use library\model\user\OrderModel;
 use support\extend\Model;
 
 class SpuModel extends Model
@@ -45,7 +45,7 @@ class SpuModel extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     function orders(){
-        return $this->hasMany(OrderService::class,'spu_id','spu_id');
+        return $this->hasMany(OrderModel::class,'spu_id','spu_id');
     }
 
     /**

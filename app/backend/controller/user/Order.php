@@ -3,6 +3,7 @@
 namespace app\backend\controller\user;
 
 use library\logic\OrderLogic;
+use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\user\MemberService;
 use library\service\user\OrderService;
@@ -61,6 +62,13 @@ class Order extends Backend
             $spuList = $spuService->getGoodsList($spu_ids);
         }
         $this->response->assign('spuList',$spuList);
+        $projectList = [];
+        $project_ids = Data::toFlatArray($data->items(),'project_id');
+        if(!empty($project_ids)){
+            $projectService = Container::get(ProjectService::class);
+            $projectList = $projectService->getProjectList($project_ids);
+        }
+        $this->response->assign('projectList',$projectList);
         return $this->response->layout('user/order/list');
     }
 

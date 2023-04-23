@@ -42,7 +42,7 @@ class Main extends Backend
             $data['member_cnt'] = $memberService->count();
             $extendService = Container::get(MemberExtendService::class);
             $res = $extendService->selector()->selectRaw('sum(point) as point')->first()->toArray();
-            $data['member_point'] = $res['point'];
+            $data['member_point'] = $res['point']??0;
             $spuService = Container::get(SpuService::class);
             $data['spu_cnt'] = $spuService->count();
             $projectNumberService = Container::get(ProjectNumberService::class);
@@ -51,8 +51,8 @@ class Main extends Backend
             $res = $orderService->selector(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null)])->selectRaw('count(*) as ct,sum(pay_money) as pay_money')->first()->toArray();
             $data['order_cnt'] = $res['ct'];
             $data['order_money'] = $res['pay_money'];
-            $data['order_pending_cnt'] = $spuService->count(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'pending']);
-            $data['order_completed_cnt'] = $spuService->count(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'completed']);
+            $data['order_pending_cnt'] = $orderService->count(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'pending']);
+            $data['order_completed_cnt'] = $orderService->count(['project_id'=>(!empty($projectObj)?$projectObj['project_id']:null),'order_status'=>'completed']);
             //周报表统计
             $start_time = (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600);
             $end_time = time();

@@ -30,12 +30,14 @@ class AuthValidation extends Validator{
             'account' => 'required|account',
             'password'=> 'required|string|min:6|max:30',
             'invitationCode' => 'required|string',
+            'nickname' => 'required|string',
             'vcode'=>'required|string',
         ]);
         $this->setAttributes([
             'account'=>'账号',
             'password'=>'密码',
             'invitationCode' => '邀请码',
+            'nickname' => '姓名',
             'vcode' => '验证码',
         ]);
         return $this->checkValidate($data);

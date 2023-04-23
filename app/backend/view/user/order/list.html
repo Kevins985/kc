@@ -54,10 +54,15 @@
                                         </label>
                                     </th>
                                     <th class="col-md-2">订单号码</th>
-                                    <th class="col-md-2">商品名称</th>
+<!--                                    <th class="col-md-2">商品名称</th>-->
+                                    <th class="col-md-2">所属项目</th>
                                     <th class="col-md-2">用户账号(UID)</th>
                                     <th class="col-md-1">积分数</th>
+                                    {% if params.order_status=='paid' %}
+                                    <th>审核时间</th>
+                                    {% else %}
                                     <th>添加时间</th>
+                                    {% endif %}
                                     {% if params.order_status=='' %}
                                     <th>状态</th>
                                     {% endif %}
@@ -78,11 +83,18 @@
                                         {{ v.order_no }}
                                     </div>
                                 </td>
-                                <td>{{ spuList[v.spu_id].title }}</td>
-                                <td>{{memberList[v.user_id].account}}<span style="color:red;">({{v.user_id}})</span></td>
+<!--                                <td>{{ spuList[v.spu_id].title }}</td>-->
+                                <td>{% if v.project_id>0 %}{{ projectList[v.project_id].project_name }}{% endif %}</td>
+                                <td>{{memberList[v.user_id].getViewName()}}<span style="color:red;">({{v.user_id}})</span></td>
                                 <td>{{ v.point }}</td>
+                                {% if params.order_status=='paid' %}
+                                <td>{{ v.verify_time|date('Y-m-d H:i:s') }}</td>
+                                {% else %}
                                 <td>{{ v.created_time|date('Y-m-d H:i:s') }}</td>
+                                {% endif %}
+                                {% if params.order_status=='' %}
                                 <td>{{ v.order_status|replace({"pending":"待审核","refused":"已拒绝","paid":"已付款","completed":"已完成","closed":"已关闭"}) }}</td>
+                                {% endif %}
                             </tr>
                             {% else %}
                             <tr>

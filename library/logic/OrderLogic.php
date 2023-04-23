@@ -5,6 +5,7 @@ use library\service\goods\ProjectNumberService;
 use library\service\goods\ProjectService;
 use library\service\goods\SpuService;
 use library\service\user\MemberBankService;
+use library\service\user\MemberService;
 use library\service\user\MemberTeamService;
 use library\service\user\OrderService;
 use library\service\user\ProjectOrderService;
@@ -14,7 +15,6 @@ use support\Container;
 use support\exception\BusinessException;
 use support\extend\Log;
 use support\extend\Logic;
-use Webman\Event\Event;
 
 class OrderLogic extends Logic
 {
@@ -275,7 +275,6 @@ class OrderLogic extends Logic
             return $orderObj;
         }
         catch (\Exception $e){
-            print_r($e->getTraceAsString());
             $conn->rollBack();
             Log::channel('server')->error('verifyOrder:'.$order_id.'-'.$e->getMessage());
             throw $e;
@@ -301,6 +300,9 @@ class OrderLogic extends Logic
                     'order_status'=>'completed',
                     'status'=>2
                 ]);
+                $memberService = Container::get(MemberService::class);
+                $memberObj = $orderObj->member;
+                $memberObj->update(['project_cnt'=>$memberService->raw('project_cnt+1')]);
                 $walletLogic = Container::get(WalletLogic::class);
                 $walletLogic->addUserPoint($projectOrderObj['user_id'],$orderObj['point'],$orderObj['order_no'].'结算');
                 $conn->commit();
