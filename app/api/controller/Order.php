@@ -145,7 +145,7 @@ class Order extends Api
             }
             $orderObj = $projectOrderObj->order;
             $projectObj = $projectOrderObj->project;
-            $projectNumberObj = $projectOrderObj->projectNumber;
+            $projectNumberObj = $projectOrderObj->getProjectNumber();
             $memberTeam = $projectOrderObj->memberTeam;
             $user_progress = $projectOrderObj->getProgress($projectNumberObj['user_cnt']);
             $data = [
