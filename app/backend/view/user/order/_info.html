@@ -126,7 +126,11 @@
                                 <div class="col-2">
                                     <div class="profile-info-name"> 审核时间 </div>
                                     <div class="profile-info-value">
-                                        <span>{{ data.verify_time|default(' ') }}</span>
+                                        {% if data.verify_time %}
+                                        <span>{{ data.verify_time|date('Y-m-d H:i:s') }}</span>
+                                        {% else %}
+                                        <span>&nbsp;</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -201,16 +205,6 @@
                                     <div class="profile-info-name"> 创建时间 </div>
                                     <div class="profile-info-value">
                                         <span>{{ spu.created_time|date('Y-m-d H:i:s') }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="profile-info-name"> 上架时间 </div>
-                                    <div class="profile-info-value">
-                                        {% if spu.up_time %}
-                                        <span>{{ spu.up_time }}</span>
-                                        {% else %}
-                                        <span>&nbsp;</span>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>

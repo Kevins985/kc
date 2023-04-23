@@ -24,7 +24,7 @@
                                             <span></span>
                                         </label>
                                     </th>
-                                    <th>会员ID(UID)</th>
+                                    <th>会员账号(UID)</th>
                                     <th class="col-xs-1">钱包余额</th>
                                     <th class="col-xs-1">收益余额</th>
                                     <th class="col-xs-1">冻结金额</th>
@@ -43,7 +43,7 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td>{{memberList[v.user_id].user_no}}<span style="color:red;">({{v.user_id}})</span></td>
+                                <td>{{memberList[v.user_id].getViewName()}}<span style="color:red;">({{v.user_id}})</span></td>
                                 <td class="text-center">{{v.wallet}}</td>
                                 <td class="text-center">{{v.profit}}</td>
                                 <td class="text-center">{{v.frozen}}</td>

@@ -33,6 +33,7 @@ class MemberModel extends Model
 		"descr",
 		"token",
 		"login_cnt",
+		"project_cnt",
 		"client_ip",
 		"identity",
 		"login_time",
@@ -87,6 +88,15 @@ class MemberModel extends Model
 
     function level(){
         return $this->belongsTo(LevelModel::class,'level_id','level_id');
+    }
+
+    function getViewName(){
+        if(!empty($this->nickname)){
+            return $this->nickname;
+        }
+        else{
+            return $this->account;
+        }
     }
 
     function getLevelName(){

@@ -3,7 +3,7 @@
 namespace library\model\goods;
 
 use library\model\user\MemberModel;
-use library\service\user\OrderService;
+use library\model\user\OrderModel;
 use support\extend\Model;
 
 class ProjectModel extends Model
@@ -38,7 +38,7 @@ class ProjectModel extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     function orders(){
-        return $this->hasMany(OrderService::class,'project_id','project_id');
+        return $this->hasMany(OrderModel::class,'project_id','project_id');
     }
 
     /**
