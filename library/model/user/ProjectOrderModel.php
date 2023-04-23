@@ -44,6 +44,10 @@ class ProjectOrderModel extends Model
         return $this->belongsTo(ProjectNumberModel::class,'project_number','project_number');
     }
 
+    function getProjectNumber(){
+        return $this->projectNumber()->where('project_id',$this->project_id)->first();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

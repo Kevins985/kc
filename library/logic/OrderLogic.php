@@ -190,7 +190,7 @@ class OrderLogic extends Logic
             }
             $parentProjectOrderObj = $projectOrderService->fetch($where);
             if(!empty($parentProjectOrderObj)){
-                $projectNumberObj = $parentProjectOrderObj->projectNumber;
+                $projectNumberObj = $parentProjectOrderObj->getProjectNumber();
                 $projectObj = $parentProjectOrderObj->project;
             }
             else{
