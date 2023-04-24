@@ -3,7 +3,7 @@
         <thead>
         <tr>
             <th>订单号</th>
-            <th>用户账号(UID)</th>
+            <th>用户信息(UID)</th>
             <th>项目编号</th>
             <th>用户位置</th>
             <th>创建时间</th>
@@ -15,7 +15,7 @@
         {% for k,v in data %}
         <tr class="sku_node">
             <td>{{v.order.order_no}}</td>
-            <td>{{v.member.account}}<span style="color:red;">({{v.user_id}})</span></td>
+            <td>{{v.member.getViewName()}}<span style="color:red;">({{v.user_id}})</span></td>
             <td>{{v.project_number}}</td>
             <td>{{v.user_number}}</td>
             <td>{{v['created_time']|date('Y-m-d H:i:s') }}</td>

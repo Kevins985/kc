@@ -99,6 +99,7 @@ class MemberService extends Service
                 $memberTeamObj = $memberTeamService->create([
                     'user_id'=>$memberObj['user_id'],
                     'account'=>$memberObj['account'],
+                    'name'=>$memberObj['nickname']??$memberObj['account'],
                     'invite_code'=>$memberTeamService->getInviteCode(),
                     'parent_id'=>$parent_id,
                     'parents_path'=>$parents_path
