@@ -52,18 +52,18 @@ class MemberTeamService extends Service
         if(!empty($user_id)){
             $memberTeamObj = $this->get($user_id);
             if(!empty($memberTeamObj)){
-                $selector = $this->selector(['parents_path'=>['left_like',$memberTeamObj['parents_path'].',']],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'account as name','parents_path']);
+                $selector = $this->selector(['parents_path'=>['left_like',$memberTeamObj['parents_path'].',']],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'name','parents_path']);
                 $data = $selector->get()->toArray();
                 array_unshift($data,[
                     'id'=>$memberTeamObj['user_id'],
                     'pId'=>$memberTeamObj['parent_id'],
-                    'name'=>$memberTeamObj['account'],
+                    'name'=>$memberTeamObj['name'],
                     'parents_path'=>$memberTeamObj['parents_path'],
                 ]);
             }
         }
         else{
-            $selector = $this->selector([],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'account as name','parents_path']);
+            $selector = $this->selector([],['parent_id'=>'asc'],['user_id as id', 'parent_id as pId', 'name','parents_path']);
             $data = $selector->get()->toArray();
         }
         return $data;
