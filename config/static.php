@@ -5,7 +5,7 @@
  */
 return [
     'enable'     => false,
-    'version' => 202305112,
+    'version' => 2023051122,
     'middleware' => [     // Static file Middleware
         support\middleware\StaticFile::class,
     ],

@@ -89,6 +89,7 @@ class Spu extends Backend
         $post = $this->getPost();
         if (!empty($post)) {
             try {
+                print_r($post);
                 if (!$request->isAjax() || empty($post['spu_id'])) {
                     throw new VerifyException('Exception request');
                 }

@@ -21,6 +21,7 @@ class SpuModel extends Model
 		"market_price",
 		"sell_price",
 		"point",
+		"point2",
 		"weight",
 		"up_time",
 		"down_time",

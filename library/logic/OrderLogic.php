@@ -111,6 +111,10 @@ class OrderLogic extends Logic
             $project_id = 0;
             $memberTeamService = Container::get(MemberTeamService::class);
             $memberTeam = $memberTeamService->get($data['user_id']);
+            $jifen = $spuObj['point2'];
+            if(!empty($memberTeam) && $memberTeam['team_money']>0){
+                $jifen = $spuObj['point'];
+            }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
                 $projectOrderService = Container::get(ProjectOrderService::class);
                 $parentArr = explode(',',$memberTeam['parents_path']);
@@ -125,6 +129,7 @@ class OrderLogic extends Logic
                     }
                 }
                 if(!empty($projectObj)){
+
                     $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
                     if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
                         $project_id = $projectObj['project_id'];
@@ -142,7 +147,7 @@ class OrderLogic extends Logic
             $data['order_no'] = $orderService->getOrderNo();
             $data['project_id'] = $project_id;
             $data['qty'] = 1;
-            $data['point'] = $spuObj['point'];
+            $data['point'] = $jifen;
             $data['money'] = $spuObj['sell_price'];
             $orderObj = $orderService->create($data);
             $spuObj->update([
@@ -178,9 +183,14 @@ class OrderLogic extends Logic
             ]);
         }
         $memberTeam = $orderObj->memberTeam;
+        $spuObj = $orderObj->spu;
         $projectNumberObj = null;
         $projectObj = null;
         $parentProjectOrderObj = null;
+        $jifen = $spuObj['point2'];
+        if(!empty($memberTeam) && $memberTeam['team_money']>0){
+            $jifen = $spuObj['point'];
+        }
         if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
             $projectOrderService = Container::get(ProjectOrderService::class);
             $parentArr = explode(',',$memberTeam['parents_path']);
@@ -243,6 +253,7 @@ class OrderLogic extends Logic
                 'project_id'=>$projectObj['project_id'],
                 'project_sort'=>$projectObj['sales_cnt'],
                 'order_status'=>'paid',
+                'point'=>$jifen,
                 'pay_money'=>$orderObj['money'],
                 'verify_time'=>time(),
             ]);
@@ -292,12 +303,19 @@ class OrderLogic extends Logic
             try {
                 $conn->beginTransaction();
                 $orderObj = $projectOrderObj->order;
+                $memberTeam = $orderObj->memberTeam;
+                $spuObj = $orderObj->spu;
+                $jifen = $spuObj['point2'];
+                if(!empty($memberTeam) && $memberTeam['team_money']>0){
+                    $jifen = $spuObj['point'];
+                }
                 $projectOrderObj->update([
                     'order_status'=>'completed',
                     'status'=>2,
                 ]);
                 $orderObj->update([
                     'order_status'=>'completed',
+                    'jifen'=>$jifen,
                     'status'=>2
                 ]);
                 $memberService = Container::get(MemberService::class);
