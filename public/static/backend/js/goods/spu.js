@@ -121,6 +121,7 @@ spuJs = {
             sales_cnt:$('#sales_cnt').val(),
             sort:$('#sort').val(),
             point:$('#point').val(),
+            point2:$('#point2').val(),
             status:$('input[name=status]:checked').val(),
             brief:$('#brief').val(),
             description:$('#description').val()
@@ -158,7 +159,11 @@ spuJs = {
             is_submit = false;
         }
         else if(!data.point){
-            dialog.msg('请输入出彩积分','error');
+            dialog.msg('请输入有直推出彩积分','error');
+            is_submit = false;
+        }
+        else if(!data.point2){
+            dialog.msg('请输入无直推出彩积分','error');
             is_submit = false;
         }
         else if(data.description==''){
