@@ -209,6 +209,7 @@ function verifyCodeMsg($account,$code,$type='email')
  * @param $type
  */
 function sendCodeMsg($account,$type='email'){
+    $sendMsgSevice = Container::get(\library\service\sys\SendMsgLogService::class);
     try{
         $code = \support\utils\Random::getRandStr(6,0);
         $code_key = 'code_'.md5($type.'_'.$account);
@@ -217,11 +218,11 @@ function sendCodeMsg($account,$type='email'){
         if(!empty($isSend)){
             throw new BusinessException("请不要重复发送信息");
         }
+        $title = trans('验证码');
         if($type=='email'){
             if(!validateEmail($account)){
                 throw new BusinessException("邮箱格式不正确");
             }
-            $title = trans('验证码');
             $message = trans('你的邮箱验证码是',[],null,\request()->getLanguage()).'：'.$code;
             $mailService = Container::get(\support\mailer\SwiftMailer::class);
             $res = $mailService->send($account,$title,$message);
@@ -230,8 +231,8 @@ function sendCodeMsg($account,$type='email'){
             }
         }
         else{
-            //$message = '【Shop】'.trans('你的短信验证码是',[],null,\request()->getLanguage()).'：'.$code;
-            $message = "【Shop】Your verification code is ".$code.", If it's not operated by yourself, please ignore this message.";
+            $message = '【华夏之花】'.trans('你的短信验证码是',[],null,\request()->getLanguage()).'：'.$code;
+//            $message = "【Shop】Your verification code is ".$code.", If it's not operated by yourself, please ignore this message.";
             $smsService = Container::get(\support\mailer\Smsbao::class);
             $res = $smsService->sendMsg($account,$message);
             if(is_null($res)){
@@ -241,12 +242,28 @@ function sendCodeMsg($account,$type='email'){
                 throw new BusinessException($smsService->getError());
             }
         }
+        $sendMsgSevice->create([
+            'send_type'=>$type,
+            'send_to'=>$account,
+            'title'=>$title,
+            'content'=>$message,
+            'result'=>'success',
+            'status'=>1
+        ]);
         Log::channel('message')->info($message,['type'=>$type]);
         Cache::set($code_key,$code,600);
         Cache::set($code_click,1,60);
         return true;
     }
     catch (\Throwable $e){
+        $sendMsgSevice->create([
+            'send_type'=>$type,
+            'send_to'=>$account,
+            'title'=>$title,
+            'content'=>$message,
+            'result'=>$e->getMessage(),
+            'status'=>2
+        ]);
         Log::channel('message')->error($account.':'.$e->getMessage(),['type'=>$type]);
         throw $e;
     }
