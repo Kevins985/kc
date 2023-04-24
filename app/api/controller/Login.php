@@ -107,7 +107,7 @@ class Login extends Api
                     throw new BusinessException('该账号不存在');
                 }
             }
-            if($type=='mobile'){
+            if($type=='mobile' && !empty($num_code) && $num_code!='86'){
                 $account = $num_code.$account;
             }
             sendCodeMsg($account,$type);
