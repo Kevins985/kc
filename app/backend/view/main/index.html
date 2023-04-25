@@ -167,7 +167,7 @@
                         <div class="info-box-content">
                             <span class="info-box-text">周支付订单额</span>
                             <span class="info-box-number">
-                                <a href="javascript:;">{{week_order_money}}</a>
+                                <a href="javascript:;">{{week_order_money|default(0)}}</a>
                                 <small>元</small>
                             </span>
                         </div>
@@ -236,7 +236,7 @@
                         <div class="info-box-content">
                             <span class="info-box-text">日支付订单额</span>
                             <span class="info-box-number">
-                                <a href="javascript:;">{{today_order_money}}</a>
+                                <a href="javascript:;">{{today_order_money|default(0)}}</a>
                                 <small>元</small>
                             </span>
                         </div>

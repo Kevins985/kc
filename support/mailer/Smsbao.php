@@ -70,19 +70,20 @@ class Smsbao
         $postArr = array(
             'u' => $this->config['u'],
             'p' => $this->config['p'],
-            'm' => '+'.$mobile,
+            'm' => $mobile,
             'c' => $msg
         );
         $header = [
             'Content-Type: application/json; charset=utf-8'
         ];
-        $url = 'http://hk.smsbao.com/sms';
-        if(strpos($postArr['m'],'+86')!==0){
-            $url = 'https://hk.smsbao.com/wsms';
-        }
-        else{
-            $postArr['m'] = str_replace('+86','',$postArr['m']);
-        }
+        $url = 'https://api.smsbao.com/sms';
+//        $url = 'http://hk.smsbao.com/sms';
+//        if(strpos($postArr['m'],'+86')!==0){
+//            $url = 'https://hk.smsbao.com/wsms';
+//        }
+//        else{
+//            $postArr['m'] = str_replace('+86','',$postArr['m']);
+//        }
         $url.='?'.http_build_query($postArr);
         Log::channel('message')->info($url,['type'=>"mobile"]);
         $res = Curl::getInstance()->get($url,[],$header);
