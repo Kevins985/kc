@@ -210,20 +210,26 @@ function verifyCodeMsg($account,$code,$type='email')
  */
 function sendCodeMsg($account,$type='email'){
     $sendMsgSevice = Container::get(\library\service\sys\SendMsgLogService::class);
-    try{
-        $code = \support\utils\Random::getRandStr(6,0);
-        $code_key = 'code_'.md5($type.'_'.$account);
-        $code_click = 'click_'.md5($type.'_'.$account);
-        $isSend = Cache::get($code_click);
-        if(!empty($isSend)){
-            throw new BusinessException("请不要重复发送信息");
+    $title = trans('验证码');
+    $code = \support\utils\Random::getRandStr(6,0);
+    $code_key = 'code_'.md5($type.'_'.$account);
+    $code_click = 'click_'.md5($type.'_'.$account);
+    $isSend = Cache::get($code_click);
+    if(!empty($isSend)){
+        throw new BusinessException("请不要重复发送信息");
+    }
+    if($type=='email'){
+        if(!validateEmail($account)){
+            throw new BusinessException("邮箱格式不正确");
         }
-        $title = trans('验证码');
+        $message = trans('你的邮箱验证码是',[],null,\request()->getLanguage()).'：'.$code;
+    }
+    else{
+        $message = '【华夏之花】'.trans('你的短信验证码是',[],null,\request()->getLanguage()).'：'.$code;
+//            $message = "【Shop】Your verification code is ".$code.", If it's not operated by yourself, please ignore this message.";
+    }
+    try{
         if($type=='email'){
-            if(!validateEmail($account)){
-                throw new BusinessException("邮箱格式不正确");
-            }
-            $message = trans('你的邮箱验证码是',[],null,\request()->getLanguage()).'：'.$code;
             $mailService = Container::get(\support\mailer\SwiftMailer::class);
             $res = $mailService->send($account,$title,$message);
             if(!$res){
@@ -231,8 +237,6 @@ function sendCodeMsg($account,$type='email'){
             }
         }
         else{
-            $message = '【华夏之花】'.trans('你的短信验证码是',[],null,\request()->getLanguage()).'：'.$code;
-//            $message = "【Shop】Your verification code is ".$code.", If it's not operated by yourself, please ignore this message.";
             $smsService = Container::get(\support\mailer\Smsbao::class);
             $res = $smsService->sendMsg($account,$message);
             if(is_null($res)){

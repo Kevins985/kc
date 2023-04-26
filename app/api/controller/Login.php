@@ -64,9 +64,12 @@ class Login extends Api
             $post = $this->getPost(['account','type','password','nickname','invitationCode','vcode']);
             $this->logic->setUserGuard('user');
             $account = $post['account'];
-            if($post['type']=='mobile'){
-                $account = $account;
+            if(empty($post['type'])){
+                $post['type'] = 'mobile';
             }
+//            if($post['type']=='mobile'){
+//                $account = $account;
+//            }
             if(!verifyCodeMsg($account,$post['vcode'],$post['type'])) {
                 throw new VerifyException("输入的验证码不正确");
             }
@@ -91,7 +94,7 @@ class Login extends Api
      */
     public function sendMsgCode(Request $request){
         try{
-            $type = $this->getPost('type','email');
+            $type = $this->getPost('type','mobile');
             $account = $this->getPost('account');
             $num_code = $this->getPost('num_code');
             $from = $this->getPost('from','register');
@@ -107,9 +110,9 @@ class Login extends Api
                     throw new BusinessException('该账号不存在');
                 }
             }
-            if($type=='mobile' && !empty($num_code) && $num_code!='86'){
-                $account = $num_code.$account;
-            }
+//            if($type=='mobile' && !empty($num_code) && $num_code!='86'){
+//                $account = $num_code.$account;
+//            }
             sendCodeMsg($account,$type);
             return $this->response->json(true);
         }

@@ -226,13 +226,16 @@ class MemberService extends Service
     public function deleteMember($id){
         $ids = explode(',',$id);
         $extendService = Container::get(MemberExtendService::class);
+        $teamService = Container::get(MemberTeamService::class);
         if(count($ids)>1){
             $res = $this->batchDelete($ids);
             $extendService->batchDelete($ids);
+            $teamService->batchDelete($ids);
         }
         else{
             $res = $this->delete($id);
             $extendService->delete($id);
+            $teamService->delete($id);
         }
         return $res;
     }
