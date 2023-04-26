@@ -12,6 +12,7 @@ class MemberTeamModel extends Model
     protected $fillable=[
 		"user_id",
 		"account",
+        "name",
 		"invite_code",
 		"parent_id",
 		"parents_path",
@@ -24,6 +25,7 @@ class MemberTeamModel extends Model
 		"team_money",
 		"reward",
 		"sync_time",
+        "status",
     ];
 
     /**
