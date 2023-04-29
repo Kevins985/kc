@@ -112,9 +112,9 @@ class OrderLogic extends Logic
             $memberTeamService = Container::get(MemberTeamService::class);
             $memberTeam = $memberTeamService->get($data['user_id']);
             $jifen = $spuObj['point2'];
-            if(!empty($memberTeam) && $memberTeam['team_money']>0){
-                $jifen = $spuObj['point'];
-            }
+//            if(!empty($memberTeam) && $memberTeam['team_money']>0){
+//                $jifen = $spuObj['point'];
+//            }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
                 $projectOrderService = Container::get(ProjectOrderService::class);
                 $parentArr = explode(',',$memberTeam['parents_path']);
@@ -129,7 +129,6 @@ class OrderLogic extends Logic
                     }
                 }
                 if(!empty($projectObj)){
-
                     $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
                     if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
                         $project_id = $projectObj['project_id'];
@@ -188,9 +187,12 @@ class OrderLogic extends Logic
         $projectObj = null;
         $parentProjectOrderObj = null;
         $jifen = $spuObj['point2'];
-        if(!empty($memberTeam) && $memberTeam['team_money']>0){
+        if(!empty($orderObj['invite_cnt'])){
             $jifen = $spuObj['point'];
         }
+//        if(!empty($memberTeam) && $memberTeam['team_money']>0){
+//            $jifen = $spuObj['point'];
+//        }
         if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
             $projectOrderService = Container::get(ProjectOrderService::class);
             $parentArr = explode(',',$memberTeam['parents_path']);
@@ -303,12 +305,15 @@ class OrderLogic extends Logic
             try {
                 $conn->beginTransaction();
                 $orderObj = $projectOrderObj->order;
-                $memberTeam = $orderObj->memberTeam;
                 $spuObj = $orderObj->spu;
                 $jifen = $spuObj['point2'];
-                if(!empty($memberTeam) && $memberTeam['team_money']>0){
+                if(!empty($orderObj['invite_cnt'])){
                     $jifen = $spuObj['point'];
                 }
+//                $memberTeam = $orderObj->memberTeam;
+//                if(!empty($memberTeam) && $memberTeam['team_money']>0){
+//                    $jifen = $spuObj['point'];
+//                }
                 $projectOrderObj->update([
                     'order_status'=>'completed',
                     'status'=>2,
