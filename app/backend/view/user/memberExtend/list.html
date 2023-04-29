@@ -26,11 +26,9 @@
                                     </th>
                                     <th>会员账号(UID)</th>
                                     <th class="col-xs-1">钱包余额</th>
-                                    <th class="col-xs-1">收益余额</th>
                                     <th class="col-xs-1">冻结金额</th>
-                                    <th class="col-xs-1">已充值金额</th>
-                                    <th class="col-xs-1">已提现金额</th>
-                                    <th class="col-xs-1">累计收益金额</th>
+                                    <th class="col-xs-1">出彩积分</th>
+                                    <th class="col-xs-1">已使用积分</th>
                                     <th>最后更新时间</th>
                                 </tr>
                             </thead>
@@ -45,11 +43,9 @@
                                 </td>
                                 <td>{{memberList[v.user_id].getViewName()}}<span style="color:red;">({{v.user_id}})</span></td>
                                 <td class="text-center">{{v.wallet}}</td>
-                                <td class="text-center">{{v.profit}}</td>
                                 <td class="text-center">{{v.frozen}}</td>
-                                <td class="text-center">{{v.recharge_money}}</td>
-                                <td class="text-center">{{v.profit_money}}</td>
-                                <td class="text-center">{{v.withdraw_money}}</td>
+                                <td class="text-center">{{v.point}}</td>
+                                <td class="text-center">{{v.used_point}}</td>
                                 <td>{{v.updated_time|date('Y-m-d H:i:s')}}</td>
                             </tr>
                             {% else %}
