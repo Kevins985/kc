@@ -61,15 +61,9 @@ class Login extends Api
     {
         try{
             $request->verifyRequestData();
-            $post = $this->getPost(['account','type','password','nickname','invitationCode','vcode']);
+            $post = $this->getPost(['account','mobile','email','type','password','nickname','invitationCode','vcode']);
             $this->logic->setUserGuard('user');
-            $account = $post['account'];
-            if(empty($post['type'])){
-                $post['type'] = 'mobile';
-            }
-//            if($post['type']=='mobile'){
-//                $account = $account;
-//            }
+            $account = $post['type']=='email'?$post['email']:$post['mobile'];
             if(!verifyCodeMsg($account,$post['vcode'],$post['type'])) {
                 throw new VerifyException("输入的验证码不正确");
             }
@@ -100,16 +94,17 @@ class Login extends Api
             $from = $this->getPost('from','register');
             $memberService = Container::get(MemberService::class);
             $accountObj = $memberService->getUserByAccount($account);
-            if($from=='register'){
-                if(!empty($accountObj)){
-                    throw new BusinessException('该账号已经存在');
-                }
-            }
-            else{
+            if($from!='register'){
                 if(empty($accountObj)){
                     throw new BusinessException('该账号不存在');
                 }
+                elseif($from=='findPwd'){
+                    $account = $type=='email'?$accountObj['email']:$accountObj['mobile'];
+                }
             }
+//            elseif(!empty($accountObj)){
+//                throw new BusinessException('该账号已经存在');
+//            }
 //            if($type=='mobile' && !empty($num_code) && $num_code!='86'){
 //                $account = $num_code.$account;
 //            }
@@ -128,19 +123,16 @@ class Login extends Api
     public function resetPwd(Request $request){
         try{
             $post = $this->getPost(['account','type','num_code','vcode','password']);
-            $account = $post['account'];
-            if($post['type']=='mobile'){
-                $account = $post['num_code'].$account;
-            }
-            if(verifyCodeMsg($account,$post['vcode'],$post['type'])) {
-                throw new VerifyException("输入的验证码不正确");
-            }
             $memberService = Container::get(MemberService::class);
             $accountObj = $memberService->getUserByAccount($post['account']);
             if(empty($accountObj)){
                 throw new BusinessException('该账号不存在');
             }
-            $memberObj = $memberService->modifyPassword($request->getUserID(),$post['password']);
+            $account = $post['type']=='email'?$accountObj['email']:$accountObj['mobile'];
+            if(!verifyCodeMsg($account,$post['vcode'],$post['type'])) {
+                throw new VerifyException("输入的验证码不正确");
+            }
+            $memberObj = $memberService->modifyPassword($accountObj['user_id'],$post['password']);
             if(empty($memberObj)){
                 throw new BusinessException('修改失败');
             }

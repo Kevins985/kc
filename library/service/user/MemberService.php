@@ -73,10 +73,14 @@ class MemberService extends Service
                 $parent_id = $parentMemberTeamObj['user_id'];
             }
             if(isset($data['type']) && $data['type']=='email'){
-                $data['email'] = $data['account'];
+                if(empty($data['email'])){
+                    $data['email'] = $data['account'];
+                }
             }
             else{
-                $data['mobile'] = $data['account'];
+                if(empty($data['mobile'])){
+                    $data['mobile'] = $data['account'];
+                }
             }
             $memberObj = $this->create($data);
             $memberExtendService = Container::get(MemberExtendService::class);
