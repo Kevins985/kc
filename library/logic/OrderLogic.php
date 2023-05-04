@@ -307,7 +307,7 @@ class OrderLogic extends Logic
                 $orderObj = $projectOrderObj->order;
                 $spuObj = $orderObj->spu;
                 $jifen = $spuObj['point2'];
-                if(!empty($orderObj['invite_cnt'])){
+                if($orderObj['invite_cnt']>0 && $orderObj['point']!=$spuObj['point']){
                     $jifen = $spuObj['point'];
                 }
 //                $memberTeam = $orderObj->memberTeam;
@@ -320,7 +320,7 @@ class OrderLogic extends Logic
                 ]);
                 $orderObj->update([
                     'order_status'=>'completed',
-                    'jifen'=>$jifen,
+                    'point'=>$jifen,
                     'status'=>2
                 ]);
                 $memberService = Container::get(MemberService::class);
