@@ -111,10 +111,6 @@ class OrderLogic extends Logic
             $project_id = 0;
             $memberTeamService = Container::get(MemberTeamService::class);
             $memberTeam = $memberTeamService->get($data['user_id']);
-            $jifen = $spuObj['point2'];
-//            if(!empty($memberTeam) && $memberTeam['team_money']>0){
-//                $jifen = $spuObj['point'];
-//            }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
                 $parentArr = $memberTeam->getParentUserIds();
                 if(!empty($parentArr)){
@@ -148,7 +144,7 @@ class OrderLogic extends Logic
             $data['order_no'] = $orderService->getOrderNo();
             $data['project_id'] = $project_id;
             $data['qty'] = 1;
-            $data['point'] = $jifen;
+            $data['point'] = $spuObj['point2'];
             $data['money'] = $spuObj['sell_price'];
             $orderObj = $orderService->create($data);
             $spuObj->update([
@@ -188,13 +184,6 @@ class OrderLogic extends Logic
         $projectNumberObj = null;
         $projectObj = null;
         $parentProjectOrderObj = null;
-        $jifen = $spuObj['point2'];
-        if($orderObj['invite_cnt']>0){
-            $jifen = $spuObj['point'];
-        }
-//        if(!empty($memberTeam) && $memberTeam['team_money']>0){
-//            $jifen = $spuObj['point'];
-//        }
         if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
             $parentArr = $memberTeam->getParentUserIds();
             if(!empty($parentArr)){
@@ -220,7 +209,6 @@ class OrderLogic extends Logic
                     }
                 }
             }
-
         }
         if(empty($projectObj)){
             $projectObj = $projectService->getActiveProject($orderObj['user_id']);
@@ -241,13 +229,13 @@ class OrderLogic extends Logic
         $conn = $this->connection();
         try{
             $conn->beginTransaction();
-            if(!empty($parentProjectOrderObj)){
+            if(!empty($memberTeam) && !empty($memberTeam['parent_id'])){
                 $parentOrderWhere = [
                     'user_id'=>$memberTeam['parent_id'],
                     'status'=>1,
                     'project_id'=>$projectObj['project_id']
                 ];
-                $orderService->updateAll($parentOrderWhere,['invite_cnt'=>$orderService->raw('invite_cnt+1')]);
+                $orderService->updateAll($parentOrderWhere,['point'=>$spuObj['point'],'invite_cnt'=>$orderService->raw('invite_cnt+1')]);
             }
             $projectService->selector(['project_id'=>$projectObj['project_id']])->lockForUpdate();
             //修改项目数据
@@ -260,7 +248,6 @@ class OrderLogic extends Logic
                 'project_id'=>$projectObj['project_id'],
                 'project_sort'=>$projectObj['sales_cnt'],
                 'order_status'=>'paid',
-                'point'=>$jifen,
                 'pay_money'=>$orderObj['money'],
                 'verify_time'=>time(),
             ]);
@@ -310,25 +297,12 @@ class OrderLogic extends Logic
             try {
                 $conn->beginTransaction();
                 $orderObj = $projectOrderObj->order;
-                $spuObj = $orderObj->spu;
-                $jifen = $spuObj['point2'];
-                if($orderObj['invite_cnt']>0 && $orderObj['point']!=$spuObj['point']){
-                    $jifen = $spuObj['point'];
-                }
-                elseif($orderObj['point']>$jifen){
-                    $jifen = $orderObj['point'];
-                }
-//                $memberTeam = $orderObj->memberTeam;
-//                if(!empty($memberTeam) && $memberTeam['team_money']>0){
-//                    $jifen = $spuObj['point'];
-//                }
                 $projectOrderObj->update([
                     'order_status'=>'completed',
                     'status'=>2,
                 ]);
                 $orderObj->update([
                     'order_status'=>'completed',
-                    'point'=>$jifen,
                     'status'=>2
                 ]);
                 $memberService = Container::get(MemberService::class);
@@ -388,3 +362,4 @@ class OrderLogic extends Logic
         }
     }
 }
+

@@ -144,10 +144,6 @@ class Order extends Api
                 throw new BusinessException("暂无活动数据");
             }
             $orderObj = $projectOrderObj->order;
-            $spuObj = $orderObj->spu;
-            if($orderObj['invite_cnt']>0 && $orderObj['point']!=$spuObj['point']){
-                $orderObj->update(['point'=>$spuObj['point']]);
-            }
             $projectObj = $projectOrderObj->project;
             $projectNumberObj = $projectOrderObj->getProjectNumber();
             $memberTeam = $projectOrderObj->memberTeam;

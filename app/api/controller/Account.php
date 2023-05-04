@@ -44,7 +44,8 @@ class Account extends Api
             $memberObj = getTokenUser('user',$request->getUserToken());
             if($type=='pay'){
                 $user_pass = $memberObj['pay_password'];
-            }else{
+            }
+            else{
                 $user_pass = $memberObj['password'];
             }
             if(!password_verify($password,$user_pass)){
