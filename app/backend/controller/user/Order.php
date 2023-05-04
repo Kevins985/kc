@@ -148,6 +148,7 @@ class Order extends Backend
             $this->response->assign('spu',$spuObj);
             $projectOrder = $orderObj->projectOrder;
             $this->response->assign('projectOrder',$projectOrder);
+            $this->response->assign('ProjectUserCnt',ProjectUserCnt);
             $memberTeam = $orderObj->memberTeam;
             $this->response->assign('memberTeam',$memberTeam);
             return $this->response->view('user/order/_info');

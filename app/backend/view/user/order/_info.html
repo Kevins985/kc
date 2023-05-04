@@ -223,7 +223,8 @@
                                 <thead>
                                 <tr>
                                     <th class="col-xs-2">项目编号</th>
-                                    <th class="col-xs-2">用户位置</th>
+                                    <th class="col-xs-1">用户位置</th>
+                                    <th class="col-xs-1">个人进度</th>
                                     <th class="col-xs-3">创建时间</th>
                                     <th class="col-xs-2">状态</th>
                                     <th class="col-xs-2">操作</th>
@@ -235,6 +236,7 @@
                                 <tr class="sku_node">
                                     <td>{{v['project_number']}}</td>
                                     <td>{{v['user_number']}}</td>
+                                    <td>{{v['user_progress']~'/'~ProjectUserCnt}}</td>
                                     <td>{{v['created_time']|date('Y-m-d H:i:s') }}</td>
                                     <td>{{v.status|replace({2:"已出彩",1:"进行中",0:"已拆分","-1":"已删除"})}}</td>
                                     <td><a data-type="number" data-val="{{v['project_number']}}" class="btn btn-default btn-xs projectOrderBtn">查看</a></td>
