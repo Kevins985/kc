@@ -116,26 +116,28 @@ class OrderLogic extends Logic
 //                $jifen = $spuObj['point'];
 //            }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
-                $projectOrderService = Container::get(ProjectOrderService::class);
-                $parentArr = explode(',',$memberTeam['parents_path']);
-                $parentProjectOrderObj = $projectOrderService->fetch(['user_id'=>['in',$parentArr],'status'=>1]);
-                if(!empty($parentProjectOrderObj)){
-                    $projectObj = $parentProjectOrderObj->project;
-                }
-                else{
-                    $parentOrderObj = $orderService->fetch(['project_id'=>['gt',0],'user_id'=>['in',$parentArr]],['status'=>'asc']);
-                    if(!empty($parentOrderObj)){
-                        $projectObj = $parentOrderObj->project;
+                $parentArr = $memberTeam->getParentUserIds();
+                if(!empty($parentArr)){
+                    $projectOrderService = Container::get(ProjectOrderService::class);
+                    $parentProjectOrderObj = $projectOrderService->fetch(['user_id'=>['in',$parentArr],'status'=>1]);
+                    if(!empty($parentProjectOrderObj)){
+                        $projectObj = $parentProjectOrderObj->project;
                     }
-                }
-                if(!empty($projectObj)){
-                    $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
-                    if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
-                        $project_id = $projectObj['project_id'];
+                    else{
+                        $parentOrderObj = $orderService->fetch(['project_id'=>['gt',0],'user_id'=>['in',$parentArr]],['status'=>'asc']);
+                        if(!empty($parentOrderObj)){
+                            $projectObj = $parentOrderObj->project;
+                        }
+                    }
+                    if(!empty($projectObj)){
+                        $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
+                        if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
+                            $project_id = $projectObj['project_id'];
+                        }
                     }
                 }
             }
-            else{
+            if(empty($project_id)){
                 $projectService = Container::get(ProjectService::class);
                 $projectObj = $projectService->getActiveProject($data['user_id']);
                 if(!empty($projectObj)){
@@ -187,35 +189,38 @@ class OrderLogic extends Logic
         $projectObj = null;
         $parentProjectOrderObj = null;
         $jifen = $spuObj['point2'];
-        if(!empty($orderObj['invite_cnt'])){
+        if($orderObj['invite_cnt']>0){
             $jifen = $spuObj['point'];
         }
 //        if(!empty($memberTeam) && $memberTeam['team_money']>0){
 //            $jifen = $spuObj['point'];
 //        }
         if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
-            $projectOrderService = Container::get(ProjectOrderService::class);
-            $parentArr = explode(',',$memberTeam['parents_path']);
-            $where = ['user_id'=>['in',$parentArr],'status'=>1];
-            if(!empty($orderObj['project_id'])){
-                $where['project_id'] = $orderObj['project_id'];
-            }
-            $parentProjectOrderObj = $projectOrderService->fetch($where);
-            if(!empty($parentProjectOrderObj)){
-                $projectNumberObj = $parentProjectOrderObj->getProjectNumber();
-                $projectObj = $parentProjectOrderObj->project;
-            }
-            else{
-                unset($where['status']);
-                if(!isset($where['project_id'])){
-                    $where['project_id']=['gt',0];
+            $parentArr = $memberTeam->getParentUserIds();
+            if(!empty($parentArr)){
+                $projectOrderService = Container::get(ProjectOrderService::class);
+                $where = ['user_id'=>['in',$parentArr],'status'=>1];
+                if(!empty($orderObj['project_id'])){
+                    $where['project_id'] = $orderObj['project_id'];
                 }
-                $parentOrderObj = $orderService->fetch($where,['status'=>'asc']);
-                if(!empty($parentOrderObj)){
-                    $projectObj = $parentOrderObj->project;
-                    $projectNumberObj = $projectObj->getProjectNumber();
+                $parentProjectOrderObj = $projectOrderService->fetch($where);
+                if(!empty($parentProjectOrderObj)){
+                    $projectNumberObj = $parentProjectOrderObj->getProjectNumber();
+                    $projectObj = $parentProjectOrderObj->project;
+                }
+                else{
+                    unset($where['status']);
+                    if(!isset($where['project_id'])){
+                        $where['project_id']=['gt',0];
+                    }
+                    $parentOrderObj = $orderService->fetch($where,['status'=>'asc']);
+                    if(!empty($parentOrderObj)){
+                        $projectObj = $parentOrderObj->project;
+                        $projectNumberObj = $projectObj->getProjectNumber();
+                    }
                 }
             }
+
         }
         if(empty($projectObj)){
             $projectObj = $projectService->getActiveProject($orderObj['user_id']);
@@ -309,6 +314,9 @@ class OrderLogic extends Logic
                 $jifen = $spuObj['point2'];
                 if($orderObj['invite_cnt']>0 && $orderObj['point']!=$spuObj['point']){
                     $jifen = $spuObj['point'];
+                }
+                elseif($orderObj['point']>$jifen){
+                    $jifen = $orderObj['point'];
                 }
 //                $memberTeam = $orderObj->memberTeam;
 //                if(!empty($memberTeam) && $memberTeam['team_money']>0){

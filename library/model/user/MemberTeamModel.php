@@ -34,4 +34,13 @@ class MemberTeamModel extends Model
     function member(){
         return $this->hasOne(MemberModel::class,'user_id','user_id');
     }
+
+    function getParentUserIds(){
+        $data = [];
+        if(!empty($this->parents_path)){
+            $data = explode(',',$this->parents_path);
+            array_pop($data);
+        }
+        return $data;
+    }
 }
