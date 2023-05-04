@@ -259,13 +259,17 @@ class OrderLogic extends Logic
             elseif($projectOrderObj['user_number']>$projectObj['user_cnt']){
                 throw new BusinessException('用户排序号大于项目最多人数');
             }
+            $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
+            if(empty($outProjectOrder)){
+                throw new BusinessException('出彩用户订单不存在');
+            }
+            $outProjectOrder->increase('user_progress')->save();
             $conn->commit();
+            if($outProjectOrder['user_progress']>=ProjectUserCnt){
+                $this->outProjectOrder($outProjectOrder);
+            }
             if($projectOrderObj['user_number']==$projectObj['user_cnt']){
                 $this->finishProjectOrder($projectOrderObj);
-            }
-            elseif($projectOrderObj['user_number']>ProjectUserCnt && ($projectOrderObj['user_number']-1)%ProjectUserCnt==0){
-                $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
-                $this->outProjectOrder($outProjectOrder);
             }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
                 $queueData = [
@@ -291,13 +295,14 @@ class OrderLogic extends Logic
      * @param $projectOrderObj 要出彩的项目订单
      * @throws \Throwable
      */
-    public function outProjectOrder($projectOrderObj){
+    public function outProjectOrder($projectOrderObj,$user_progress){
         if(!empty($projectOrderObj)){
             $conn = $this->connection();
             try {
                 $conn->beginTransaction();
                 $orderObj = $projectOrderObj->order;
                 $projectOrderObj->update([
+                    'user_progress'=>ProjectUserCnt,
                     'order_status'=>'completed',
                     'status'=>2,
                 ]);

@@ -161,7 +161,7 @@ class Order extends Api
                 'team_money'=>$memberTeam['team_money']??0,
                 'point'=>$orderObj['point'],
                 'user_total_cnt'=>ProjectUserCnt,
-                'user_progress'=>$user_progress,
+                'user_progress'=>$projectOrderObj['user_progress'],
             ];
             return $this->response->json(true,$data);
         }

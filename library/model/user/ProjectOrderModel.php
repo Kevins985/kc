@@ -12,13 +12,14 @@ class ProjectOrderModel extends Model
     public $primaryKey = 'id';
     public $connection = 'mysql';
      
-    protected $fillable = [
+    protected $fillable=[
 		"id",
 		"order_id",
 		"project_id",
 		"project_number",
 		"user_id",
 		"user_number",
+		"user_progress",
 		"order_status",
 		"status",
     ];

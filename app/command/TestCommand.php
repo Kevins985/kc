@@ -22,10 +22,10 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $a = explode(',','1');
-        print_r($a);
-        array_pop($a);
-        print_r($a);
+        $projectOrderService = Container::get(ProjectOrderService::class);
+        $outProjectOrder = $projectOrderService->getOutProjectOrder(1,'P2');
+        $outProjectOrder->increase('user_progress')->save();
+        print_r($outProjectOrder['user_progress']);
         exit;
 
         $orderService = Container::get(OrderService::class);
