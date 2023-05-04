@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <div class="profile-info-name"> 邀请人订单数 </div>
+                                    <div class="profile-info-name"> 邀请订单数 </div>
                                     <div class="profile-info-value">
                                         <span>{{data.invite_cnt}}</span>
                                     </div>
@@ -172,15 +172,15 @@
                             </div>
                             <div class="profile-info-row">
                                 <div class="col-2">
-                                    <div class="profile-info-name"> 出彩积分 </div>
+                                    <div class="profile-info-name"> 有直推出彩积分 </div>
                                     <div class="profile-info-value">
                                         <span>{{ spu.point|default('&nbsp;') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <div class="profile-info-name"> 状态 </div>
+                                    <div class="profile-info-name"> 无直推出彩积分 </div>
                                     <div class="profile-info-value">
-                                        <span>{{spu.status|replace({2:"已下架",1:"已上架",0:"待审核"})}}</span>
+                                        <span>{{spu.point2|default('&nbsp;')}}</span>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -201,6 +201,12 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="profile-info-row">
+                                <div class="col-2">
+                                    <div class="profile-info-name"> 状态 </div>
+                                    <div class="profile-info-value">
+                                        <span>{{spu.status|replace({2:"已下架",1:"已上架",0:"待审核"})}}</span>
+                                    </div>
+                                </div>
                                 <div class="col-2">
                                     <div class="profile-info-name"> 创建时间 </div>
                                     <div class="profile-info-value">

@@ -22,6 +22,11 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $a = explode(',','1');
+        print_r($a);
+        array_pop($a);
+        print_r($a);
+        exit;
 
         $orderService = Container::get(OrderService::class);
         $res  = $orderService->fetchAll(['status'=>2]);
