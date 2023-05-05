@@ -227,6 +227,7 @@ class Project extends Backend
                 $data = $projectOrderService->fetchAll(['project_id'=>$val,'status'=>1],['project_number'=>'asc','user_number'=>'asc']);
             }
             $this->response->assign('data',$data);
+            $this->response->assign('projectUserCnt',ProjectUserCnt);
             return $this->response->view('goods/project/_order_member');
         }
         catch (\Exception $e) {

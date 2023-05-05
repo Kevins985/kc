@@ -203,7 +203,7 @@
                                 <thead>
                                 <tr>
                                     <th class="col-xs-1">UID</th>
-                                    <th>登陆账号</th>
+                                    <th>用户姓名</th>
                                     <th>用户IP</th>
                                     <th style="width:120px;">邀请码</th>
                                     <th class="col-xs-2">直推人数</th>
@@ -217,7 +217,7 @@
                                 {% for k,v in inviteList %}
                                 <tr class="sku_node">
                                     <td>{{v.user_id}}</td>
-                                    <td>{{v.account}}</td>
+                                    <td>{{v.name}}</td>
                                     <td>{{memberList[v.user_id].client_ip}}</td>
                                     <td>{{v.invite_code}}</td>
                                     <td class="text-center">{{v.invite_cnt}}</td>
