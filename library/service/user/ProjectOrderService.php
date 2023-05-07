@@ -14,7 +14,7 @@ class ProjectOrderService extends Service
     }
 
     public function getOutProjectOrder($project_id,$project_number){
-        return $this->fetch(['project_id'=>$project_id,'project_number'=>$project_number,'status'=>1],['user_number'=>'asc']);
+        return $this->fetch(['project_id'=>$project_id,'project_number'=>$project_number,'status'=>1,'user_progress'=>['lt',ProjectUserCnt]],['user_number'=>'asc']);
     }
 
     public function getActiveProjectOrderList($project_id,$project_number){

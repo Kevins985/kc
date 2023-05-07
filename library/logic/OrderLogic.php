@@ -111,25 +111,22 @@ class OrderLogic extends Logic
             $project_id = 0;
             $memberTeamService = Container::get(MemberTeamService::class);
             $memberTeam = $memberTeamService->get($data['user_id']);
-            if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
-                $parentArr = $memberTeam->getParentUserIds();
-                if(!empty($parentArr)){
-                    $projectOrderService = Container::get(ProjectOrderService::class);
-                    $parentProjectOrderObj = $projectOrderService->fetch(['user_id'=>['in',$parentArr],'status'=>1]);
-                    if(!empty($parentProjectOrderObj)){
-                        $projectObj = $parentProjectOrderObj->project;
+            if(!empty($memberTeam) && !empty($memberTeam['parent_id'])){
+                $projectOrderService = Container::get(ProjectOrderService::class);
+                $parentProjectOrderObj = $projectOrderService->fetch(['user_id'=>$memberTeam['parent_id'],'status'=>1]);
+                if(!empty($parentProjectOrderObj)){
+                    $projectObj = $parentProjectOrderObj->project;
+                }
+                else{
+                    $parentOrderObj = $orderService->fetch(['project_id'=>['gt',0],'user_id'=>$memberTeam['parent_id']],['status'=>'asc']);
+                    if(!empty($parentOrderObj)){
+                        $projectObj = $parentOrderObj->project;
                     }
-                    else{
-                        $parentOrderObj = $orderService->fetch(['project_id'=>['gt',0],'user_id'=>['in',$parentArr]],['status'=>'asc']);
-                        if(!empty($parentOrderObj)){
-                            $projectObj = $parentOrderObj->project;
-                        }
-                    }
-                    if(!empty($projectObj)){
-                        $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
-                        if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
-                            $project_id = $projectObj['project_id'];
-                        }
+                }
+                if(!empty($projectObj)){
+                    $buy_number = $orderService->getBuyProjectOrderCount($projectObj['project_id'],['user_id'=>$data['user_id']]);
+                    if($buy_number<$projectObj['limit_num'] || $projectObj['limit_num']==0){
+                        $project_id = $projectObj['project_id'];
                     }
                 }
             }
@@ -184,29 +181,26 @@ class OrderLogic extends Logic
         $projectNumberObj = null;
         $projectObj = null;
         $parentProjectOrderObj = null;
-        if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
-            $parentArr = $memberTeam->getParentUserIds();
-            if(!empty($parentArr)){
-                $projectOrderService = Container::get(ProjectOrderService::class);
-                $where = ['user_id'=>['in',$parentArr],'status'=>1];
-                if(!empty($orderObj['project_id'])){
-                    $where['project_id'] = $orderObj['project_id'];
+        if(!empty($memberTeam) && !empty($memberTeam['parent_id'])){
+            $projectOrderService = Container::get(ProjectOrderService::class);
+            $where = ['user_id'=>$memberTeam['parent_id'],'status'=>1];
+            if(!empty($orderObj['project_id'])){
+                $where['project_id'] = $orderObj['project_id'];
+            }
+            $parentProjectOrderObj = $projectOrderService->fetch($where);
+            if(!empty($parentProjectOrderObj)){
+                $projectNumberObj = $parentProjectOrderObj->getProjectNumber();
+                $projectObj = $parentProjectOrderObj->project;
+            }
+            else{
+                unset($where['status']);
+                if(!isset($where['project_id'])){
+                    $where['project_id']=['gt',0];
                 }
-                $parentProjectOrderObj = $projectOrderService->fetch($where);
-                if(!empty($parentProjectOrderObj)){
-                    $projectNumberObj = $parentProjectOrderObj->getProjectNumber();
-                    $projectObj = $parentProjectOrderObj->project;
-                }
-                else{
-                    unset($where['status']);
-                    if(!isset($where['project_id'])){
-                        $where['project_id']=['gt',0];
-                    }
-                    $parentOrderObj = $orderService->fetch($where,['status'=>'asc']);
-                    if(!empty($parentOrderObj)){
-                        $projectObj = $parentOrderObj->project;
-                        $projectNumberObj = $projectObj->getProjectNumber();
-                    }
+                $parentOrderObj = $orderService->fetch($where,['status'=>'asc']);
+                if(!empty($parentOrderObj)){
+                    $projectObj = $parentOrderObj->project;
+                    $projectNumberObj = $projectObj->getProjectNumber();
                 }
             }
         }
@@ -241,7 +235,7 @@ class OrderLogic extends Logic
             //修改项目数据
             $projectObj->update([
                 'sales_cnt'=> ($projectObj['sales_cnt']+1),
-                'sales_money'=> $projectService->raw('sales_money+'.$orderObj['pay_money'])
+                'sales_money'=> $projectService->raw('sales_money+'.$orderObj['money'])
             ]);
             //修改订单数据
             $orderObj->update([
@@ -263,12 +257,12 @@ class OrderLogic extends Logic
             if(empty($outProjectOrder)){
                 throw new BusinessException('出彩用户订单不存在');
             }
-            $outProjectOrder->increase('user_progress')->save();
-            $conn->commit();
+            $outProjectOrder->update(['user_progress'=>($outProjectOrder['user_progress']+1)]);
             if($outProjectOrder['user_progress']>=ProjectUserCnt){
                 $this->outProjectOrder($outProjectOrder);
             }
-            if($projectOrderObj['user_number']==$projectObj['user_cnt']){
+            $conn->commit();
+            if($projectOrderObj['user_number']>=$projectObj['user_cnt']){
                 $this->finishProjectOrder($projectOrderObj);
             }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
@@ -295,33 +289,22 @@ class OrderLogic extends Logic
      * @param $projectOrderObj 要出彩的项目订单
      * @throws \Throwable
      */
-    public function outProjectOrder($projectOrderObj,$user_progress){
-        if(!empty($projectOrderObj)){
-            $conn = $this->connection();
-            try {
-                $conn->beginTransaction();
-                $orderObj = $projectOrderObj->order;
-                $projectOrderObj->update([
-                    'user_progress'=>ProjectUserCnt,
-                    'order_status'=>'completed',
-                    'status'=>2,
-                ]);
-                $orderObj->update([
-                    'order_status'=>'completed',
-                    'status'=>2
-                ]);
-                $memberService = Container::get(MemberService::class);
-                $memberObj = $orderObj->member;
-                $memberObj->update(['project_cnt'=>$memberService->raw('project_cnt+1')]);
-                $walletLogic = Container::get(WalletLogic::class);
-                $walletLogic->addUserPoint($projectOrderObj['user_id'],$orderObj['point'],$orderObj['order_no'].'结算');
-                $conn->commit();
-            }
-            catch (\Throwable $e){
-                Log::channel('server')->error('outProjectOrder:'.$projectOrderObj['id'].'-'.$e->getMessage());
-                $conn->rollBack();
-            }
-        }
+    public function outProjectOrder($projectOrderObj){
+        $orderObj = $projectOrderObj->order;
+        $projectOrderObj->update([
+            'user_progress'=>ProjectUserCnt,
+            'order_status'=>'completed',
+            'status'=>2,
+        ]);
+        $orderObj->update([
+            'order_status'=>'completed',
+            'status'=>2
+        ]);
+        $memberService = Container::get(MemberService::class);
+        $memberObj = $orderObj->member;
+        $memberObj->update(['project_cnt'=>$memberService->raw('project_cnt+1')]);
+        $walletLogic = Container::get(WalletLogic::class);
+        $walletLogic->addUserPoint($projectOrderObj['user_id'],$orderObj['point'],$orderObj['order_no'].'结算');
     }
 
     /**

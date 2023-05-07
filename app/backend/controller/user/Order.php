@@ -115,17 +115,20 @@ class Order extends Backend
      */
     public function verifyOrder(Request $request)
     {
+        $post = $this->getPost(['id','status','remark']);
         try {
-            $post = $this->getPost(['id','status','remark']);
             if (!empty($post['id'])) {
+                $this->addRequestLock($post);
                 foreach($post['id'] as $id){
                     $res = $this->logic->verifyOrder($id,$post['status'],$post['remark']);
                 }
+                $this->deleteRequestLock($post);
                 return $this->response->json(true);
             }
             return $this->response->view('user/order/_verify');
         }
         catch (\Exception $e) {
+            $this->deleteRequestLock($post);
             return $this->response->json(false, [], $e->getMessage());
         }
     }
