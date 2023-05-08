@@ -335,7 +335,7 @@ class OrderLogic extends Logic
                         $index = ProjectUserCnt-1;
                     }
                     if(isset($projectNumberAry[$index])){
-                        $createProjectOrderObj = $projectOrderService->createProjectOrder($projectNumberAry[$index],$v['order_id'],$v['user_id']);
+                        $createProjectOrderObj = $projectOrderService->createProjectOrder($projectNumberAry[$index],$v['order_id'],$v['user_id'],$v['user_progress']);
                         if(!empty($createProjectOrderObj)){
                             $v->update(['status'=>0]);
                         }

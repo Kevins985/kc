@@ -18,10 +18,10 @@ class ProjectOrderService extends Service
     }
 
     public function getActiveProjectOrderList($project_id,$project_number){
-        return $this->fetchAll(['project_id'=>$project_id,'project_number'=>$project_number,'status'=>1],['user_number'=>'asc']);
+        return $this->fetchAll(['project_id'=>$project_id,'project_number'=>$project_number,'status'=>1,'user_progress'=>['lt',ProjectUserCnt]],['user_number'=>'asc']);
     }
 
-    public function createProjectOrder(ProjectNumberModel $projectNumberObj,$order_id,$user_id){
+    public function createProjectOrder(ProjectNumberModel $projectNumberObj,$order_id,$user_id,$user_progress=0){
         $projectNumberObj->increase('user_cnt')->save();
         $projectOrderData = [
             'order_id'=>$order_id,
@@ -29,6 +29,7 @@ class ProjectOrderService extends Service
             'project_number'=>$projectNumberObj['project_number'],
             'user_id'=>$user_id,
             'user_number'=>$projectNumberObj['user_cnt'],
+            'user_progress'=>$user_progress,
             'order_status'=>'pending',
             'status'=>1,
         ];
