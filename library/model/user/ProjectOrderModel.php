@@ -20,6 +20,7 @@ class ProjectOrderModel extends Model
 		"user_id",
 		"user_number",
 		"user_progress",
+        "reset_status",
 		"order_status",
 		"status",
     ];

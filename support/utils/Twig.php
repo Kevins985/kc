@@ -136,7 +136,10 @@ class Twig implements View
         });
         $env->addFunction($staticUrl_func);
         $jsonDecode_func= new TwigFunction("json_decode",function ($json){
-            return json_decode($json,true);
+            if(!empty($json)){
+                return json_decode($json,true);
+            }
+            return [];
         });
         $env->addFunction($jsonDecode_func);
         $label_func= new TwigFunction("label",function ($num,$data,$attr=''){

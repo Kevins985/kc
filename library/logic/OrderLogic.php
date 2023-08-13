@@ -229,7 +229,14 @@ class OrderLogic extends Logic
                     'status'=>1,
                     'project_id'=>$projectObj['project_id']
                 ];
-                $orderService->updateAll($parentOrderWhere,['point'=>$spuObj['point'],'invite_cnt'=>$orderService->raw('invite_cnt+1')]);
+                $parentOrderObj = $orderService->fetch($parentOrderWhere);
+                if(!empty($parentOrderObj)){
+                    $parentOrderObj->update(['point'=>$spuObj['point'],'invite_cnt'=>($parentOrderObj['invite_cnt']+1)]);
+                    //插队重新排序
+                    if($parentOrderObj['invite_cnt']>=ProjectUserCnt){
+                        $projectOrderService->resetProjectOrder($parentOrderObj);
+                    }
+                }
             }
             $projectService->selector(['project_id'=>$projectObj['project_id']])->lockForUpdate();
             //修改项目数据
@@ -250,21 +257,27 @@ class OrderLogic extends Logic
             if(empty($projectOrderObj)){
                 throw new BusinessException('创建项目订单失败');
             }
-            elseif($projectOrderObj['user_number']>$projectObj['user_cnt']){
+            elseif($projectObj['user_cnt']>0 && $projectOrderObj['user_number']>$projectObj['user_cnt']){
                 throw new BusinessException('用户排序号大于项目最多人数');
             }
             $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
             if(empty($outProjectOrder)){
                 throw new BusinessException('出彩用户订单不存在');
             }
-            $outProjectOrder->update(['user_progress'=>($outProjectOrder['user_progress']+1)]);
+            if($outProjectOrder['reset_status']==1){
+                $outProjectOrder->update(['reset_status'=>2]);
+            }
+            else{
+                $outProjectOrder->update(['user_progress'=>($outProjectOrder['user_progress']+1)]);
+            }
             if($outProjectOrder['user_progress']>=ProjectUserCnt){
                 $this->outProjectOrder($outProjectOrder);
             }
             $conn->commit();
-            if($projectOrderObj['user_number']>=$projectObj['user_cnt']){
-                $this->finishProjectOrder($projectOrderObj);
-            }
+            //自动拆分项目组
+//            if($projectOrderObj['user_number']>=$projectObj['user_cnt']){
+//                $this->finishProjectOrder($projectOrderObj);
+//            }
             if(!empty($memberTeam) && !empty($memberTeam['parents_path'])){
                 $queueData = [
                     'user_id'=>$memberTeam['user_id'],
@@ -335,7 +348,7 @@ class OrderLogic extends Logic
                         $index = ProjectUserCnt-1;
                     }
                     if(isset($projectNumberAry[$index])){
-                        $createProjectOrderObj = $projectOrderService->createProjectOrder($projectNumberAry[$index],$v['order_id'],$v['user_id'],$v['user_progress']);
+                        $createProjectOrderObj = $projectOrderService->createProjectOrder($projectNumberAry[$index],$v['order_id'],$v['user_id']);
                         if(!empty($createProjectOrderObj)){
                             $v->update(['status'=>0]);
                         }

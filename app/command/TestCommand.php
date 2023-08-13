@@ -22,6 +22,18 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $rows = [2,4,12,14,91];
+        $orderLogic = Container::get(OrderLogic::class);
+        foreach ($rows as $id){
+            $res = $orderLogic->createOrder([
+                'user_id'=>$id,
+                'address_id'=>0,
+                'spu_id'=>1
+            ]);
+        }
+
+
+        exit;
         $projectOrderService = Container::get(ProjectOrderService::class);
         $outProjectOrder = $projectOrderService->getOutProjectOrder(1,'P2');
         $outProjectOrder->increase('user_progress')->save();
