@@ -64,7 +64,7 @@ projectJs = {
                 dialog.open({
                     title:'查看数据',
                     content:response,
-                    area:['750px','550px']
+                    area:['850px','550px']
                 });
             }
         });

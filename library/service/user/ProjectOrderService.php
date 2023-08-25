@@ -15,6 +15,37 @@ class ProjectOrderService extends Service
         $this->model = $model;
     }
 
+    /**
+     * 重设要出彩人的进度
+     * @param $project_id
+     * @param $project_number
+     */
+    public function resetOutProjectOrderProgress($project_id,$project_number){
+        $outProjctOrder = $this->getOutProjectOrder($project_id,$project_number);
+        if(!empty($outProjctOrder)){
+            $invite_cnt = $outProjctOrder->order['invite_cnt'];
+            if($invite_cnt<4){
+                $outProjctOrder->update(['user_progress'=>$invite_cnt]);
+            }
+        }
+    }
+
+    /**
+     * @param $user_id
+     * @param $project_id
+     * @param $order_id
+     * @return \support\extend\Model
+     */
+    public function getUserOutProjectOrder($user_id,$project_id,$order_id){
+        return $this->fetch(['user_id'=>$user_id,'project_id'=>$project_id,'order_id'=>$order_id,'status'=>1]);
+    }
+
+    /**
+     * 获取要出彩的用户项目订单
+     * @param $project_id
+     * @param $project_number
+     * @return \support\extend\Model
+     */
     public function getOutProjectOrder($project_id,$project_number){
         return $this->fetch(['project_id'=>$project_id,'project_number'=>$project_number,'status'=>1,'user_progress'=>['lt',ProjectUserCnt]],['user_number'=>'asc']);
     }
@@ -43,7 +74,7 @@ class ProjectOrderService extends Service
      * @param OrderModel $parentOrderObj
      */
     public function resetProjectOrder(OrderModel $parentOrderObj){
-         $parentProjectOrderObj = $this->fetch(['user_id'=>$parentOrderObj['user_id'],'project_id'=>$parentOrderObj['parent_id'],'order_id'=>$parentOrderObj['order_id']]);
+         $parentProjectOrderObj = $this->fetch(['user_id'=>$parentOrderObj['user_id'],'project_id'=>$parentOrderObj['project_id'],'order_id'=>$parentOrderObj['order_id']]);
          if(empty($parentProjectOrderObj)){
              throw new BusinessException("暂未找到该邀请人的项目订单");
          }

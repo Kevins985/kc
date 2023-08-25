@@ -222,6 +222,7 @@ class OrderLogic extends Logic
         }
         $conn = $this->connection();
         try{
+            $outProjectOrder = null;
             $conn->beginTransaction();
             if(!empty($memberTeam) && !empty($memberTeam['parent_id'])){
                 $parentOrderWhere = [
@@ -232,9 +233,10 @@ class OrderLogic extends Logic
                 $parentOrderObj = $orderService->fetch($parentOrderWhere);
                 if(!empty($parentOrderObj)){
                     $parentOrderObj->update(['point'=>$spuObj['point'],'invite_cnt'=>($parentOrderObj['invite_cnt']+1)]);
-                    //插队重新排序
+                    //邀请4人出彩重新排序
                     if($parentOrderObj['invite_cnt']>=ProjectUserCnt){
-                        $projectOrderService->resetProjectOrder($parentOrderObj);
+                        $outProjectOrder = $projectOrderService->getUserOutProjectOrder($parentOrderObj['user_id'],$parentOrderObj['project_id'],$parentOrderObj['order_id']);
+//                        $projectOrderService->resetProjectOrder($parentOrderObj);
                     }
                 }
             }
@@ -260,14 +262,15 @@ class OrderLogic extends Logic
             elseif($projectObj['user_cnt']>0 && $projectOrderObj['user_number']>$projectObj['user_cnt']){
                 throw new BusinessException('用户排序号大于项目最多人数');
             }
-            $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
-            if(empty($outProjectOrder)){
-                throw new BusinessException('出彩用户订单不存在');
-            }
-            if($outProjectOrder['reset_status']==1){
-                $outProjectOrder->update(['reset_status'=>2]);
+            if(!empty($outProjectOrder)){
+                $outProjectOrder->update(['user_progress'=>4,'reset_status'=>2]);
+                $projectOrderService->resetOutProjectOrderProgress($projectOrderObj['project_id'],$projectOrderObj['project_number']);
             }
             else{
+                $outProjectOrder = $projectOrderService->getOutProjectOrder($projectOrderObj['project_id'],$projectOrderObj['project_number']);
+                if(empty($outProjectOrder)){
+                    throw new BusinessException('出彩用户订单不存在');
+                }
                 $outProjectOrder->update(['user_progress'=>($outProjectOrder['user_progress']+1)]);
             }
             if($outProjectOrder['user_progress']>=ProjectUserCnt){
