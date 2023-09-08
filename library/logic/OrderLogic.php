@@ -271,7 +271,7 @@ class OrderLogic extends Logic
                 if(empty($outProjectOrder)){
                     throw new BusinessException('出彩用户订单不存在');
                 }
-                if($outProjectOrder['user_number']>1){
+                if($projectOrderObj['user_number']>1){
                     $outProjectOrder->update(['user_progress'=>($outProjectOrder['user_progress']+1)]);
                 }
             }
