@@ -53,6 +53,14 @@ if(in_array('redis_consumer',$config)){
         ]
     ];
 }
+if(in_array('proxy',$config)){
+    $process['proxy'] = [
+        'handler' => app\process\Proxy::class,
+        'listen' => 'http://0.0.0.0:8989',
+        'count' => cpu_count(),
+        'reloadable' => false,
+    ];
+}
 if(in_array('websocket',$config)){
     $process['websocket'] = [
         // 这里指定进程类
